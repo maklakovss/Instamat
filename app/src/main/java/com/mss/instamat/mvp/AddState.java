@@ -1,4 +1,4 @@
-package com.mss.instamat;
+package com.mss.instamat.mvp;
 
 import android.support.annotation.NonNull;
 
