@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.bumptech.glide.Glide;
 import com.mss.instamat.R;
 import com.mss.instamat.presenter.DetailPresenter;
 
@@ -40,7 +41,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     }
 
     @Override
-    public void showImage(int idResource) {
-        imageView.setImageResource(idResource);
+    public void showImage(String idResource) {
+        Glide.with(this).load(idResource).into(imageView);
     }
 }

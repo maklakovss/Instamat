@@ -6,8 +6,11 @@ import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.mss.instamat.model.ImageListModel;
+import com.mss.instamat.model.ImagesResponse;
 import com.mss.instamat.view.imagelist.IImageListViewHolder;
 import com.mss.instamat.view.imagelist.ImageListView;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 @InjectViewState
 public class ImageListPresenter extends MvpPresenter<ImageListView> {
@@ -16,17 +19,8 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
     private final ImageListModel model = ImageListModel.getInstance();
     private final RvPresenter rvPresenter = new RvPresenter();
 
-
-    @Override
-    protected void onFirstViewAttach() {
-        super.onFirstViewAttach();
-        getViewState().initImageList(model.getImages());
-    }
-
     public void onItemClick(int position) {
-        model.setCountClick(model.getCountClick() + 1);
         getViewState().openDetailActivity(position);
-        Log.d(TAG, String.valueOf(model.getCountClick()));
     }
 
     @NonNull
@@ -34,17 +28,32 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
         return rvPresenter;
     }
 
+    public void onSearchClick(String searchText) {
+        model.findImages(searchText)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(imagesResponse -> doOnSuccess(imagesResponse),
+                        throwable -> doOnError(throwable));
+    }
+
+    private void doOnError(Throwable throwable) {
+        Log.d("", throwable.toString());
+    }
+
+    private void doOnSuccess(ImagesResponse imagesResponse) {
+        getViewState().initImageList();
+    }
+
 
     class RvPresenter implements IRvImageListPresenter {
 
         @Override
         public void bindView(@NonNull IImageListViewHolder viewHolder) {
-            viewHolder.setImage(model.getImages().get(viewHolder.getPos()));
+            viewHolder.setImage(model.getImagesResponse().getHits().get(viewHolder.getPos()).getPreviewURL());
         }
 
         @Override
         public int getItemCount() {
-            return model.getImages().size();
+            return model.getImagesResponse().getHits().size();
         }
     }
 }

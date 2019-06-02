@@ -4,5 +4,5 @@ public interface IImageListViewHolder {
 
     public int getPos();
 
-    public void setImage(int imageResourceId);
+    public void setImage(String imageResourceId);
 }

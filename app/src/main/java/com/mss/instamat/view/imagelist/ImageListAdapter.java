@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.mss.instamat.R;
 import com.mss.instamat.presenter.IRvImageListPresenter;
 
@@ -75,8 +76,8 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
         }
 
         @Override
-        public void setImage(int imageResourceId) {
-            ivItem.setImageResource(imageResourceId);
+        public void setImage(String imageResourceId) {
+            Glide.with(itemView).load(imageResourceId).into(ivItem);
         }
     }
 }

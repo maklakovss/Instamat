@@ -16,6 +16,6 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
 
     public void onCreate(int position) {
         Log.d(TAG, String.valueOf(position));
-        getViewState().showImage(model.getImages().get(position));
+        getViewState().showImage(model.getImagesResponse().getHits().get(position).getLargeImageURL());
     }
 }

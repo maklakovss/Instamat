@@ -1,23 +1,19 @@
 package com.mss.instamat.model;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
-import com.mss.instamat.R;
-
-import java.util.ArrayList;
-import java.util.List;
+import io.reactivex.Maybe;
 
 public class ImageListModel {
 
     private static final ImageListModel instance = new ImageListModel();
 
-    private final List<Integer> images = new ArrayList<>();
-    private int countClick = 0;
+    private final ImagesRepository imagesRepository;
+    private ImagesResponse imagesResponse;
 
-    private ImageListModel() {
-        for (int i = 0; i < 40; i++) {
-            images.add(R.drawable.ic_android_black_24dp);
-        }
+    public ImageListModel() {
+        imagesRepository = new ImagesRepository();
     }
 
     @NonNull
@@ -26,15 +22,17 @@ public class ImageListModel {
     }
 
     @NonNull
-    public List<Integer> getImages() {
-        return images;
+    public Maybe<ImagesResponse> findImages(String searchText) {
+        return imagesRepository.findImages(searchText, 1, 50)
+                .doOnSuccess(i -> {
+                    imagesResponse = i;
+                })
+                .doOnError(throwable -> {
+                    Log.d("", throwable.toString());
+                });
     }
 
-    public int getCountClick() {
-        return countClick;
-    }
-
-    public void setCountClick(int countClick) {
-        this.countClick = countClick;
+    public ImagesResponse getImagesResponse() {
+        return imagesResponse;
     }
 }

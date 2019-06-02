@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Instamat</string>
+    <string name="search_hint">Введите строку для поиска картинок</string>
 </resources>
