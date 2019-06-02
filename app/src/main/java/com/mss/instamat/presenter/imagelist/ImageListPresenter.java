@@ -58,12 +58,20 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
         lastDisposableQuery = null;
         end = true;
         Log.d("", throwable.toString());
+        showMessageListEmpty();
+    }
+
+    private void showMessageListEmpty() {
+        if (model.getImages().size() == 0) {
+            getViewState().showNotFoundMessage();
+        }
     }
 
     private void doOnSuccess(ImagesResponse imagesResponse) {
         getViewState().showProgress(false);
         getViewState().refreshImageList();
         lastDisposableQuery = null;
+        showMessageListEmpty();
     }
 
 

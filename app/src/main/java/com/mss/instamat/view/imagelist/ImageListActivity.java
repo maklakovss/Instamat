@@ -3,6 +3,7 @@ package com.mss.instamat.view.imagelist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -101,6 +102,11 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         } else {
             pbList.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    public void showNotFoundMessage() {
+        Snackbar.make(rvImages, getString(R.string.not_found_message), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

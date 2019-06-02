@@ -15,4 +15,7 @@ public interface ImageListView extends MvpView {
 
     @StateStrategyType(value = AddToEndSingleStrategy.class)
     void showProgress(boolean visible);
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void showNotFoundMessage();
 }
