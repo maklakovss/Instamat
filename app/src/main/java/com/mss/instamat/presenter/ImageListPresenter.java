@@ -28,6 +28,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
     }
 
     public void onSearchClick(String searchText) {
+        getViewState().showProgress(true);
         model.findImages(searchText)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(imagesResponse -> doOnSuccess(imagesResponse),
@@ -35,10 +36,12 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
     }
 
     private void doOnError(Throwable throwable) {
+        getViewState().showProgress(false);
         Log.d("", throwable.toString());
     }
 
     private void doOnSuccess(ImagesResponse imagesResponse) {
+        getViewState().showProgress(false);
         getViewState().initImageList();
     }
 

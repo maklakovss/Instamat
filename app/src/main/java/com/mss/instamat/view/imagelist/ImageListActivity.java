@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ProgressBar;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -36,10 +37,13 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
     @BindView(R.id.etSearch)
     TextInputEditText etSearch;
 
+    @BindView(R.id.pbList)
+    ProgressBar pbList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_imagelist);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -75,6 +79,15 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         intent.putExtra(DetailActivity.POSITION_TAG, position);
         startActivity(intent);
 
+    }
+
+    @Override
+    public void showProgress(boolean visible) {
+        if (visible) {
+            pbList.setVisibility(View.VISIBLE);
+        } else {
+            pbList.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

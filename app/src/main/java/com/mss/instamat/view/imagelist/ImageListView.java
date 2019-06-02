@@ -12,4 +12,6 @@ public interface ImageListView extends MvpView {
 
     @StateStrategyType(value = OneExecutionStateStrategy.class)
     void openDetailActivity(int position);
+
+    void showProgress(boolean visible);
 }
