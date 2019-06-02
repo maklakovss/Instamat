@@ -1,4 +1,4 @@
-package com.mss.instamat.presenter;
+package com.mss.instamat.presenter.imagelist;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -11,13 +11,17 @@ import com.mss.instamat.view.imagelist.IImageListViewHolder;
 import com.mss.instamat.view.imagelist.ImageListView;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 
 @InjectViewState
 public class ImageListPresenter extends MvpPresenter<ImageListView> {
 
     private final ImageListModel model = ImageListModel.getInstance();
     private final RvPresenter rvPresenter = new RvPresenter();
-    private boolean isLoading = false;
+    private String lastQuery = "";
+    private int lastPage = 0;
+    private Disposable lastDisposableQuery = null;
+    private boolean end = false;
 
     public void onItemClick(int position) {
         getViewState().openDetailActivity(position);
@@ -29,10 +33,20 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
     }
 
     public void onNeedNextPage(String searchText) {
-        if (!isLoading) {
+        if (!searchText.equals(lastQuery)) {
+            if (lastDisposableQuery != null) {
+                lastDisposableQuery.dispose();
+                lastDisposableQuery = null;
+            }
+            lastQuery = searchText;
+            lastPage = 0;
+            end = false;
+            model.clearImages();
+            getViewState().refreshImageList();
+        }
+        if (lastDisposableQuery == null) {
             getViewState().showProgress(true);
-            isLoading = true;
-            model.findImages(searchText)
+            lastDisposableQuery = model.getImagesFromNetwork(searchText, ++lastPage)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(imagesResponse -> doOnSuccess(imagesResponse),
                             throwable -> doOnError(throwable));
@@ -41,14 +55,15 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
 
     private void doOnError(Throwable throwable) {
         getViewState().showProgress(false);
-        isLoading = false;
+        lastDisposableQuery = null;
+        end = true;
         Log.d("", throwable.toString());
     }
 
     private void doOnSuccess(ImagesResponse imagesResponse) {
         getViewState().showProgress(false);
-        getViewState().initImageList();
-        isLoading = false;
+        getViewState().refreshImageList();
+        lastDisposableQuery = null;
     }
 
 
@@ -65,7 +80,12 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
         }
 
         @Override
-        public void onImageLoaded(@NonNull IImageListViewHolder viewHolder) {
+        public void onImageLoaded(@NonNull final IImageListViewHolder viewHolder) {
+            viewHolder.showProgress(false);
+        }
+
+        @Override
+        public void onImageLoadFailed(@NonNull final IImageListViewHolder viewHolder) {
             viewHolder.showProgress(false);
         }
     }

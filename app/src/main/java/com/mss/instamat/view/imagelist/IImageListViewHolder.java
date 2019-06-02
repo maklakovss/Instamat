@@ -2,9 +2,9 @@ package com.mss.instamat.view.imagelist;
 
 public interface IImageListViewHolder {
 
-    public int getPos();
+    int getPos();
 
-    public void setImage(String imageResourceId);
+    void setImage(String imageURL);
 
     void showProgress(boolean visible);
 }

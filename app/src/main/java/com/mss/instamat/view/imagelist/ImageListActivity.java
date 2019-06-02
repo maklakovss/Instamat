@@ -17,7 +17,7 @@ import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.mss.instamat.R;
-import com.mss.instamat.presenter.ImageListPresenter;
+import com.mss.instamat.presenter.imagelist.ImageListPresenter;
 import com.mss.instamat.view.detail.DetailActivity;
 
 import butterknife.BindView;
@@ -76,7 +76,7 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
     }
 
     @Override
-    public void initImageList() {
+    public void refreshImageList() {
         if (rvImages.getAdapter() == null) {
             ImageListAdapter adapter = new ImageListAdapter(presenter.getRvPresenter());
             adapter.setOnItemClickListener(this);
@@ -89,7 +89,7 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
     @Override
     public void openDetailActivity(int position) {
         Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(DetailActivity.POSITION_TAG, position);
+        intent.putExtra(DetailActivity.PARAMETER_POSITION_TAG, position);
         startActivity(intent);
 
     }

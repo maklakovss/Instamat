@@ -16,24 +16,23 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.mss.instamat.R;
-import com.mss.instamat.presenter.DetailPresenter;
+import com.mss.instamat.presenter.detail.DetailPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
-    public static String POSITION_TAG = "POSITION_TAG";
-
+    public static String PARAMETER_POSITION_TAG = "PARAMETER_POSITION_TAG";
     @BindView(R.id.pbDetail)
     ProgressBar pbDetail;
 
     @InjectPresenter
     DetailPresenter presenter;
+    private int position = 0;
 
     @BindView(R.id.imageView)
     ImageView imageView;
-    private int position = 0;
 
     @ProvidePresenter
     DetailPresenter providePresenter() {
@@ -48,7 +47,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            position = bundle.getInt(POSITION_TAG, 0);
+            position = bundle.getInt(PARAMETER_POSITION_TAG, 0);
         }
         presenter.onCreate(position);
     }
@@ -61,6 +60,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
                 .addListener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        presenter.onImageLoadFailed();
                         return false;
                     }
 

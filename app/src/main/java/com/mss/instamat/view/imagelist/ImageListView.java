@@ -8,10 +8,11 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 public interface ImageListView extends MvpView {
 
     @StateStrategyType(value = AddToEndSingleStrategy.class)
-    void initImageList();
+    void refreshImageList();
 
     @StateStrategyType(value = OneExecutionStateStrategy.class)
     void openDetailActivity(int position);
 
+    @StateStrategyType(value = AddToEndSingleStrategy.class)
     void showProgress(boolean visible);
 }

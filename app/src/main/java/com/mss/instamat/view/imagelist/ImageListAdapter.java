@@ -16,7 +16,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.mss.instamat.R;
-import com.mss.instamat.presenter.IRvImageListPresenter;
+import com.mss.instamat.presenter.imagelist.IRvImageListPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,13 +86,14 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
         }
 
         @Override
-        public void setImage(String imageResourceId) {
+        public void setImage(String imageURL) {
             Glide
                     .with(itemView)
-                    .load(imageResourceId)
+                    .load(imageURL)
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            rvPresenter.onImageLoadFailed(ViewHolder.this);
                             return false;
                         }
 

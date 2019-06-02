@@ -1,4 +1,4 @@
-package com.mss.instamat.presenter;
+package com.mss.instamat.presenter.detail;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -16,6 +16,10 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
     }
 
     public void onImageLoaded() {
+        getViewState().showProgress(false);
+    }
+
+    public void onImageLoadFailed() {
         getViewState().showProgress(false);
     }
 }

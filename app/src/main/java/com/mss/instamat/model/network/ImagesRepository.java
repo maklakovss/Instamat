@@ -1,9 +1,10 @@
-package com.mss.instamat.model;
+package com.mss.instamat.model.network;
 
 import android.support.annotation.NonNull;
 
 import com.google.gson.GsonBuilder;
 import com.mss.instamat.BuildConfig;
+import com.mss.instamat.model.ImagesResponse;
 
 import io.reactivex.Maybe;
 import io.reactivex.schedulers.Schedulers;
@@ -19,6 +20,7 @@ public class ImagesRepository {
     private static final String LANG = "ru";
     private static final String IMAGE_TYPE = "photo";
     private static final String URL = "https://pixabay.com/";
+    private static final int IMAGES_PER_PAGE = 50;
 
     private final PixabayAPI pixabayAPI;
 
@@ -33,9 +35,9 @@ public class ImagesRepository {
     }
 
     @NonNull
-    public Maybe<ImagesResponse> findImages(@NonNull final String query, int pageNumber, int imagesPerPage) {
+    public Maybe<ImagesResponse> findImages(@NonNull final String query, int pageNumber) {
         return pixabayAPI
-                .findImages(KEY, query, LANG, IMAGE_TYPE, pageNumber, imagesPerPage)
+                .findImages(KEY, query, LANG, IMAGE_TYPE, pageNumber, IMAGES_PER_PAGE)
                 .subscribeOn(Schedulers.io());
     }
 }
