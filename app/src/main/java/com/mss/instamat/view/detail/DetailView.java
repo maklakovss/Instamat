@@ -11,4 +11,8 @@ public interface DetailView extends MvpView {
 
     @StateStrategyType(value = OneExecutionStateStrategy.class)
     void showProgress(boolean visible);
+
+    void showSuccessSaveMessage();
+
+    void showFailedSaveMessage();
 }

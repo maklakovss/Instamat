@@ -1,8 +1,12 @@
 package com.mss.instamat.view.detail;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -53,6 +57,24 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.detail_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.miSave:
+                if (imageView.getDrawable() != null) {
+                    presenter.onSaveClick(position, ((BitmapDrawable) imageView.getDrawable()).getBitmap());
+                }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void showImage(String imageURL) {
         Glide
                 .with(this)
@@ -80,5 +102,15 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
         } else {
             pbDetail.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void showSuccessSaveMessage() {
+        Snackbar.make(imageView, R.string.image_saved_message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showFailedSaveMessage() {
+        Snackbar.make(imageView, R.string.image_failed_message, Snackbar.LENGTH_SHORT).show();
     }
 }

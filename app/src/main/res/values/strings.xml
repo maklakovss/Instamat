@@ -2,4 +2,7 @@
     <string name="app_name">Instamat</string>
     <string name="search_hint">Введите строку для поиска картинок</string>
     <string name="not_found_message">Подходящих картинок не найдено</string>
+    <string name="save_label">Сохранить</string>
+    <string name="image_saved_message">Изображение сохранено</string>
+    <string name="image_failed_message">Не удалось сохранить изображение</string>
 </resources>
