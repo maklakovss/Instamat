@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
@@ -15,6 +14,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.jsibbold.zoomage.ZoomageView;
 import com.mss.instamat.R;
 import com.mss.instamat.presenter.detail.DetailPresenter;
 
@@ -32,7 +32,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     private int position = 0;
 
     @BindView(R.id.imageView)
-    ImageView imageView;
+    ZoomageView imageView;
 
     @ProvidePresenter
     DetailPresenter providePresenter() {
