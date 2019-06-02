@@ -79,6 +79,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
 
         @Override
         public void bindView(@NonNull IImageListViewHolder viewHolder) {
+            viewHolder.showProgress(true);
             viewHolder.setImage(model.getImages().get(viewHolder.getPos()).getPreviewURL());
         }
 
