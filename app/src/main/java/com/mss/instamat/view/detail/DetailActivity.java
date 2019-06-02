@@ -25,8 +25,8 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
     public static String POSITION_TAG = "POSITION_TAG";
 
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
+    @BindView(R.id.pbDetail)
+    ProgressBar pbDetail;
 
     @InjectPresenter
     DetailPresenter presenter;
@@ -76,9 +76,9 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     @Override
     public void showProgress(boolean visible) {
         if (visible) {
-            progressBar.setVisibility(View.VISIBLE);
+            pbDetail.setVisibility(View.VISIBLE);
         } else {
-            progressBar.setVisibility(View.GONE);
+            pbDetail.setVisibility(View.GONE);
         }
     }
 }

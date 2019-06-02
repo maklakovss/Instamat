@@ -15,7 +15,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 @InjectViewState
 public class ImageListPresenter extends MvpPresenter<ImageListView> {
 
-    private static String TAG = "ImageListPresenter";
     private final ImageListModel model = ImageListModel.getInstance();
     private final RvPresenter rvPresenter = new RvPresenter();
 
@@ -54,6 +53,11 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
         @Override
         public int getItemCount() {
             return model.getImagesResponse().getHits().size();
+        }
+
+        @Override
+        public void onImageLoaded(@NonNull IImageListViewHolder viewHolder) {
+            viewHolder.showProgress(false);
         }
     }
 }

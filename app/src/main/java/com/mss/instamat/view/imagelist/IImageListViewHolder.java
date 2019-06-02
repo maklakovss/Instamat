@@ -5,4 +5,6 @@ public interface IImageListViewHolder {
     public int getPos();
 
     public void setImage(String imageResourceId);
+
+    void showProgress(boolean visible);
 }

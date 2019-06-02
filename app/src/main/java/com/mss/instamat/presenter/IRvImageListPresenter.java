@@ -9,4 +9,6 @@ public interface IRvImageListPresenter {
     void bindView(@NonNull IImageListViewHolder viewHolder);
 
     int getItemCount();
+
+    void onImageLoaded(@NonNull IImageListViewHolder viewHolder);
 }
