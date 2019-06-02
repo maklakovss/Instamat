@@ -12,7 +12,7 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
 
     public void onCreate(int position) {
         getViewState().showProgress(true);
-        getViewState().showImage(model.getImagesResponse().getHits().get(position).getLargeImageURL());
+        getViewState().showImage(model.getImages().get(position).getLargeImageURL());
     }
 
     public void onImageLoaded() {

@@ -17,6 +17,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
 
     private final ImageListModel model = ImageListModel.getInstance();
     private final RvPresenter rvPresenter = new RvPresenter();
+    private boolean isLoading = false;
 
     public void onItemClick(int position) {
         getViewState().openDetailActivity(position);
@@ -27,22 +28,27 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
         return rvPresenter;
     }
 
-    public void onSearchClick(String searchText) {
-        getViewState().showProgress(true);
-        model.findImages(searchText)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(imagesResponse -> doOnSuccess(imagesResponse),
-                        throwable -> doOnError(throwable));
+    public void onNeedNextPage(String searchText) {
+        if (!isLoading) {
+            getViewState().showProgress(true);
+            isLoading = true;
+            model.findImages(searchText)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(imagesResponse -> doOnSuccess(imagesResponse),
+                            throwable -> doOnError(throwable));
+        }
     }
 
     private void doOnError(Throwable throwable) {
         getViewState().showProgress(false);
+        isLoading = false;
         Log.d("", throwable.toString());
     }
 
     private void doOnSuccess(ImagesResponse imagesResponse) {
         getViewState().showProgress(false);
         getViewState().initImageList();
+        isLoading = false;
     }
 
 
@@ -50,12 +56,12 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
 
         @Override
         public void bindView(@NonNull IImageListViewHolder viewHolder) {
-            viewHolder.setImage(model.getImagesResponse().getHits().get(viewHolder.getPos()).getPreviewURL());
+            viewHolder.setImage(model.getImages().get(viewHolder.getPos()).getPreviewURL());
         }
 
         @Override
         public int getItemCount() {
-            return model.getImagesResponse().getHits().size();
+            return model.getImages().size();
         }
 
         @Override

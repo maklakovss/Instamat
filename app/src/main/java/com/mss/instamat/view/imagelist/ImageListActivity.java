@@ -51,10 +51,19 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         rvImages.setItemAnimator(new DefaultItemAnimator());
         rvImages.setHasFixedSize(true);
         rvImages.setLayoutManager(new GridLayoutManager(this, 2));
+        rvImages.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && recyclerView.computeVerticalScrollRange() - recyclerView.computeVerticalScrollOffset() < 2 * recyclerView.getHeight()) {
+                    presenter.onNeedNextPage(etSearch.getText().toString());
+                }
+            }
+        });
 
         etSearch.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH || keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                presenter.onSearchClick(etSearch.getText().toString());
+                presenter.onNeedNextPage(etSearch.getText().toString());
             }
             return false;
         });
@@ -68,9 +77,13 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
 
     @Override
     public void initImageList() {
-        ImageListAdapter adapter = new ImageListAdapter(presenter.getRvPresenter());
-        adapter.setOnItemClickListener(this);
-        rvImages.setAdapter(adapter);
+        if (rvImages.getAdapter() == null) {
+            ImageListAdapter adapter = new ImageListAdapter(presenter.getRvPresenter());
+            adapter.setOnItemClickListener(this);
+            rvImages.setAdapter(adapter);
+        } else {
+            rvImages.getAdapter().notifyDataSetChanged();
+        }
     }
 
     @Override
