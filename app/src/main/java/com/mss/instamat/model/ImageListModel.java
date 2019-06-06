@@ -1,26 +1,43 @@
 package com.mss.instamat.model;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.mss.instamat.model.network.ImagesRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Maybe;
+
 public class ImageListModel {
 
-    private List<Integer> images = new ArrayList<Integer>();
-    private int countClick = 0;
+    private static final ImageListModel instance = new ImageListModel();
 
-    public List<Integer> getImages() {
-        return images;
+    private final ImagesRepository imagesRepository;
+    private final List<ImageInfo> imageInfoList = new ArrayList<>();
+
+    public ImageListModel() {
+        imagesRepository = new ImagesRepository();
     }
 
-    public void setImages(List<Integer> images) {
-        this.images = images;
+    @NonNull
+    public static ImageListModel getInstance() {
+        return instance;
     }
 
-    public int getCountClick() {
-        return countClick;
+    @NonNull
+    public Maybe<ImagesResponse> getImagesFromNetwork(String searchText, int page) {
+        return imagesRepository.findImages(searchText, page)
+                .doOnSuccess(imagesResponse -> imageInfoList.addAll(imagesResponse.getHits()))
+                .doOnError(throwable -> Log.d("", throwable.toString()));
     }
 
-    public void setCountClick(int countClick) {
-        this.countClick = countClick;
+    public List<ImageInfo> getImages() {
+        return imageInfoList;
+    }
+
+    public void clearImages() {
+        imageInfoList.clear();
     }
 }
