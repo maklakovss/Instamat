@@ -54,6 +54,10 @@ dependencies {
 
     implementation 'com.jsibbold:zoomage:1.2.0'
 
+    implementation 'android.arch.persistence.room:runtime:1.1.1'
+    implementation 'android.arch.persistence.room:rxjava2:1.1.1'
+    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
+
 
     testImplementation 'junit:junit:4.12'
 

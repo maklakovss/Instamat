@@ -1,4 +1,4 @@
-package com.mss.instamat.model;
+package com.mss.instamat.model.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -3,7 +3,9 @@ package com.mss.instamat.model;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.mss.instamat.model.network.ImagesRepository;
+import com.mss.instamat.model.models.ImageInfo;
+import com.mss.instamat.model.models.ImagesResponse;
+import com.mss.instamat.repositories.network.ImagesRepository;
 
 import java.util.ArrayList;
 import java.util.List;
