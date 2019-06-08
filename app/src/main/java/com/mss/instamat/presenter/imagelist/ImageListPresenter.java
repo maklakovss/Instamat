@@ -6,12 +6,12 @@ import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.mss.instamat.model.ImageListModel;
-import com.mss.instamat.model.models.ImagesResponse;
 import com.mss.instamat.view.imagelist.IImageListViewHolder;
 import com.mss.instamat.view.imagelist.ImageListView;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 @InjectViewState
 public class ImageListPresenter extends MvpPresenter<ImageListView> {
@@ -19,7 +19,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
     private final ImageListModel model = ImageListModel.getInstance();
     private final RvPresenter rvPresenter = new RvPresenter();
     private String lastQuery = "";
-    private int lastPage = 0;
+    private int nextPage = 1;
     private Disposable lastDisposableQuery = null;
     private boolean end = false;
 
@@ -39,17 +39,31 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
                 lastDisposableQuery = null;
             }
             lastQuery = searchText;
-            lastPage = 0;
+            nextPage = 1;
             end = false;
             model.clearImages();
             getViewState().refreshImageList();
         }
         if (lastDisposableQuery == null) {
             getViewState().showProgress(true);
-            lastDisposableQuery = model.getImagesFromNetwork(searchText, ++lastPage)
+
+            model.getImagesFromCacheDB(searchText, nextPage)
+                    .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(imagesResponse -> doOnSuccess(imagesResponse),
-                            throwable -> doOnError(throwable));
+                    .subscribe(images -> {
+                        if (images.size() == 0) {
+                            lastDisposableQuery = model.getImagesFromNetwork(searchText, nextPage)
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(imagesResponse -> {
+                                                model.saveToCacheDBAsync(searchText, nextPage, imagesResponse.getHits());
+                                                doOnSuccess();
+                                            },
+                                            throwable -> doOnError(throwable));
+                        } else {
+                            doOnSuccess();
+                        }
+                    });
+
         }
     }
 
@@ -57,7 +71,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
         getViewState().showProgress(false);
         lastDisposableQuery = null;
         end = true;
-        Log.d("", throwable.toString());
+        Log.e("", throwable.toString());
         showMessageListEmpty();
     }
 
@@ -67,7 +81,8 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
         }
     }
 
-    private void doOnSuccess(ImagesResponse imagesResponse) {
+    private void doOnSuccess() {
+        nextPage += 1;
         getViewState().showProgress(false);
         getViewState().refreshImageList();
         lastDisposableQuery = null;

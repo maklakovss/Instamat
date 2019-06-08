@@ -16,7 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.detail.DetailActivity"></activity>
         <activity
             android:name=".view.imagelist.ImageListActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -25,6 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.detail.DetailActivity"></activity>
     </application>
 
 </manifest>
