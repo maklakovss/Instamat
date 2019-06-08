@@ -9,14 +9,17 @@ public class ImagesResponse {
 
     @Expose
     @SerializedName("totalHits")
+    private
     int totalHits;
 
     @Expose
     @SerializedName("total")
+    private
     int total;
 
     @Expose
     @SerializedName("hits")
+    private
     List<ImageInfo> hits;
 
     public int getTotalHits() {

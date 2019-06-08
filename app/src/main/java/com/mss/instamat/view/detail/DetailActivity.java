@@ -19,20 +19,23 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.jsibbold.zoomage.ZoomageView;
+import com.mss.instamat.App;
 import com.mss.instamat.R;
 import com.mss.instamat.presenter.detail.DetailPresenter;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
-    public static String PARAMETER_POSITION_TAG = "PARAMETER_POSITION_TAG";
-    @BindView(R.id.pbDetail)
-    ProgressBar pbDetail;
-
+    public static final String PARAMETER_POSITION_TAG = "PARAMETER_POSITION_TAG";
+    @Inject
     @InjectPresenter
     DetailPresenter presenter;
+    @BindView(R.id.pbDetail)
+    ProgressBar pbDetail;
     private int position = 0;
 
     @BindView(R.id.imageView)
@@ -40,11 +43,12 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
     @ProvidePresenter
     DetailPresenter providePresenter() {
-        return new DetailPresenter();
+        return presenter;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        App.getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
@@ -67,7 +71,8 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
         switch (item.getItemId()) {
             case R.id.miSave:
                 if (imageView.getDrawable() != null) {
-                    presenter.onSaveClick(position, ((BitmapDrawable) imageView.getDrawable()).getBitmap());
+                    final BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+                    presenter.onSaveClick(position, drawable.getBitmap());
                 }
                 return true;
         }

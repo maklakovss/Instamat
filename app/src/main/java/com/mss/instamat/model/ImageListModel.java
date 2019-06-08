@@ -3,7 +3,6 @@ package com.mss.instamat.model;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.mss.instamat.App;
 import com.mss.instamat.model.models.ImageInfo;
 import com.mss.instamat.model.models.ImagesResponse;
 import com.mss.instamat.repositories.network.ImagesRepository;
@@ -18,23 +17,15 @@ import io.reactivex.Single;
 
 public class ImageListModel {
 
-    private static final ImageListModel instance = new ImageListModel();
-
-    private final List<ImageInfo> imageInfoList = new ArrayList<>();
-
-    @Inject
-    CacheDBRepository cacheDBRepository;
+    private final List<ImageInfo> imageInfoList;
+    private final CacheDBRepository cacheDBRepository;
+    private final ImagesRepository imagesRepository;
 
     @Inject
-    ImagesRepository imagesRepository;
-
-    public ImageListModel() {
-        App.getAppComponent().inject(this);
-    }
-
-    @NonNull
-    public static ImageListModel getInstance() {
-        return instance;
+    public ImageListModel(CacheDBRepository cacheDBRepository, ImagesRepository imagesRepository) {
+        imageInfoList = new ArrayList<>();
+        this.cacheDBRepository = cacheDBRepository;
+        this.imagesRepository = imagesRepository;
     }
 
     @NonNull

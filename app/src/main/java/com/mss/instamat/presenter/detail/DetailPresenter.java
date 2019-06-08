@@ -13,11 +13,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 @InjectViewState
 public class DetailPresenter extends MvpPresenter<DetailView> {
 
-    public static final String SAVE_FOLDER = "instamat";
-    private final ImageListModel model = ImageListModel.getInstance();
+    private static final String SAVE_FOLDER = "instamat";
+    private final ImageListModel model;
+
+    @Inject
+    public DetailPresenter(ImageListModel model) {
+        this.model = model;
+    }
 
     public void onCreate(int position) {
         getViewState().showProgress(true);
@@ -37,7 +44,7 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
             File storageLoc = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
             File myDir = new File(storageLoc.getAbsoluteFile() + File.separator + SAVE_FOLDER);
             myDir.mkdirs();
-            File file = new File(myDir, String.valueOf(model.getImages().get(position).getId()) + ".jpg");
+            File file = new File(myDir, model.getImages().get(position).getId() + ".jpg");
             if (file.exists()) {
                 file.delete();
             }

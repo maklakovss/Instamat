@@ -34,12 +34,13 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.imagelist_list_item, viewGroup, false));
+        return new ViewHolder(LayoutInflater
+                .from(viewGroup.getContext())
+                .inflate(R.layout.imagelist_list_item, viewGroup, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        viewHolder.position = position;
         rvPresenter.bindView(viewHolder);
     }
 
@@ -65,9 +66,8 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
 
         @BindView(R.id.ivItem)
         public ImageView ivItem;
-        int position = 0;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -81,7 +81,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
 
         @Override
         public int getPos() {
-            return position;
+            return getAdapterPosition();
         }
 
         @Override
@@ -91,13 +91,22 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
                     .load(imageURL)
                     .listener(new RequestListener<Drawable>() {
                         @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        public boolean onLoadFailed(
+                                @Nullable GlideException e,
+                                Object model,
+                                Target<Drawable> target,
+                                boolean isFirstResource) {
                             rvPresenter.onImageLoadFailed(ViewHolder.this);
                             return false;
                         }
 
                         @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        public boolean onResourceReady(
+                                Drawable resource,
+                                Object model,
+                                Target<Drawable> target,
+                                DataSource dataSource,
+                                boolean isFirstResource) {
                             rvPresenter.onImageLoaded(ViewHolder.this);
                             return false;
                         }

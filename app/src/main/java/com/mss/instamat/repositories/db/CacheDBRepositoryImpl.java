@@ -7,23 +7,32 @@ import com.mss.instamat.repositories.db.models.ImageInfoDB;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
 import io.reactivex.Single;
 
 public class CacheDBRepositoryImpl implements CacheDBRepository {
 
     private final CacheDB cacheDB;
 
+    @Inject
     public CacheDBRepositoryImpl(CacheDB cacheDB) {
         this.cacheDB = cacheDB;
     }
 
     @Override
     public Single<List<Long>> saveToCacheDB(String searchText, int page, List<ImageInfo> images) {
-        return Single.create(emitter -> emitter.onSuccess(cacheDB.productDao().insertAll(mapToDB(searchText, page, images))));
+        return Single.create(emitter ->
+                emitter.onSuccess(cacheDB
+                        .productDao()
+                        .insertAll(mapToDB(searchText, page, images)))
+        );
     }
 
     private List<ImageInfoDB> mapToDB(String searchText, int page, List<ImageInfo> images) {
-        return images.stream().map(imageInfo -> map(searchText, page, imageInfo)).collect(Collectors.toList());
+        return images.stream().map(imageInfo ->
+                map(searchText, page, imageInfo)).collect(Collectors.toList()
+        );
     }
 
     private ImageInfoDB map(String searchText, int page, ImageInfo imageInfo) {

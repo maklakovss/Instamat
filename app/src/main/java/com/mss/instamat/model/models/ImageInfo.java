@@ -7,14 +7,17 @@ public class ImageInfo {
 
     @Expose
     @SerializedName("id")
+    private
     long id;
 
     @Expose
     @SerializedName("largeImageURL")
+    private
     String largeImageURL;
 
     @Expose
     @SerializedName("previewURL")
+    private
     String previewURL;
 
     public long getId() {

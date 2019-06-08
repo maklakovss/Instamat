@@ -51,6 +51,7 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imagelist);
         ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -61,14 +62,20 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0 && recyclerView.computeVerticalScrollRange() - recyclerView.computeVerticalScrollOffset() < 2 * recyclerView.getHeight()) {
-                    presenter.onNeedNextPage(etSearch.getText().toString());
+                if (dy > 0) {
+                    int offsetOfEnd = recyclerView.computeVerticalScrollRange()
+                            - recyclerView.computeVerticalScrollOffset();
+
+                    if (offsetOfEnd < 2 * recyclerView.getHeight()) {
+                        presenter.onNeedNextPage(etSearch.getText().toString());
+                    }
                 }
             }
         });
 
         etSearch.setOnEditorActionListener((textView, actionId, keyEvent) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH || keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH
+                    || keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                 presenter.onNeedNextPage(etSearch.getText().toString());
             }
             return false;
@@ -97,7 +104,6 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(DetailActivity.PARAMETER_POSITION_TAG, position);
         startActivity(intent);
-
     }
 
     @Override

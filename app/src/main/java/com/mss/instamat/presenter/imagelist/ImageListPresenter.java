@@ -9,6 +9,8 @@ import com.mss.instamat.model.ImageListModel;
 import com.mss.instamat.view.imagelist.IImageListViewHolder;
 import com.mss.instamat.view.imagelist.ImageListView;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -16,12 +18,19 @@ import io.reactivex.schedulers.Schedulers;
 @InjectViewState
 public class ImageListPresenter extends MvpPresenter<ImageListView> {
 
-    private final ImageListModel model = ImageListModel.getInstance();
-    private final RvPresenter rvPresenter = new RvPresenter();
+    private final RvPresenter rvPresenter;
+    private final ImageListModel model;
+
     private String lastQuery = "";
     private int nextPage = 1;
     private Disposable lastDisposableQuery = null;
     private boolean end = false;
+
+    @Inject
+    public ImageListPresenter(ImageListModel model) {
+        this.model = model;
+        rvPresenter = new RvPresenter();
+    }
 
     public void onItemClick(int position) {
         getViewState().openDetailActivity(position);
@@ -58,7 +67,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
                                                 model.saveToCacheDBAsync(searchText, nextPage, imagesResponse.getHits());
                                                 doOnSuccess();
                                             },
-                                            throwable -> doOnError(throwable));
+                                            this::doOnError);
                         } else {
                             doOnSuccess();
                         }
