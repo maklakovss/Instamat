@@ -27,7 +27,6 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
     private final IRvImageListPresenter rvPresenter;
     private OnItemClickListener onItemClickListener;
 
-
     public ImageListAdapter(@NonNull final IRvImageListPresenter rvPresenter) {
         this.rvPresenter = rvPresenter;
     }

@@ -17,15 +17,19 @@ import android.widget.ProgressBar;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.mss.instamat.App;
 import com.mss.instamat.R;
 import com.mss.instamat.presenter.imagelist.ImageListPresenter;
 import com.mss.instamat.view.detail.DetailActivity;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ImageListActivity extends MvpAppCompatActivity implements ImageListView, ImageListAdapter.OnItemClickListener {
 
+    @Inject
     @InjectPresenter
     ImageListPresenter presenter;
 
@@ -43,6 +47,7 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        App.getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imagelist);
         ButterKnife.bind(this);
@@ -73,7 +78,7 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
     @NonNull
     @ProvidePresenter
     ImageListPresenter providePresenter() {
-        return new ImageListPresenter();
+        return presenter;
     }
 
     @Override

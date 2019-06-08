@@ -11,6 +11,8 @@ import com.mss.instamat.repositories.network.ImagesRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 
@@ -18,11 +20,16 @@ public class ImageListModel {
 
     private static final ImageListModel instance = new ImageListModel();
 
-    private final ImagesRepository imagesRepository;
     private final List<ImageInfo> imageInfoList = new ArrayList<>();
 
+    @Inject
+    CacheDBRepository cacheDBRepository;
+
+    @Inject
+    ImagesRepository imagesRepository;
+
     public ImageListModel() {
-        imagesRepository = new ImagesRepository();
+        App.getAppComponent().inject(this);
     }
 
     @NonNull
@@ -50,7 +57,7 @@ public class ImageListModel {
     }
 
     public void saveToCacheDBAsync(String searchText, int page, List<ImageInfo> images) {
-        App.getCacheDBRepository()
+        cacheDBRepository
                 .saveToCacheDB(searchText, page, images)
                 .subscribe(list -> Log.d("", "Saved " + list.size() + "records to cache DB"),
                         throwable -> Log.e("", "Filed save records to cache DB", throwable));
