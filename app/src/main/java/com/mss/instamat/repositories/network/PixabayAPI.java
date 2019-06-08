@@ -1,6 +1,6 @@
-package com.mss.instamat.model.network;
+package com.mss.instamat.repositories.network;
 
-import com.mss.instamat.model.ImagesResponse;
+import com.mss.instamat.model.models.ImagesResponse;
 
 import io.reactivex.Maybe;
 import retrofit2.http.GET;

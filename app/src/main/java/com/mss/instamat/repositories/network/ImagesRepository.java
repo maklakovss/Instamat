@@ -1,10 +1,10 @@
-package com.mss.instamat.model.network;
+package com.mss.instamat.repositories.network;
 
 import android.support.annotation.NonNull;
 
 import com.google.gson.GsonBuilder;
 import com.mss.instamat.BuildConfig;
-import com.mss.instamat.model.ImagesResponse;
+import com.mss.instamat.model.models.ImagesResponse;
 
 import io.reactivex.Maybe;
 import io.reactivex.schedulers.Schedulers;
