@@ -1,4 +1,4 @@
-package com.mss.instamat.di;
+package com.mss.instamat.di.nodi;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

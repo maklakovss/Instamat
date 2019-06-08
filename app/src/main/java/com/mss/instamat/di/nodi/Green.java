@@ -1,4 +1,4 @@
-package com.mss.instamat.di;
+package com.mss.instamat.di.nodi;
 
 public class Green {
     public String show() {

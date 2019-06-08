@@ -1,10 +1,10 @@
-package com.mss.instamat.di;
+package com.mss.instamat.di.nodi;
 
 import android.util.Log;
 
-public class White {
+public class Red {
 
-    public White() {
+    public Red() {
         Green green = new Green();
         Log.d("TAG", green.show());
         Log.d("TAG", green.toString());
