@@ -1,13 +1,16 @@
-package com.mss.instamat.di.nodi;
+package com.mss.instamat.di.dagger;
 
 import android.util.Log;
 
+import javax.inject.Inject;
+
 public class Red {
 
+    @Inject
     Green green;
 
     public Red() {
-        green = new Green();
+        App.getAppComponent().inject(this);
         Log.d("TAG", green.show());
         Log.d("TAG", green.toString());
     }
