@@ -15,7 +15,7 @@ import io.reactivex.Single;
 @Dao
 public interface ImageInfoDao {
 
-    @Query("SELECT * FROM ImageInfoDB WHERE 'query' = :query and page = :page")
+    @Query("SELECT * FROM ImageInfoDB WHERE query = :query and page = :page")
     Single<List<ImageInfoDB>> getImagesInfo(String query, int page);
 
     @Insert
@@ -30,10 +30,10 @@ public interface ImageInfoDao {
     @Query("DELETE FROM ImageInfoDB")
     void deleteAll();
 
-    @Query("DELETE FROM ImageInfoDB where 'query' = :query")
+    @Query("DELETE FROM ImageInfoDB where query = :query")
     int deleteQuery(String query);
 
-    @Query("DELETE FROM ImageInfoDB where 'query' = :query AND page = :page")
+    @Query("DELETE FROM ImageInfoDB where query = :query AND page = :page")
     int deleteQuery(String query, int page);
 
     @Update

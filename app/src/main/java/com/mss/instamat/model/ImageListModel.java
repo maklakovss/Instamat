@@ -44,13 +44,15 @@ public class ImageListModel {
     }
 
     public Single<List<ImageInfo>> getImagesFromCacheDB(String searchText, int page) {
-        return Single.just(new ArrayList<>());
+        return cacheDBRepository.getImagesInfo(searchText, page)
+                .doOnSuccess(images -> imageInfoList.addAll(images))
+                .doOnError(throwable -> Log.d("", throwable.toString()));
     }
 
-    public void saveToCacheDBAsync(String searchText, int page, List<ImageInfo> images) {
-        cacheDBRepository
+    public Single<List<Long>> saveToCacheDBAsync(String searchText, int page, List<ImageInfo> images) {
+        return cacheDBRepository
                 .saveToCacheDB(searchText, page, images)
-                .subscribe(list -> Log.d("", "Saved " + list.size() + "records to cache DB"),
-                        throwable -> Log.e("", "Filed save records to cache DB", throwable));
+                .doOnSuccess(list -> Log.d("", "Saved " + list.size() + "records to cache DB"))
+                .doOnError(throwable -> Log.e("", "Filed save records to cache DB", throwable));
     }
 }

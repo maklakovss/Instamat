@@ -43,15 +43,8 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
 
     public void onNeedNextPage(String searchText) {
         if (!searchText.equals(lastQuery)) {
-            if (lastDisposableQuery != null) {
-                lastDisposableQuery.dispose();
-                lastDisposableQuery = null;
-            }
-            lastQuery = searchText;
-            nextPage = 1;
-            end = false;
-            model.clearImages();
-            getViewState().refreshImageList();
+            stopNetworkQuery();
+            initNewQuery(searchText);
         }
         if (lastDisposableQuery == null) {
             getViewState().showProgress(true);
@@ -64,7 +57,11 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
                             lastDisposableQuery = model.getImagesFromNetwork(searchText, nextPage)
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(imagesResponse -> {
-                                                model.saveToCacheDBAsync(searchText, nextPage, imagesResponse.getHits());
+
+                                                model.saveToCacheDBAsync(searchText, nextPage, imagesResponse.getHits())
+                                                        .subscribeOn(Schedulers.io())
+                                                        .observeOn(AndroidSchedulers.mainThread())
+                                                        .subscribe();
                                                 doOnSuccess();
                                             },
                                             this::doOnError);
@@ -73,6 +70,21 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
                         }
                     });
 
+        }
+    }
+
+    private void initNewQuery(String searchText) {
+        lastQuery = searchText;
+        nextPage = 1;
+        end = false;
+        model.clearImages();
+        getViewState().refreshImageList();
+    }
+
+    private void stopNetworkQuery() {
+        if (lastDisposableQuery != null) {
+            lastDisposableQuery.dispose();
+            lastDisposableQuery = null;
         }
     }
 

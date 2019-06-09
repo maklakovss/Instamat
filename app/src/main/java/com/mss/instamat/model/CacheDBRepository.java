@@ -8,4 +8,6 @@ import io.reactivex.Single;
 
 public interface CacheDBRepository {
     Single<List<Long>> saveToCacheDB(String searchText, int page, List<ImageInfo> images);
+
+    Single<List<ImageInfo>> getImagesInfo(String searchText, int page);
 }
