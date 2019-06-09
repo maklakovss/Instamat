@@ -1,4 +1,4 @@
-package com.mss.instamat.model.models;
+package com.mss.instamat.repositories.network.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -9,18 +9,15 @@ public class ImagesResponse {
 
     @Expose
     @SerializedName("totalHits")
-    private
-    int totalHits;
+    private int totalHits;
 
     @Expose
     @SerializedName("total")
-    private
-    int total;
+    private int total;
 
     @Expose
     @SerializedName("hits")
-    private
-    List<ImageInfo> hits;
+    private List<ImageInfoNet> hits;
 
     public int getTotalHits() {
         return totalHits;
@@ -38,11 +35,11 @@ public class ImagesResponse {
         this.total = total;
     }
 
-    public List<ImageInfo> getHits() {
+    public List<ImageInfoNet> getHits() {
         return hits;
     }
 
-    public void setHits(List<ImageInfo> hits) {
+    public void setHits(List<ImageInfoNet> hits) {
         this.hits = hits;
     }
 }

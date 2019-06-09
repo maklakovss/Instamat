@@ -7,8 +7,7 @@ import android.arch.persistence.room.PrimaryKey;
 public class ImageInfoDB {
 
     @PrimaryKey(autoGenerate = true)
-    private
-    long uid;
+    private long uid;
 
     private String query;
 

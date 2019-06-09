@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.mss.instamat.model.ImageListModel;
+import com.mss.instamat.domain.ImageListModel;
 import com.mss.instamat.view.imagelist.IImageListViewHolder;
 import com.mss.instamat.view.imagelist.ImageListView;
 
@@ -27,7 +27,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
     private boolean end = false;
 
     @Inject
-    public ImageListPresenter(ImageListModel model) {
+    public ImageListPresenter(@NonNull final ImageListModel model) {
         this.model = model;
         rvPresenter = new RvPresenter();
     }
@@ -41,7 +41,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
         return rvPresenter;
     }
 
-    public void onNeedNextPage(String searchText) {
+    public void onNeedNextPage(@NonNull final String searchText) {
         if (!searchText.equals(lastQuery)) {
             stopNetworkQuery();
             initNewQuery(searchText);
@@ -57,8 +57,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
                             lastDisposableQuery = model.getImagesFromNetwork(searchText, nextPage)
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(imagesResponse -> {
-
-                                                model.saveToCacheDBAsync(searchText, nextPage, imagesResponse.getHits())
+                                                model.saveToCacheDBAsync(searchText, nextPage, images)
                                                         .subscribeOn(Schedulers.io())
                                                         .observeOn(AndroidSchedulers.mainThread())
                                                         .subscribe();
@@ -73,7 +72,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
         }
     }
 
-    private void initNewQuery(String searchText) {
+    private void initNewQuery(@NonNull final String searchText) {
         lastQuery = searchText;
         nextPage = 1;
         end = false;
@@ -88,7 +87,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
         }
     }
 
-    private void doOnError(Throwable throwable) {
+    private void doOnError(@NonNull final Throwable throwable) {
         getViewState().showProgress(false);
         lastDisposableQuery = null;
         end = true;
@@ -114,7 +113,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
     class RvPresenter implements IRvImageListPresenter {
 
         @Override
-        public void bindView(@NonNull IImageListViewHolder viewHolder) {
+        public void bindView(@NonNull final IImageListViewHolder viewHolder) {
             viewHolder.showProgress(true);
             viewHolder.setImage(model.getImages().get(viewHolder.getPos()).getPreviewURL());
         }

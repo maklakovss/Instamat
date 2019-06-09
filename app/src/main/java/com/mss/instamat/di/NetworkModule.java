@@ -1,5 +1,7 @@
 package com.mss.instamat.di;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.GsonBuilder;
 import com.mss.instamat.BuildConfig;
 import com.mss.instamat.repositories.network.ImagesRepository;
@@ -22,6 +24,7 @@ public class NetworkModule {
 
     @Singleton
     @Provides
+    @NonNull
     PixabayAPI providePixabayAPI() {
         return new Retrofit.Builder()
                 .baseUrl(URL)
@@ -34,7 +37,8 @@ public class NetworkModule {
 
     @Singleton
     @Provides
-    ImagesRepository provideImagesRepository(PixabayAPI pixabayAPI) {
+    @NonNull
+    ImagesRepository provideImagesRepository(@NonNull final PixabayAPI pixabayAPI) {
         return new ImagesRepository(pixabayAPI);
     }
 }

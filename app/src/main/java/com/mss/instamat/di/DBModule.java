@@ -2,8 +2,9 @@ package com.mss.instamat.di;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.support.annotation.NonNull;
 
-import com.mss.instamat.model.CacheDBRepository;
+import com.mss.instamat.domain.CacheDBRepository;
 import com.mss.instamat.repositories.db.CacheDB;
 import com.mss.instamat.repositories.db.CacheDBRepositoryImpl;
 
@@ -19,13 +20,15 @@ public class DBModule {
 
     @Singleton
     @Provides
-    CacheDB provideCacheDB(Context context) {
+    @NonNull
+    CacheDB provideCacheDB(@NonNull final Context context) {
         return Room.databaseBuilder(context, CacheDB.class, DATABASE_NAME).build();
     }
 
     @Singleton
     @Provides
-    CacheDBRepository provideCacheDBRepository(CacheDB cacheDB) {
+    @NonNull
+    CacheDBRepository provideCacheDBRepository(@NonNull final CacheDB cacheDB) {
         return new CacheDBRepositoryImpl(cacheDB);
     }
 }

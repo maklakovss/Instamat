@@ -1,9 +1,9 @@
-package com.mss.instamat.model.models;
+package com.mss.instamat.repositories.network.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ImageInfo {
+public class ImageInfoNet {
 
     @Expose
     @SerializedName("id")

@@ -55,7 +55,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
 
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick(@NonNull View view, int position);
     }
 
 
@@ -67,7 +67,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
         @BindView(R.id.ivItem)
         public ImageView ivItem;
 
-        ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

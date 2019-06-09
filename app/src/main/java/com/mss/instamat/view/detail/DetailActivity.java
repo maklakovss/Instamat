@@ -3,6 +3,7 @@ package com.mss.instamat.view.detail;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.view.Menu;
@@ -31,16 +32,20 @@ import butterknife.ButterKnife;
 public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
     public static final String PARAMETER_POSITION_TAG = "PARAMETER_POSITION_TAG";
+
+    private int position = 0;
+
     @Inject
     @InjectPresenter
     DetailPresenter presenter;
+
     @BindView(R.id.pbDetail)
     ProgressBar pbDetail;
-    private int position = 0;
 
     @BindView(R.id.imageView)
     ZoomageView imageView;
 
+    @NonNull
     @ProvidePresenter
     DetailPresenter providePresenter() {
         return presenter;
@@ -53,7 +58,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
 
-        Bundle bundle = getIntent().getExtras();
+        final Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             position = bundle.getInt(PARAMETER_POSITION_TAG, 0);
         }
@@ -80,7 +85,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     }
 
     @Override
-    public void showImage(String imageURL) {
+    public void showImage(@NonNull final String imageURL) {
         Glide
                 .with(this)
                 .load(imageURL)

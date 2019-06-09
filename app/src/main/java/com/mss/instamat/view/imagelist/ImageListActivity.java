@@ -91,7 +91,7 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
     @Override
     public void refreshImageList() {
         if (rvImages.getAdapter() == null) {
-            ImageListAdapter adapter = new ImageListAdapter(presenter.getRvPresenter());
+            final ImageListAdapter adapter = new ImageListAdapter(presenter.getRvPresenter());
             adapter.setOnItemClickListener(this);
             rvImages.setAdapter(adapter);
         } else {
@@ -101,7 +101,7 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
 
     @Override
     public void openDetailActivity(int position) {
-        Intent intent = new Intent(this, DetailActivity.class);
+        final Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(DetailActivity.PARAMETER_POSITION_TAG, position);
         startActivity(intent);
     }
