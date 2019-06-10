@@ -20,4 +20,7 @@ public interface DetailView extends MvpView {
 
     @StateStrategyType(value = OneExecutionStateStrategy.class)
     void showFailedSaveMessage();
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void shareImage(@NonNull final String path);
 }

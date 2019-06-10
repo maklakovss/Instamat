@@ -67,7 +67,8 @@ public class ImageListModel {
                 .doOnError(throwable -> Log.e("", "Filed save records to cache DB", throwable));
     }
 
-    public void saveBitmap(ImageInfo imageInfo, @NonNull final Bitmap bitmap) throws IOException {
-        filesRepository.saveBitmap(imageInfo, bitmap);
+    @NonNull
+    public String saveBitmap(ImageInfo imageInfo, @NonNull final Bitmap bitmap) throws IOException {
+        return filesRepository.saveBitmap(imageInfo, bitmap);
     }
 }

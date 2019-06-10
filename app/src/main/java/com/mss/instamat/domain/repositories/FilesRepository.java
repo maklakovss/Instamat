@@ -9,5 +9,6 @@ import java.io.IOException;
 
 public interface FilesRepository {
 
-    void saveBitmap(@NonNull final ImageInfo imageInfo, @NonNull final Bitmap bitmap) throws IOException;
+    @NonNull
+    String saveBitmap(@NonNull final ImageInfo imageInfo, @NonNull final Bitmap bitmap) throws IOException;
 }

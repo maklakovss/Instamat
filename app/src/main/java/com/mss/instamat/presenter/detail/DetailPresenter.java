@@ -47,6 +47,18 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
             e.printStackTrace();
             getViewState().showFailedSaveMessage();
         }
+    }
 
+    public void onShareClick(int position, Bitmap bitmap) {
+        try {
+            String path = model.saveBitmap(model.getImages().get(position), bitmap);
+            getViewState().shareImage(path);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            getViewState().showFailedSaveMessage();
+        } catch (IOException e) {
+            e.printStackTrace();
+            getViewState().showFailedSaveMessage();
+        }
     }
 }

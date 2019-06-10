@@ -15,8 +15,9 @@ public class FilesRepositoryImpl implements FilesRepository {
 
     private static final String SAVE_FOLDER = "instamat";
 
+    @NonNull
     @Override
-    public void saveBitmap(@NonNull ImageInfo imageInfo, @NonNull Bitmap bitmap) throws IOException {
+    public String saveBitmap(@NonNull ImageInfo imageInfo, @NonNull Bitmap bitmap) throws IOException {
         final File storageLoc = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         final File myDir = new File(storageLoc.getAbsoluteFile() + File.separator + SAVE_FOLDER);
         myDir.mkdirs();
@@ -29,5 +30,6 @@ public class FilesRepositoryImpl implements FilesRepository {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
         outStream.flush();
         outStream.close();
+        return file.getAbsolutePath();
     }
 }
