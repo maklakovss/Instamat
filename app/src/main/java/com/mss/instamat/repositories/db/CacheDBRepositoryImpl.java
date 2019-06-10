@@ -2,8 +2,8 @@ package com.mss.instamat.repositories.db;
 
 import android.support.annotation.NonNull;
 
-import com.mss.instamat.domain.CacheDBRepository;
 import com.mss.instamat.domain.models.ImageInfo;
+import com.mss.instamat.domain.repositories.CacheDBRepository;
 
 import java.util.List;
 

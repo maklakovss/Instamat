@@ -4,7 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.GsonBuilder;
 import com.mss.instamat.BuildConfig;
-import com.mss.instamat.repositories.network.ImagesRepository;
+import com.mss.instamat.domain.repositories.ImagesNetRepository;
+import com.mss.instamat.repositories.network.ImagesNetRepositoryImpl;
 import com.mss.instamat.repositories.network.PixabayAPI;
 
 import javax.inject.Singleton;
@@ -38,7 +39,7 @@ public class NetworkModule {
     @Singleton
     @Provides
     @NonNull
-    ImagesRepository provideImagesRepository(@NonNull final PixabayAPI pixabayAPI) {
-        return new ImagesRepository(pixabayAPI);
+    ImagesNetRepository provideImagesRepository(@NonNull final PixabayAPI pixabayAPI) {
+        return new ImagesNetRepositoryImpl(pixabayAPI);
     }
 }

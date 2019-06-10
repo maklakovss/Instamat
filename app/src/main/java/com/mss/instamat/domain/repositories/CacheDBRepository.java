@@ -1,4 +1,4 @@
-package com.mss.instamat.domain;
+package com.mss.instamat.domain.repositories;
 
 import android.support.annotation.NonNull;
 

@@ -4,7 +4,8 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.mss.instamat.domain.models.ImageInfo;
-import com.mss.instamat.repositories.network.ImagesRepository;
+import com.mss.instamat.domain.repositories.CacheDBRepository;
+import com.mss.instamat.domain.repositories.ImagesNetRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,11 @@ public class ImageListModel {
 
     private final List<ImageInfo> imageInfoList;
     private final CacheDBRepository cacheDBRepository;
-    private final ImagesRepository imagesRepository;
+    private final ImagesNetRepository imagesRepository;
 
     @Inject
     public ImageListModel(@NonNull final CacheDBRepository cacheDBRepository,
-                          @NonNull final ImagesRepository imagesRepository) {
+                          @NonNull final ImagesNetRepository imagesRepository) {
         imageInfoList = new ArrayList<>();
         this.cacheDBRepository = cacheDBRepository;
         this.imagesRepository = imagesRepository;

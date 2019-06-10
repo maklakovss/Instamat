@@ -4,7 +4,7 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.mss.instamat.domain.CacheDBRepository;
+import com.mss.instamat.domain.repositories.CacheDBRepository;
 import com.mss.instamat.repositories.db.CacheDB;
 import com.mss.instamat.repositories.db.CacheDBRepositoryImpl;
 

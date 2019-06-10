@@ -3,10 +3,10 @@ package com.mss.instamat.di;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.mss.instamat.domain.CacheDBRepository;
 import com.mss.instamat.domain.ImageListModel;
+import com.mss.instamat.domain.repositories.CacheDBRepository;
+import com.mss.instamat.domain.repositories.ImagesNetRepository;
 import com.mss.instamat.presenter.imagelist.ImageListPresenter;
-import com.mss.instamat.repositories.network.ImagesRepository;
 
 import javax.inject.Singleton;
 
@@ -33,8 +33,8 @@ public class AppModule {
     @Provides
     @NonNull
     ImageListModel provideImageListModel(@NonNull final CacheDBRepository cacheDBRepository,
-                                         @NonNull final ImagesRepository imagesRepository) {
-        return new ImageListModel(cacheDBRepository, imagesRepository);
+                                         @NonNull final ImagesNetRepository imagesNetRepository) {
+        return new ImageListModel(cacheDBRepository, imagesNetRepository);
     }
 
     @Singleton
