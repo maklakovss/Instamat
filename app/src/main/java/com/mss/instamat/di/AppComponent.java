@@ -11,7 +11,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {AppModule.class, DBModule.class, NetworkModule.class})
+@Component(modules = {AppModule.class, DBModule.class, NetworkModule.class, FilesModule.class})
 public interface AppComponent {
 
     void inject(@NonNull final ImageListActivity imageListActivity);

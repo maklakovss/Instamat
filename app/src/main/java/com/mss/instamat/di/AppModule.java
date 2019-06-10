@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.mss.instamat.domain.ImageListModel;
 import com.mss.instamat.domain.repositories.CacheDBRepository;
+import com.mss.instamat.domain.repositories.FilesRepository;
 import com.mss.instamat.domain.repositories.ImagesNetRepository;
 import com.mss.instamat.presenter.imagelist.ImageListPresenter;
 
@@ -33,8 +34,9 @@ public class AppModule {
     @Provides
     @NonNull
     ImageListModel provideImageListModel(@NonNull final CacheDBRepository cacheDBRepository,
-                                         @NonNull final ImagesNetRepository imagesNetRepository) {
-        return new ImageListModel(cacheDBRepository, imagesNetRepository);
+                                         @NonNull final ImagesNetRepository imagesNetRepository,
+                                         @NonNull final FilesRepository filesRepository) {
+        return new ImageListModel(cacheDBRepository, imagesNetRepository, filesRepository);
     }
 
     @Singleton

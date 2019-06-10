@@ -1,12 +1,15 @@
 package com.mss.instamat.domain;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.mss.instamat.domain.models.ImageInfo;
 import com.mss.instamat.domain.repositories.CacheDBRepository;
+import com.mss.instamat.domain.repositories.FilesRepository;
 import com.mss.instamat.domain.repositories.ImagesNetRepository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,13 +23,15 @@ public class ImageListModel {
     private final List<ImageInfo> imageInfoList;
     private final CacheDBRepository cacheDBRepository;
     private final ImagesNetRepository imagesRepository;
+    private final FilesRepository filesRepository;
 
     @Inject
     public ImageListModel(@NonNull final CacheDBRepository cacheDBRepository,
-                          @NonNull final ImagesNetRepository imagesRepository) {
+                          @NonNull final ImagesNetRepository imagesRepository, FilesRepository filesRepository) {
         imageInfoList = new ArrayList<>();
         this.cacheDBRepository = cacheDBRepository;
         this.imagesRepository = imagesRepository;
+        this.filesRepository = filesRepository;
     }
 
     @NonNull
@@ -60,5 +65,9 @@ public class ImageListModel {
                 .saveToCacheDB(searchText, page, images)
                 .doOnSuccess(list -> Log.d("", "Saved " + list.size() + "records to cache DB"))
                 .doOnError(throwable -> Log.e("", "Filed save records to cache DB", throwable));
+    }
+
+    public void saveBitmap(ImageInfo imageInfo, @NonNull final Bitmap bitmap) throws IOException {
+        filesRepository.saveBitmap(imageInfo, bitmap);
     }
 }
