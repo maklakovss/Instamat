@@ -1,11 +1,15 @@
 package com.mss.instamat.view.detail;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +36,7 @@ import butterknife.ButterKnife;
 public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
     public static final String PARAMETER_POSITION_TAG = "PARAMETER_POSITION_TAG";
+    private static final int PERMISSION_REQUEST_CODE = 555;
 
     private int position = 0;
 
@@ -75,10 +80,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.miSave:
-                if (imageView.getDrawable() != null) {
-                    final BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-                    presenter.onSaveClick(position, drawable.getBitmap());
-                }
+                saveImageWithCheckPermission();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -122,5 +124,39 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     @Override
     public void showFailedSaveMessage() {
         Snackbar.make(imageView, R.string.image_failed_message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull final String[] permissions,
+                                           @NonNull final int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE
+                && grantResults.length == 2) {
+            saveImage();
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void saveImageWithCheckPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED) {
+            saveImage();
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },
+                    PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    private void saveImage() {
+        final BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+        if (drawable != null) {
+            presenter.onSaveClick(position, drawable.getBitmap());
+        }
     }
 }
