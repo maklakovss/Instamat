@@ -30,6 +30,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class ImageListActivity extends MvpAppCompatActivity implements ImageListView, ImageListAdapter.OnItemClickListener {
 
@@ -55,6 +56,7 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
     protected void onCreate(Bundle savedInstanceState) {
         App.getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
+        Timber.d("onCreate");
         setContentView(R.layout.activity_imagelist);
         ButterKnife.bind(this);
 
@@ -80,8 +82,12 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         });
 
         etSearch.setOnEditorActionListener((textView, actionId, keyEvent) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH
-                    || keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+            int keyCode = 0;
+            if (keyEvent != null) {
+                keyCode = keyEvent.getKeyCode();
+            }
+            Timber.d("setOnEditorActionListener actionId = %d keyCode = %d", actionId, keyCode);
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER) {
                 presenter.onNeedNextPage(etSearch.getText().toString());
             }
             return false;
@@ -94,6 +100,7 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull final String[] permissions,
                                            @NonNull final int[] grantResults) {
+        Timber.d("onRequestPermissionsResult requestCode = %d, grantResultsSize = %s", requestCode, grantResults.length);
         if (requestCode == PERMISSION_REQUEST_CODE
                 && grantResults.length == 2) {
             finish();
@@ -109,17 +116,21 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
 
     @Override
     public void refreshImageList() {
+        Timber.d("refreshImageList");
         if (rvImages.getAdapter() == null) {
+            Timber.d("Create adapter");
             final ImageListAdapter adapter = new ImageListAdapter(presenter.getRvPresenter());
             adapter.setOnItemClickListener(this);
             rvImages.setAdapter(adapter);
         } else {
+            Timber.d("Adapter notifyDataSetChanged");
             rvImages.getAdapter().notifyDataSetChanged();
         }
     }
 
     @Override
     public void openDetailActivity(int position) {
+        Timber.d("openDetailActivity");
         final Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(DetailActivity.PARAMETER_POSITION_TAG, position);
         startActivity(intent);
@@ -127,6 +138,7 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
 
     @Override
     public void showProgress(boolean visible) {
+        Timber.d("showProgress %b", visible);
         if (visible) {
             pbList.setVisibility(View.VISIBLE);
         } else {
@@ -136,11 +148,13 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
 
     @Override
     public void showNotFoundMessage() {
+        Timber.d("showNotFoundMessage");
         Snackbar.make(rvImages, getString(R.string.not_found_message), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void onItemClick(View view, int position) {
+        Timber.d("onItemClick");
         presenter.onItemClick(position);
     }
 
@@ -149,6 +163,7 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
                 != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE)
                         != PackageManager.PERMISSION_GRANTED) {
+            Timber.d("Need NetworkPermissions");
             ActivityCompat.requestPermissions(this,
                     new String[]{
                             Manifest.permission.READ_EXTERNAL_STORAGE,

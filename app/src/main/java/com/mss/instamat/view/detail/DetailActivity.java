@@ -34,6 +34,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
@@ -62,6 +63,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Timber.d("onCreate");
         App.getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
@@ -97,6 +99,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull final String[] permissions,
                                            @NonNull final int[] grantResults) {
+        Timber.d("onRequestPermissionsResult requestCode = %d, grantResultsSize = %s", requestCode, grantResults.length);
         if (grantResults.length == 2) {
             switch (requestCode) {
                 case PERMISSION_REQUEST_SAVE:
@@ -112,12 +115,14 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
     @Override
     public void showImage(@NonNull final String imageURL) {
+        Timber.d("showImage");
         Glide
                 .with(this)
                 .load(imageURL)
                 .addListener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        Timber.e(e);
                         presenter.onImageLoadFailed();
                         return false;
                     }
@@ -133,6 +138,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
     @Override
     public void showProgress(boolean visible) {
+        Timber.d("showProgress %b", visible);
         if (visible) {
             pbDetail.setVisibility(View.VISIBLE);
         } else {
@@ -142,16 +148,19 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
     @Override
     public void showSuccessSaveMessage() {
+        Timber.d("showSuccessSaveMessage");
         Snackbar.make(imageView, R.string.image_saved_message, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void showFailedSaveMessage() {
+        Timber.d("showFailedSaveMessage");
         Snackbar.make(imageView, R.string.image_failed_message, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void shareImage(@NonNull final String path) {
+        Timber.d("shareImage");
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("image/jpeg");
         intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
@@ -167,6 +176,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     }
 
     private void requestPermission(int permissionRequestSave) {
+        Timber.d("requestPermission");
         ActivityCompat.requestPermissions(this,
                 new String[]{
                         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -176,6 +186,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     }
 
     private void saveImage() {
+        Timber.d("saveImage");
         final BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
         if (drawable != null) {
             presenter.onSaveClick(position, drawable.getBitmap());
@@ -191,6 +202,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     }
 
     private void shareImage() {
+        Timber.d("shareImage");
         final BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
         if (drawable != null) {
             presenter.onShareClick(position, drawable.getBitmap());

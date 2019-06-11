@@ -2,7 +2,6 @@ package com.mss.instamat.domain;
 
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.mss.instamat.domain.models.ImageInfo;
 import com.mss.instamat.domain.repositories.CacheDBRepository;
@@ -17,6 +16,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Maybe;
 import io.reactivex.Single;
+import timber.log.Timber;
 
 public class ImageListModel {
 
@@ -37,8 +37,15 @@ public class ImageListModel {
     @NonNull
     public Maybe<List<ImageInfo>> getImagesFromNetwork(@NonNull final String searchText, int page) {
         return imagesRepository.findImages(searchText, page)
-                .doOnSuccess(images -> imageInfoList.addAll(images))
-                .doOnError(throwable -> Log.d("", throwable.toString()));
+                .doOnSuccess(images -> {
+                    imageInfoList.addAll(images);
+                    Timber.d("Added from network %d images on query '%s' page %d, all - %d",
+                            images.size(),
+                            searchText,
+                            page,
+                            imageInfoList.size());
+                })
+                .doOnError(throwable -> Timber.e(throwable));
     }
 
     @NonNull
@@ -48,13 +55,21 @@ public class ImageListModel {
 
     public void clearImages() {
         imageInfoList.clear();
+        Timber.d("Image list cleared");
     }
 
     @NonNull
     public Single<List<ImageInfo>> getImagesFromCacheDB(@NonNull final String searchText, int page) {
         return cacheDBRepository.getImagesInfo(searchText, page)
-                .doOnSuccess(images -> imageInfoList.addAll(images))
-                .doOnError(throwable -> Log.d("", throwable.toString()));
+                .doOnSuccess(images -> {
+                    imageInfoList.addAll(images);
+                    Timber.d("Added from cache database %d images on query '%s' page %d, all - %d",
+                            images.size(),
+                            searchText,
+                            page,
+                            imageInfoList.size());
+                })
+                .doOnError(throwable -> Timber.e(throwable));
     }
 
     @NonNull
@@ -62,13 +77,19 @@ public class ImageListModel {
                                                  int page,
                                                  @NonNull final List<ImageInfo> images) {
         return cacheDBRepository
-                .saveToCacheDB(searchText, page, images)
-                .doOnSuccess(list -> Log.d("", "Saved " + list.size() + "records to cache DB"))
-                .doOnError(throwable -> Log.e("", "Filed save records to cache DB", throwable));
+                .insertToCacheDB(searchText, page, images)
+                .doOnSuccess(list ->
+                        Timber.d("Saved to cache database %d images on query '%s' page %d",
+                                list.size(),
+                                searchText,
+                                page))
+                .doOnError(throwable -> Timber.e(throwable));
     }
 
     @NonNull
     public String saveBitmap(ImageInfo imageInfo, @NonNull final Bitmap bitmap) throws IOException {
-        return filesRepository.saveBitmap(imageInfo, bitmap);
+        final String path = filesRepository.saveBitmap(imageInfo, bitmap);
+        Timber.d("Image saved to path - %s", path);
+        return path;
     }
 }

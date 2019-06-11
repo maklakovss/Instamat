@@ -9,6 +9,7 @@ import java.util.List;
 
 import io.reactivex.Maybe;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class ImagesNetRepositoryImpl implements ImagesNetRepository {
 
@@ -28,6 +29,8 @@ public class ImagesNetRepositoryImpl implements ImagesNetRepository {
     public Maybe<List<ImageInfo>> findImages(@NonNull final String query, int pageNumber) {
         return pixabayAPI
                 .findImages(KEY, query, LANG, IMAGE_TYPE, pageNumber, IMAGES_PER_PAGE)
+                .doOnSubscribe(disposable -> Timber.d("Start get images from network '%s' page %d", query, pageNumber))
+                .doOnSuccess(imagesResponse -> Timber.d("End get images %d from network '%s' page %d", imagesResponse.getHits().size(), query, pageNumber))
                 .map(imagesResponse -> NetMapper.mapFromNet(imagesResponse.getHits()))
                 .subscribeOn(Schedulers.io());
     }

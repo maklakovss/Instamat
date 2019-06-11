@@ -11,9 +11,9 @@ import io.reactivex.Single;
 public interface CacheDBRepository {
 
     @NonNull
-    Single<List<Long>> saveToCacheDB(@NonNull final String searchText,
-                                     int page,
-                                     @NonNull final List<ImageInfo> images);
+    Single<List<Long>> insertToCacheDB(@NonNull final String searchText,
+                                       int page,
+                                       @NonNull final List<ImageInfo> images);
 
     @NonNull
     Single<List<ImageInfo>> getImagesInfo(@NonNull final String searchText, int page);

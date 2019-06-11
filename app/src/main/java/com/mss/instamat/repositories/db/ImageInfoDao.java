@@ -3,6 +3,7 @@ package com.mss.instamat.repositories.db;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 import android.support.annotation.NonNull;
@@ -21,11 +22,11 @@ public interface ImageInfoDao {
     Single<List<ImageInfoDB>> getImagesInfo(@NonNull final String query, int page);
 
     @NonNull
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     Long insert(@NonNull final ImageInfoDB imageInfo);
 
     @NonNull
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertAll(@NonNull final List<ImageInfoDB> images);
 
     @Delete

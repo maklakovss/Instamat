@@ -1,7 +1,6 @@
 package com.mss.instamat.presenter.imagelist;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -13,7 +12,7 @@ import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 @InjectViewState
 public class ImageListPresenter extends MvpPresenter<ImageListView> {
@@ -25,6 +24,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
     private int nextPage = 1;
     private Disposable lastDisposableQuery = null;
     private boolean end = false;
+    private Boolean inProgress = false;
 
     @Inject
     public ImageListPresenter(@NonNull final ImageListModel model) {
@@ -33,6 +33,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
     }
 
     public void onItemClick(int position) {
+        Timber.d("onItemClick");
         getViewState().openDetailActivity(position);
     }
 
@@ -42,24 +43,30 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
     }
 
     public void onNeedNextPage(@NonNull final String searchText) {
+        Timber.d("onNeedNextPage");
+        synchronized (inProgress) {
+            if (inProgress) {
+                Timber.d("in progress, return");
+                return;
+            }
+            inProgress = true;
+        }
         if (!searchText.equals(lastQuery)) {
             stopNetworkQuery();
             initNewQuery(searchText);
         }
         if (lastDisposableQuery == null) {
             getViewState().showProgress(true);
-
             model.getImagesFromCacheDB(searchText, nextPage)
-                    .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(images -> {
-                        if (images.size() == 0) {
+                    .subscribe(imagesDB -> {
+                        Timber.d("From cache database returns %d images on query '%s'", imagesDB.size(), searchText);
+                        if (imagesDB.size() == 0) {
                             lastDisposableQuery = model.getImagesFromNetwork(searchText, nextPage)
                                     .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(imagesResponse -> {
-                                                model.saveToCacheDBAsync(searchText, nextPage, images)
-                                                        .subscribeOn(Schedulers.io())
-                                                        .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(imagesNet -> {
+                                                Timber.d("From network returns %d images on query '%s'", imagesNet.size(), searchText);
+                                                model.saveToCacheDBAsync(searchText, nextPage, imagesNet)
                                                         .subscribe();
                                                 doOnSuccess();
                                             },
@@ -73,6 +80,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
     }
 
     private void initNewQuery(@NonNull final String searchText) {
+        Timber.d("initNewQuery");
         lastQuery = searchText;
         nextPage = 1;
         end = false;
@@ -82,26 +90,31 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
 
     private void stopNetworkQuery() {
         if (lastDisposableQuery != null) {
+            Timber.d("stopNetworkQuery");
             lastDisposableQuery.dispose();
             lastDisposableQuery = null;
         }
     }
 
     private void doOnError(@NonNull final Throwable throwable) {
+        Timber.d(throwable);
+        inProgress = false;
         getViewState().showProgress(false);
         lastDisposableQuery = null;
         end = true;
-        Log.e("", throwable.toString());
         showMessageListEmpty();
     }
 
     private void showMessageListEmpty() {
         if (model.getImages().size() == 0) {
+            Timber.d("showMessageListEmpty");
             getViewState().showNotFoundMessage();
         }
     }
 
     private void doOnSuccess() {
+        Timber.d("doOnSuccess");
+        inProgress = false;
         nextPage += 1;
         getViewState().showProgress(false);
         getViewState().refreshImageList();
