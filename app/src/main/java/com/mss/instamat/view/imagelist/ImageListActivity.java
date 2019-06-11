@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
@@ -17,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -63,35 +65,9 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        rvImages.setItemAnimator(new DefaultItemAnimator());
-        rvImages.setHasFixedSize(true);
-        rvImages.setLayoutManager(new GridLayoutManager(this, 2));
-        rvImages.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0) {
-                    int offsetOfEnd = recyclerView.computeVerticalScrollRange()
-                            - recyclerView.computeVerticalScrollOffset();
+        recyclerViewInit();
 
-                    if (offsetOfEnd < 2 * recyclerView.getHeight()) {
-                        presenter.onNeedNextPage();
-                    }
-                }
-            }
-        });
-
-        etSearch.setOnEditorActionListener((textView, actionId, keyEvent) -> {
-            int keyCode = 0;
-            if (keyEvent != null) {
-                keyCode = keyEvent.getKeyCode();
-            }
-            Timber.d("setOnEditorActionListener actionId = %d keyCode = %d", actionId, keyCode);
-            if (actionId == EditorInfo.IME_ACTION_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER) {
-                presenter.onSearchClick(etSearch.getText().toString());
-            }
-            return false;
-        });
+        etSearch.setOnEditorActionListener(this::onAction);
 
         checkNetworkPermissions();
     }
@@ -172,4 +148,38 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
                     PERMISSION_REQUEST_CODE);
         }
     }
+
+    private boolean onAction(@NonNull TextView textView, int actionId, @Nullable KeyEvent keyEvent) {
+        int keyCode = 0;
+        if (keyEvent != null) {
+            keyCode = keyEvent.getKeyCode();
+        }
+        Timber.d("setOnEditorActionListener actionId = %d keyCode = %d", actionId, keyCode);
+        if (actionId == EditorInfo.IME_ACTION_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER) {
+            presenter.onSearchClick(etSearch.getText().toString());
+        }
+        return false;
+    }
+
+    private void recyclerViewInit() {
+        rvImages.setItemAnimator(new DefaultItemAnimator());
+        rvImages.setHasFixedSize(true);
+        rvImages.setLayoutManager(new GridLayoutManager(this, 2));
+        rvImages.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    int offsetOfEnd = recyclerView.computeVerticalScrollRange()
+                            - recyclerView.computeVerticalScrollOffset();
+
+                    if (offsetOfEnd < 2 * recyclerView.getHeight()) {
+                        presenter.onNeedNextPage();
+                    }
+                }
+            }
+        });
+    }
+
+
 }

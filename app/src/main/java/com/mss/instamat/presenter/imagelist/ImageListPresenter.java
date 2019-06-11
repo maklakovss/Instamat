@@ -56,6 +56,10 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
 
     public void onNeedNextPage() {
         Timber.d("onNeedNextPage");
+        if (end) {
+            Timber.d("End results, return");
+            return;
+        }
         synchronized (inProgress) {
             if (inProgress) {
                 Timber.d("in progress, return");
