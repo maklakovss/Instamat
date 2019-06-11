@@ -75,7 +75,7 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
                             - recyclerView.computeVerticalScrollOffset();
 
                     if (offsetOfEnd < 2 * recyclerView.getHeight()) {
-                        presenter.onNeedNextPage(etSearch.getText().toString());
+                        presenter.onNeedNextPage();
                     }
                 }
             }
@@ -88,7 +88,7 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
             }
             Timber.d("setOnEditorActionListener actionId = %d keyCode = %d", actionId, keyCode);
             if (actionId == EditorInfo.IME_ACTION_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER) {
-                presenter.onNeedNextPage(etSearch.getText().toString());
+                presenter.onSearchClick(etSearch.getText().toString());
             }
             return false;
         });

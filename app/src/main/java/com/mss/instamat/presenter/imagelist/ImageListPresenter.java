@@ -42,7 +42,19 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
         return rvPresenter;
     }
 
-    public void onNeedNextPage(@NonNull final String searchText) {
+    public void onSearchClick(String searchText) {
+        Timber.d("onSearchClick");
+        if (searchText.equals(lastQuery)) {
+            Timber.d("Query not changed, return");
+            return;
+        }
+        inProgress = true;
+        stopNetworkQuery();
+        initNewQuery(searchText);
+        getNextPage();
+    }
+
+    public void onNeedNextPage() {
         Timber.d("onNeedNextPage");
         synchronized (inProgress) {
             if (inProgress) {
@@ -51,32 +63,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
             }
             inProgress = true;
         }
-        if (!searchText.equals(lastQuery)) {
-            stopNetworkQuery();
-            initNewQuery(searchText);
-        }
-        if (lastDisposableQuery == null) {
-            getViewState().showProgress(true);
-            model.getImagesFromCacheDB(searchText, nextPage)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(imagesDB -> {
-                        Timber.d("From cache database returns %d images on query '%s'", imagesDB.size(), searchText);
-                        if (imagesDB.size() == 0) {
-                            lastDisposableQuery = model.getImagesFromNetwork(searchText, nextPage)
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(imagesNet -> {
-                                                Timber.d("From network returns %d images on query '%s'", imagesNet.size(), searchText);
-                                                model.saveToCacheDBAsync(searchText, nextPage, imagesNet)
-                                                        .subscribe();
-                                                doOnSuccess();
-                                            },
-                                            this::doOnError);
-                        } else {
-                            doOnSuccess();
-                        }
-                    });
-
-        }
+        getNextPage();
     }
 
     private void initNewQuery(@NonNull final String searchText) {
@@ -94,6 +81,27 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
             lastDisposableQuery.dispose();
             lastDisposableQuery = null;
         }
+    }
+
+    private void getNextPage() {
+        getViewState().showProgress(true);
+        model.getImagesFromCacheDB(lastQuery, nextPage)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(imagesDB -> {
+                    Timber.d("From cache database returns %d images on query '%s'", imagesDB.size(), lastQuery);
+                    if (imagesDB.size() == 0) {
+                        lastDisposableQuery = model.getImagesFromNetwork(lastQuery, nextPage)
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(imagesNet -> {
+                                            Timber.d("From network returns %d images on query '%s'", imagesNet.size(), lastQuery);
+                                            model.saveToCacheDBAsync(lastQuery, nextPage, imagesNet).subscribe();
+                                            doOnSuccess();
+                                        },
+                                        this::doOnError);
+                    } else {
+                        doOnSuccess();
+                    }
+                });
     }
 
     private void doOnError(@NonNull final Throwable throwable) {
