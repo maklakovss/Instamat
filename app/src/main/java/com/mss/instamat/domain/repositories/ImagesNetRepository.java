@@ -11,5 +11,5 @@ import io.reactivex.Maybe;
 public interface ImagesNetRepository {
 
     @NonNull
-    public Maybe<List<ImageInfo>> findImages(@NonNull final String query, int pageNumber);
+    Maybe<List<ImageInfo>> findImages(@NonNull final String query, int pageNumber);
 }
