@@ -22,12 +22,12 @@ public class AdderTest {
     }
 
     @Test
-    public void twoAndThree_add_isCorrect() {
+    public void twoAndThree_add_isEqualsFive() {
         assertEquals(adder.add(2, 3), 5);
     }
 
     @Test
-    public void twoAndThree_add_isIncorrect() {
+    public void twoAndThree_add_isNotEqualsSix() {
         assertNotEquals(adder.add(2, 3), 4);
     }
 }
