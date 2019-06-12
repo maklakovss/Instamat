@@ -1,29 +1,39 @@
 package com.mss.instamat.presenter.imagelist;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.mss.instamat.model.ImageListModel;
+import com.mss.instamat.domain.ImageListModel;
 import com.mss.instamat.view.imagelist.IImageListViewHolder;
 import com.mss.instamat.view.imagelist.ImageListView;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 @InjectViewState
 public class ImageListPresenter extends MvpPresenter<ImageListView> {
 
-    private final ImageListModel model = ImageListModel.getInstance();
-    private final RvPresenter rvPresenter = new RvPresenter();
+    private final RvPresenter rvPresenter;
+    private final ImageListModel model;
+
     private String lastQuery = "";
     private int nextPage = 1;
     private Disposable lastDisposableQuery = null;
     private boolean end = false;
+    private Boolean inProgress = false;
+
+    @Inject
+    public ImageListPresenter(@NonNull final ImageListModel model) {
+        this.model = model;
+        rvPresenter = new RvPresenter();
+    }
 
     public void onItemClick(int position) {
+        Timber.d("onItemClick");
         getViewState().openDetailActivity(position);
     }
 
@@ -32,56 +42,91 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
         return rvPresenter;
     }
 
-    public void onNeedNextPage(String searchText) {
-        if (!searchText.equals(lastQuery)) {
-            if (lastDisposableQuery != null) {
-                lastDisposableQuery.dispose();
-                lastDisposableQuery = null;
-            }
-            lastQuery = searchText;
-            nextPage = 1;
-            end = false;
-            model.clearImages();
-            getViewState().refreshImageList();
+    public void onSearchClick(String searchText) {
+        Timber.d("onSearchClick");
+        if (searchText.equals(lastQuery)) {
+            Timber.d("Query not changed, return");
+            return;
         }
-        if (lastDisposableQuery == null) {
-            getViewState().showProgress(true);
+        inProgress = true;
+        stopNetworkQuery();
+        initNewQuery(searchText);
+        getNextPage();
+    }
 
-            model.getImagesFromCacheDB(searchText, nextPage)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(images -> {
-                        if (images.size() == 0) {
-                            lastDisposableQuery = model.getImagesFromNetwork(searchText, nextPage)
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(imagesResponse -> {
-                                                model.saveToCacheDBAsync(searchText, nextPage, imagesResponse.getHits());
-                                                doOnSuccess();
-                                            },
-                                            throwable -> doOnError(throwable));
-                        } else {
-                            doOnSuccess();
-                        }
-                    });
+    public void onNeedNextPage() {
+        Timber.d("onNeedNextPage");
+        if (end) {
+            Timber.d("End results, return");
+            return;
+        }
+        synchronized (inProgress) {
+            if (inProgress) {
+                Timber.d("in progress, return");
+                return;
+            }
+            inProgress = true;
+        }
+        getNextPage();
+    }
 
+    private void initNewQuery(@NonNull final String searchText) {
+        Timber.d("initNewQuery");
+        lastQuery = searchText;
+        nextPage = 1;
+        end = false;
+        model.clearImages();
+        getViewState().refreshImageList();
+    }
+
+    private void stopNetworkQuery() {
+        if (lastDisposableQuery != null) {
+            Timber.d("stopNetworkQuery");
+            lastDisposableQuery.dispose();
+            lastDisposableQuery = null;
         }
     }
 
-    private void doOnError(Throwable throwable) {
+    private void getNextPage() {
+        getViewState().showProgress(true);
+        model.getImagesFromCacheDB(lastQuery, nextPage)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(imagesDB -> {
+                    Timber.d("From cache database returns %d images on query '%s'", imagesDB.size(), lastQuery);
+                    if (imagesDB.size() == 0) {
+                        lastDisposableQuery = model.getImagesFromNetwork(lastQuery, nextPage)
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(imagesNet -> {
+                                            Timber.d("From network returns %d images on query '%s'", imagesNet.size(), lastQuery);
+                                            model.saveToCacheDBAsync(lastQuery, nextPage, imagesNet).subscribe();
+                                            doOnSuccess();
+                                        },
+                                        this::doOnError);
+                    } else {
+                        doOnSuccess();
+                    }
+                });
+    }
+
+    private void doOnError(@NonNull final Throwable throwable) {
+        Timber.d(throwable);
+        inProgress = false;
         getViewState().showProgress(false);
         lastDisposableQuery = null;
         end = true;
-        Log.e("", throwable.toString());
         showMessageListEmpty();
     }
 
     private void showMessageListEmpty() {
         if (model.getImages().size() == 0) {
+            Timber.d("showMessageListEmpty");
             getViewState().showNotFoundMessage();
         }
     }
 
     private void doOnSuccess() {
+        Timber.d("doOnSuccess");
+        inProgress = false;
         nextPage += 1;
         getViewState().showProgress(false);
         getViewState().refreshImageList();
@@ -93,7 +138,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
     class RvPresenter implements IRvImageListPresenter {
 
         @Override
-        public void bindView(@NonNull IImageListViewHolder viewHolder) {
+        public void bindView(@NonNull final IImageListViewHolder viewHolder) {
             viewHolder.showProgress(true);
             viewHolder.setImage(model.getImages().get(viewHolder.getPos()).getPreviewURL());
         }

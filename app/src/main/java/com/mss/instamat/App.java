@@ -1,30 +1,38 @@
 package com.mss.instamat;
 
 import android.app.Application;
-import android.arch.persistence.room.Room;
+import android.support.annotation.NonNull;
 
-import com.mss.instamat.model.CacheDBRepository;
-import com.mss.instamat.repositories.db.CacheDB;
-import com.mss.instamat.repositories.db.CacheDBRepositoryImpl;
+import com.mss.instamat.di.AppComponent;
+import com.mss.instamat.di.AppModule;
+import com.mss.instamat.di.DaggerAppComponent;
+
+import timber.log.Timber;
 
 public class App extends Application {
 
-    private static final String DATABASE_NAME = "USERS";
-    private static CacheDBRepository cacheDBRepository;
-    private static App INSTANCE;
+    private static AppComponent appComponent;
 
-    public static CacheDBRepository getCacheDBRepository() {
-        return cacheDBRepository;
-    }
-
-    public static App getINSTANCE() {
-        return INSTANCE;
+    @NonNull
+    public static AppComponent getAppComponent() {
+        return appComponent;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        INSTANCE = this;
-        cacheDBRepository = new CacheDBRepositoryImpl(Room.databaseBuilder(getApplicationContext(), CacheDB.class, DATABASE_NAME).build());
+        initLogging();
+        initAppComponent();
+    }
+
+    private void initLogging() {
+        Timber.plant(new Timber.DebugTree());
+    }
+
+    private void initAppComponent() {
+        appComponent = DaggerAppComponent
+                .builder()
+                .appModule(new AppModule(getApplicationContext()))
+                .build();
     }
 }

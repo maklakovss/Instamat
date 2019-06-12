@@ -5,4 +5,6 @@
     <string name="save_label">Сохранить</string>
     <string name="image_saved_message">Изображение сохранено</string>
     <string name="image_failed_message">Не удалось сохранить изображение</string>
+    <string name="item_image">Item Image</string>
+    <string name="share_label">Share</string>
 </resources>

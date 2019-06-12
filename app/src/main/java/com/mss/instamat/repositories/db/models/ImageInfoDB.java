@@ -7,17 +7,17 @@ import android.arch.persistence.room.PrimaryKey;
 public class ImageInfoDB {
 
     @PrimaryKey(autoGenerate = true)
-    long uid;
+    private long uid;
 
-    String query;
+    private String query;
 
-    int page;
+    private int page;
 
-    long id;
+    private long id;
 
-    String largeImageURL;
+    private String largeImageURL;
 
-    String previewURL;
+    private String previewURL;
 
     public long getUid() {
         return uid;

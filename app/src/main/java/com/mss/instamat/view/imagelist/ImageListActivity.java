@@ -1,10 +1,15 @@
 package com.mss.instamat.view.imagelist;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,19 +18,27 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.mss.instamat.App;
 import com.mss.instamat.R;
 import com.mss.instamat.presenter.imagelist.ImageListPresenter;
 import com.mss.instamat.view.detail.DetailActivity;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class ImageListActivity extends MvpAppCompatActivity implements ImageListView, ImageListAdapter.OnItemClickListener {
 
+    private static final int PERMISSION_REQUEST_CODE = 777;
+
+    @Inject
     @InjectPresenter
     ImageListPresenter presenter;
 
@@ -43,60 +56,65 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        App.getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
+        Timber.d("onCreate");
         setContentView(R.layout.activity_imagelist);
         ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        rvImages.setItemAnimator(new DefaultItemAnimator());
-        rvImages.setHasFixedSize(true);
-        rvImages.setLayoutManager(new GridLayoutManager(this, 2));
-        rvImages.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0 && recyclerView.computeVerticalScrollRange() - recyclerView.computeVerticalScrollOffset() < 2 * recyclerView.getHeight()) {
-                    presenter.onNeedNextPage(etSearch.getText().toString());
-                }
-            }
-        });
+        recyclerViewInit();
 
-        etSearch.setOnEditorActionListener((textView, actionId, keyEvent) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH || keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                presenter.onNeedNextPage(etSearch.getText().toString());
-            }
-            return false;
-        });
+        etSearch.setOnEditorActionListener(this::onAction);
+
+        checkNetworkPermissions();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull final String[] permissions,
+                                           @NonNull final int[] grantResults) {
+        Timber.d("onRequestPermissionsResult requestCode = %d, grantResultsSize = %s", requestCode, grantResults.length);
+        if (requestCode == PERMISSION_REQUEST_CODE
+                && grantResults.length == 2) {
+            finish();
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @NonNull
     @ProvidePresenter
     ImageListPresenter providePresenter() {
-        return new ImageListPresenter();
+        return presenter;
     }
 
     @Override
     public void refreshImageList() {
+        Timber.d("refreshImageList");
         if (rvImages.getAdapter() == null) {
-            ImageListAdapter adapter = new ImageListAdapter(presenter.getRvPresenter());
+            Timber.d("Create adapter");
+            final ImageListAdapter adapter = new ImageListAdapter(presenter.getRvPresenter());
             adapter.setOnItemClickListener(this);
             rvImages.setAdapter(adapter);
         } else {
+            Timber.d("Adapter notifyDataSetChanged");
             rvImages.getAdapter().notifyDataSetChanged();
         }
     }
 
     @Override
     public void openDetailActivity(int position) {
-        Intent intent = new Intent(this, DetailActivity.class);
+        Timber.d("openDetailActivity");
+        final Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(DetailActivity.PARAMETER_POSITION_TAG, position);
         startActivity(intent);
-
     }
 
     @Override
     public void showProgress(boolean visible) {
+        Timber.d("showProgress %b", visible);
         if (visible) {
             pbList.setVisibility(View.VISIBLE);
         } else {
@@ -106,11 +124,62 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
 
     @Override
     public void showNotFoundMessage() {
+        Timber.d("showNotFoundMessage");
         Snackbar.make(rvImages, getString(R.string.not_found_message), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void onItemClick(View view, int position) {
+        Timber.d("onItemClick");
         presenter.onItemClick(position);
     }
+
+    private void checkNetworkPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
+                != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE)
+                        != PackageManager.PERMISSION_GRANTED) {
+            Timber.d("Need NetworkPermissions");
+            ActivityCompat.requestPermissions(this,
+                    new String[]{
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },
+                    PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    private boolean onAction(@NonNull TextView textView, int actionId, @Nullable KeyEvent keyEvent) {
+        int keyCode = 0;
+        if (keyEvent != null) {
+            keyCode = keyEvent.getKeyCode();
+        }
+        Timber.d("setOnEditorActionListener actionId = %d keyCode = %d", actionId, keyCode);
+        if (actionId == EditorInfo.IME_ACTION_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER) {
+            presenter.onSearchClick(etSearch.getText().toString());
+        }
+        return false;
+    }
+
+    private void recyclerViewInit() {
+        rvImages.setItemAnimator(new DefaultItemAnimator());
+        rvImages.setHasFixedSize(true);
+        rvImages.setLayoutManager(new GridLayoutManager(this, 2));
+        rvImages.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    int offsetOfEnd = recyclerView.computeVerticalScrollRange()
+                            - recyclerView.computeVerticalScrollOffset();
+
+                    if (offsetOfEnd < 2 * recyclerView.getHeight()) {
+                        presenter.onNeedNextPage();
+                    }
+                }
+            }
+        });
+    }
+
+
 }
