@@ -21,8 +21,16 @@ import io.reactivex.Single;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.schedulers.Schedulers;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ImageListPresenterTest {
 
@@ -43,7 +51,7 @@ public class ImageListPresenterTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        imageListPresenter = Mockito.spy(new ImageListPresenter(model));
+        imageListPresenter = spy(new ImageListPresenter(model));
         imageListPresenter.attachView(imageListView);
     }
 
@@ -56,130 +64,130 @@ public class ImageListPresenterTest {
             imageInfo.setLargeImageURL("https:\\\\largeimagewurl" + i);
             imageInfoList.add(imageInfo);
         }
-        Mockito.when(model.getImages()).thenReturn(imageInfoList);
+        when(model.getImages()).thenReturn(imageInfoList);
     }
 
     @Test
     public void onItemClick_openDetailActivity() {
         imageListPresenter.onItemClick(1);
-        Mockito.verify(imageListView).openDetailActivity(1);
+        verify(imageListView).openDetailActivity(1);
     }
 
     @Test
     public void getRvPresenter_returnNotNull() {
-        Assert.assertNotNull(imageListPresenter.getRvPresenter());
+        assertNotNull(imageListPresenter.getRvPresenter());
     }
 
     @Test
     public void onSearchClick_queryInCache_showResultWithoutNetwork() {
         initImageInfoList();
-        Mockito.when(model.getImagesFromCacheDB(Mockito.anyString(), eq(1))).thenReturn(Single.just(imageInfoList));
+        when(model.getImagesFromCacheDB(anyString(), eq(1))).thenReturn(Single.just(imageInfoList));
 
         imageListPresenter.onSearchClick("one");
 
-        Mockito.verify(imageListView).showProgress(true);
-        Mockito.verify(model, times(0)).getImagesFromNetwork("one", 1);
-        Mockito.verify(imageListView, times(2)).refreshImageList();
-        Mockito.verify(imageListView).showProgress(false);
+        verify(imageListView).showProgress(true);
+        verify(model, times(0)).getImagesFromNetwork("one", 1);
+        verify(imageListView, times(2)).refreshImageList();
+        verify(imageListView).showProgress(false);
     }
 
     @Test
     public void onSearchClick_dbException_showResultFromNetwork() {
         initImageInfoList();
-        Mockito.when(model.getImagesFromCacheDB(Mockito.anyString(), eq(1))).thenReturn(Single.error(new Exception()));
-        Mockito.when(model.getImagesFromNetwork(Mockito.anyString(), eq(1))).thenReturn(Maybe.just(imageInfoList));
-        Mockito.when(model.saveToCacheDBAsync(Mockito.anyString(), eq(1), Mockito.anyList())).thenReturn(Single.error(new Exception()));
+        when(model.getImagesFromCacheDB(anyString(), eq(1))).thenReturn(Single.error(new Exception()));
+        when(model.getImagesFromNetwork(anyString(), eq(1))).thenReturn(Maybe.just(imageInfoList));
+        when(model.saveToCacheDBAsync(anyString(), eq(1), anyList())).thenReturn(Single.error(new Exception()));
 
         imageListPresenter.onSearchClick("one");
 
-        Mockito.verify(imageListView).showProgress(true);
-        Mockito.verify(model, times(1)).getImagesFromNetwork("one", 1);
-        Mockito.verify(imageListView, times(2)).refreshImageList();
-        Mockito.verify(imageListView).showProgress(false);
+        verify(imageListView).showProgress(true);
+        verify(model, times(1)).getImagesFromNetwork("one", 1);
+        verify(imageListView, times(2)).refreshImageList();
+        verify(imageListView).showProgress(false);
     }
 
     @Test
     public void onSearchClick_queryNotInCache_showResultFromNetwork() {
         initImageInfoList();
-        Mockito.when(model.getImagesFromCacheDB(Mockito.anyString(), eq(1))).thenReturn(Single.just(new ArrayList()));
-        Mockito.when(model.getImagesFromNetwork(Mockito.anyString(), eq(1))).thenReturn(Maybe.just(imageInfoList));
-        Mockito.when(model.saveToCacheDBAsync(Mockito.anyString(), eq(1), Mockito.anyList())).thenReturn(Single.just(new ArrayList<>()));
+        when(model.getImagesFromCacheDB(anyString(), eq(1))).thenReturn(Single.just(new ArrayList()));
+        when(model.getImagesFromNetwork(anyString(), eq(1))).thenReturn(Maybe.just(imageInfoList));
+        when(model.saveToCacheDBAsync(anyString(), eq(1), anyList())).thenReturn(Single.just(new ArrayList<>()));
 
         imageListPresenter.onSearchClick("one");
 
-        Mockito.verify(imageListView).showProgress(true);
-        Mockito.verify(model).getImagesFromCacheDB("one", 1);
-        Mockito.verify(model).getImagesFromNetwork("one", 1);
-        Mockito.verify(model).saveToCacheDBAsync("one", 1, imageInfoList);
-        Mockito.verify(imageListView, times(2)).refreshImageList();
-        Mockito.verify(imageListView).showProgress(false);
+        verify(imageListView).showProgress(true);
+        verify(model).getImagesFromCacheDB("one", 1);
+        verify(model).getImagesFromNetwork("one", 1);
+        verify(model).saveToCacheDBAsync("one", 1, imageInfoList);
+        verify(imageListView, times(2)).refreshImageList();
+        verify(imageListView).showProgress(false);
     }
 
     @Test
     public void onSearchClick_queryReturnNetworkException_showNotFoundMessage() {
-        Mockito.when(model.getImages()).thenReturn(new ArrayList<>());
-        Mockito.when(model.getImagesFromCacheDB(Mockito.anyString(), eq(1))).thenReturn(Single.just(new ArrayList()));
-        Mockito.when(model.getImagesFromNetwork(Mockito.anyString(), eq(1))).thenReturn(Maybe.error(new Exception()));
+        when(model.getImages()).thenReturn(new ArrayList<>());
+        when(model.getImagesFromCacheDB(anyString(), eq(1))).thenReturn(Single.just(new ArrayList()));
+        when(model.getImagesFromNetwork(anyString(), eq(1))).thenReturn(Maybe.error(new Exception()));
 
         imageListPresenter.onSearchClick("one");
 
-        Mockito.verify(imageListView).showProgress(true);
-        Mockito.verify(model).getImagesFromCacheDB("one", 1);
-        Mockito.verify(model).getImagesFromNetwork("one", 1);
-        Mockito.verify(model, times(0)).saveToCacheDBAsync(eq("one"), eq(1), Mockito.anyList());
-        Mockito.verify(imageListView, times(1)).refreshImageList();
-        Mockito.verify(imageListView).showProgress(false);
-        Mockito.verify(imageListView).showNotFoundMessage();
+        verify(imageListView).showProgress(true);
+        verify(model).getImagesFromCacheDB("one", 1);
+        verify(model).getImagesFromNetwork("one", 1);
+        verify(model, times(0)).saveToCacheDBAsync(eq("one"), eq(1), anyList());
+        verify(imageListView, times(1)).refreshImageList();
+        verify(imageListView).showProgress(false);
+        verify(imageListView).showNotFoundMessage();
     }
 
     @Test
     public void onNeedNextPage_queryInCache_showResultWithoutNetwork() {
         initImageInfoList();
-        Mockito.when(model.getImagesFromCacheDB(Mockito.anyString(), eq(1))).thenReturn(Single.just(imageInfoList));
+        when(model.getImagesFromCacheDB(anyString(), eq(1))).thenReturn(Single.just(imageInfoList));
 
         imageListPresenter.onNeedNextPage();
 
-        Mockito.verify(imageListView).showProgress(true);
-        Mockito.verify(model, times(0)).getImagesFromNetwork("one", 1);
-        Mockito.verify(imageListView).refreshImageList();
-        Mockito.verify(imageListView).showProgress(false);
+        verify(imageListView).showProgress(true);
+        verify(model, times(0)).getImagesFromNetwork("one", 1);
+        verify(imageListView).refreshImageList();
+        verify(imageListView).showProgress(false);
     }
 
 
     @Test
     public void RvPresenterBindView_showProgressSetImage() {
         initImageInfoList();
-        IImageListViewHolder holder = Mockito.mock(IImageListViewHolder.class);
-        Mockito.when(holder.getPos()).thenReturn(1);
+        IImageListViewHolder holder = mock(IImageListViewHolder.class);
+        when(holder.getPos()).thenReturn(1);
 
         imageListPresenter.getRvPresenter().bindView(holder);
 
-        Mockito.verify(holder).showProgress(true);
-        Mockito.verify(holder).setImage(imageInfoList.get(1).getPreviewURL());
+        verify(holder).showProgress(true);
+        verify(holder).setImage(imageInfoList.get(1).getPreviewURL());
     }
 
     @Test
     public void RvPresenterGetItemCount_returnImagesCount() {
         initImageInfoList();
 
-        Assert.assertEquals(imageListPresenter.getRvPresenter().getItemCount(), imageInfoList.size());
+        assertEquals(imageListPresenter.getRvPresenter().getItemCount(), imageInfoList.size());
     }
 
     @Test
     public void RvPresenterOnImageLoaded_stopProgress() {
-        IImageListViewHolder holder = Mockito.mock(IImageListViewHolder.class);
+        IImageListViewHolder holder = mock(IImageListViewHolder.class);
 
         imageListPresenter.getRvPresenter().onImageLoaded(holder);
 
-        Mockito.verify(holder).showProgress(false);
+        verify(holder).showProgress(false);
     }
 
     @Test
     public void RvPresenterOnImageLoadFailed_stopProgress() {
-        IImageListViewHolder holder = Mockito.mock(IImageListViewHolder.class);
+        IImageListViewHolder holder = mock(IImageListViewHolder.class);
 
         imageListPresenter.getRvPresenter().onImageLoadFailed(holder);
 
-        Mockito.verify(holder).showProgress(false);
+        verify(holder).showProgress(false);
     }
 }

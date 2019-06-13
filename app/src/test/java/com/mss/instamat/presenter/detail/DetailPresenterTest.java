@@ -21,6 +21,11 @@ import java.util.List;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.schedulers.Schedulers;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 @RunWith(MockitoJUnitRunner.class)
 public class DetailPresenterTest {
 
@@ -41,7 +46,7 @@ public class DetailPresenterTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        detailPresenter = Mockito.spy(new DetailPresenter(model));
+        detailPresenter = spy(new DetailPresenter(model));
         detailPresenter.attachView(detailView);
     }
 
@@ -55,7 +60,7 @@ public class DetailPresenterTest {
             imageInfoList.add(imageInfo);
         }
 
-        Mockito.when(model.getImages()).thenReturn(imageInfoList);
+        when(model.getImages()).thenReturn(imageInfoList);
     }
 
     @Test
@@ -64,22 +69,22 @@ public class DetailPresenterTest {
 
         detailPresenter.onCreate(1);
 
-        Mockito.verify(detailView).showProgress(true);
-        Mockito.verify(detailView).showImage(imageInfoList.get(1).getLargeImageURL());
+        verify(detailView).showProgress(true);
+        verify(detailView).showImage(imageInfoList.get(1).getLargeImageURL());
     }
 
     @Test
     public void onImageLoaded_stopProgress() {
         detailPresenter.onImageLoaded();
 
-        Mockito.verify(detailView).showProgress(false);
+        verify(detailView).showProgress(false);
     }
 
     @Test
     public void onImageLoadFailed_stopProgress() {
         detailPresenter.onImageLoadFailed();
 
-        Mockito.verify(detailView).showProgress(false);
+        verify(detailView).showProgress(false);
     }
 
     @Test
@@ -88,62 +93,62 @@ public class DetailPresenterTest {
 
         detailPresenter.onSaveClick(1, null);
 
-        Mockito.verify(model).saveBitmap(imageInfoList.get(1), null);
-        Mockito.verify(detailView).showSuccessSaveMessage();
+        verify(model).saveBitmap(imageInfoList.get(1), null);
+        verify(detailView).showSuccessSaveMessage();
     }
 
     @Test
     public void onSaveClick_throwIOException_saveBitmapShowFailMessage() throws IOException {
         initImageInfoList();
-        Mockito.when(model.saveBitmap(Mockito.any(), Mockito.any())).thenThrow(new IOException());
+        when(model.saveBitmap(any(), any())).thenThrow(new IOException());
 
         detailPresenter.onSaveClick(1, null);
 
-        Mockito.verify(model).saveBitmap(imageInfoList.get(1), null);
-        Mockito.verify(detailView).showFailedSaveMessage();
+        verify(model).saveBitmap(imageInfoList.get(1), null);
+        verify(detailView).showFailedSaveMessage();
     }
 
     @Test
     public void onSaveClick_throwFileNotFoundException_saveBitmapShowFailMessage() throws IOException {
         initImageInfoList();
-        Mockito.when(model.saveBitmap(Mockito.any(), Mockito.any())).thenThrow(new FileNotFoundException());
+        when(model.saveBitmap(any(), any())).thenThrow(new FileNotFoundException());
 
         detailPresenter.onSaveClick(1, null);
 
-        Mockito.verify(model).saveBitmap(imageInfoList.get(1), null);
-        Mockito.verify(detailView).showFailedSaveMessage();
+        verify(model).saveBitmap(imageInfoList.get(1), null);
+        verify(detailView).showFailedSaveMessage();
     }
 
     @Test
     public void onShareClick_saveBitmapShareImage() throws IOException {
         initImageInfoList();
-        Mockito.when(model.saveBitmap(Mockito.any(), Mockito.any())).thenReturn("path");
+        when(model.saveBitmap(any(), any())).thenReturn("path");
 
         detailPresenter.onShareClick(1, null);
 
-        Mockito.verify(model).saveBitmap(imageInfoList.get(1), null);
-        Mockito.verify(detailView).shareImage("path");
+        verify(model).saveBitmap(imageInfoList.get(1), null);
+        verify(detailView).shareImage("path");
     }
 
     @Test
     public void onShareClick_throwIOException_saveBitmapShowFailMessage() throws IOException {
         initImageInfoList();
-        Mockito.when(model.saveBitmap(Mockito.any(), Mockito.any())).thenThrow(new IOException());
+        when(model.saveBitmap(any(), any())).thenThrow(new IOException());
 
         detailPresenter.onShareClick(1, null);
 
-        Mockito.verify(model).saveBitmap(imageInfoList.get(1), null);
-        Mockito.verify(detailView).showFailedSaveMessage();
+        verify(model).saveBitmap(imageInfoList.get(1), null);
+        verify(detailView).showFailedSaveMessage();
     }
 
     @Test
     public void onShareClick_throwFileNotFoundException_saveBitmapShowFailMessage() throws IOException {
         initImageInfoList();
-        Mockito.when(model.saveBitmap(Mockito.any(), Mockito.any())).thenThrow(new FileNotFoundException());
+        when(model.saveBitmap(any(), any())).thenThrow(new FileNotFoundException());
 
         detailPresenter.onShareClick(1, null);
 
-        Mockito.verify(model).saveBitmap(imageInfoList.get(1), null);
-        Mockito.verify(detailView).showFailedSaveMessage();
+        verify(model).saveBitmap(imageInfoList.get(1), null);
+        verify(detailView).showFailedSaveMessage();
     }
 }
