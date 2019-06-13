@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.schedulers.Schedulers;
@@ -70,9 +71,27 @@ public class ImageListPresenterTest {
     @Test
     public void onSearchClick_dbResult_isCorrect() {
         Mockito.when(model.getImagesFromCacheDB(Mockito.anyString(), eq(1))).thenReturn(Single.just(imageInfoList));
+
         imageListPresenter.onSearchClick("one");
+
         Mockito.verify(imageListView).showProgress(true);
-        Mockito.verify(model, times(0)).getImagesFromNetwork(Mockito.any(), Mockito.anyInt());
+        Mockito.verify(model, times(0)).getImagesFromNetwork("one", 1);
+        Mockito.verify(imageListView, times(2)).refreshImageList();
+        Mockito.verify(imageListView).showProgress(false);
+    }
+
+    @Test
+    public void onSearchClick_netResult_isCorrect() {
+        Mockito.when(model.getImagesFromCacheDB(Mockito.anyString(), eq(1))).thenReturn(Single.just(new ArrayList()));
+        Mockito.when(model.getImagesFromNetwork(Mockito.anyString(), eq(1))).thenReturn(Maybe.just(imageInfoList));
+        Mockito.when(model.saveToCacheDBAsync(Mockito.anyString(), eq(1), Mockito.anyList())).thenReturn(Single.just(new ArrayList<>()));
+
+        imageListPresenter.onSearchClick("one");
+
+        Mockito.verify(imageListView).showProgress(true);
+        Mockito.verify(model).getImagesFromCacheDB("one", 1);
+        Mockito.verify(model).getImagesFromNetwork("one", 1);
+        Mockito.verify(model).saveToCacheDBAsync("one", 1, imageInfoList);
         Mockito.verify(imageListView, times(2)).refreshImageList();
         Mockito.verify(imageListView).showProgress(false);
     }
