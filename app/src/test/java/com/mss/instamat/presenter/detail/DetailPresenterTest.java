@@ -31,7 +31,6 @@ public class DetailPresenterTest {
 
     @Mock
     private DetailView detailView;
-
     @Mock
     private ImageListModel model;
 

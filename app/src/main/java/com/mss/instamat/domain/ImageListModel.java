@@ -22,21 +22,21 @@ public class ImageListModel {
 
     private final List<ImageInfo> imageInfoList;
     private final CacheDBRepository cacheDBRepository;
-    private final ImagesNetRepository imagesRepository;
+    private final ImagesNetRepository imagesNetRepository;
     private final FilesRepository filesRepository;
 
     @Inject
     public ImageListModel(@NonNull final CacheDBRepository cacheDBRepository,
-                          @NonNull final ImagesNetRepository imagesRepository, FilesRepository filesRepository) {
+                          @NonNull final ImagesNetRepository imagesNetRepository, FilesRepository filesRepository) {
         imageInfoList = new ArrayList<>();
         this.cacheDBRepository = cacheDBRepository;
-        this.imagesRepository = imagesRepository;
+        this.imagesNetRepository = imagesNetRepository;
         this.filesRepository = filesRepository;
     }
 
     @NonNull
     public Maybe<List<ImageInfo>> getImagesFromNetwork(@NonNull final String searchText, int page) {
-        return imagesRepository.findImages(searchText, page)
+        return imagesNetRepository.findImages(searchText, page)
                 .doOnSuccess(images -> {
                     imageInfoList.addAll(images);
                     Timber.d("Added from network %d images on query '%s' page %d, all - %d",
