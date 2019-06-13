@@ -2,6 +2,7 @@ package com.mss.instamat.presenter.imagelist;
 
 import com.mss.instamat.domain.ImageListModel;
 import com.mss.instamat.domain.models.ImageInfo;
+import com.mss.instamat.view.imagelist.IImageListViewHolder;
 import com.mss.instamat.view.imagelist.ImageListView;
 
 import org.junit.Assert;
@@ -83,6 +84,21 @@ public class ImageListPresenterTest {
     }
 
     @Test
+    public void onSearchClick_dbException_showResultFromNetwork() {
+        initImageInfoList();
+        Mockito.when(model.getImagesFromCacheDB(Mockito.anyString(), eq(1))).thenReturn(Single.error(new Exception()));
+        Mockito.when(model.getImagesFromNetwork(Mockito.anyString(), eq(1))).thenReturn(Maybe.just(imageInfoList));
+        Mockito.when(model.saveToCacheDBAsync(Mockito.anyString(), eq(1), Mockito.anyList())).thenReturn(Single.error(new Exception()));
+
+        imageListPresenter.onSearchClick("one");
+
+        Mockito.verify(imageListView).showProgress(true);
+        Mockito.verify(model, times(1)).getImagesFromNetwork("one", 1);
+        Mockito.verify(imageListView, times(2)).refreshImageList();
+        Mockito.verify(imageListView).showProgress(false);
+    }
+
+    @Test
     public void onSearchClick_queryNotInCache_showResultFromNetwork() {
         initImageInfoList();
         Mockito.when(model.getImagesFromCacheDB(Mockito.anyString(), eq(1))).thenReturn(Single.just(new ArrayList()));
@@ -100,12 +116,70 @@ public class ImageListPresenterTest {
     }
 
     @Test
+    public void onSearchClick_queryReturnNetworkException_showNotFoundMessage() {
+        Mockito.when(model.getImages()).thenReturn(new ArrayList<>());
+        Mockito.when(model.getImagesFromCacheDB(Mockito.anyString(), eq(1))).thenReturn(Single.just(new ArrayList()));
+        Mockito.when(model.getImagesFromNetwork(Mockito.anyString(), eq(1))).thenReturn(Maybe.error(new Exception()));
+
+        imageListPresenter.onSearchClick("one");
+
+        Mockito.verify(imageListView).showProgress(true);
+        Mockito.verify(model).getImagesFromCacheDB("one", 1);
+        Mockito.verify(model).getImagesFromNetwork("one", 1);
+        Mockito.verify(model, times(0)).saveToCacheDBAsync(eq("one"), eq(1), Mockito.anyList());
+        Mockito.verify(imageListView, times(1)).refreshImageList();
+        Mockito.verify(imageListView).showProgress(false);
+        Mockito.verify(imageListView).showNotFoundMessage();
+    }
+
+    @Test
     public void onNeedNextPage_queryInCache_showResultWithoutNetwork() {
         initImageInfoList();
         Mockito.when(model.getImagesFromCacheDB(Mockito.anyString(), eq(1))).thenReturn(Single.just(imageInfoList));
+
         imageListPresenter.onNeedNextPage();
+
         Mockito.verify(imageListView).showProgress(true);
+        Mockito.verify(model, times(0)).getImagesFromNetwork("one", 1);
         Mockito.verify(imageListView).refreshImageList();
         Mockito.verify(imageListView).showProgress(false);
+    }
+
+
+    @Test
+    public void RvPresenterBindView_showProgressSetImage() {
+        initImageInfoList();
+        IImageListViewHolder holder = Mockito.mock(IImageListViewHolder.class);
+        Mockito.when(holder.getPos()).thenReturn(1);
+
+        imageListPresenter.getRvPresenter().bindView(holder);
+
+        Mockito.verify(holder).showProgress(true);
+        Mockito.verify(holder).setImage(imageInfoList.get(1).getPreviewURL());
+    }
+
+    @Test
+    public void RvPresenterGetItemCount_returnImagesCount() {
+        initImageInfoList();
+
+        Assert.assertEquals(imageListPresenter.getRvPresenter().getItemCount(), imageInfoList.size());
+    }
+
+    @Test
+    public void RvPresenterOnImageLoaded_stopProgress() {
+        IImageListViewHolder holder = Mockito.mock(IImageListViewHolder.class);
+
+        imageListPresenter.getRvPresenter().onImageLoaded(holder);
+
+        Mockito.verify(holder).showProgress(false);
+    }
+
+    @Test
+    public void RvPresenterOnImageLoadFailed_stopProgress() {
+        IImageListViewHolder holder = Mockito.mock(IImageListViewHolder.class);
+
+        imageListPresenter.getRvPresenter().onImageLoadFailed(holder);
+
+        Mockito.verify(holder).showProgress(false);
     }
 }

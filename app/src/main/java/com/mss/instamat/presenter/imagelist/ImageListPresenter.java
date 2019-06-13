@@ -111,7 +111,13 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(imagesNet -> {
                             Timber.d("From network returns %d images on query '%s'", imagesNet.size(), lastQuery);
-                            model.saveToCacheDBAsync(lastQuery, nextPage, imagesNet).subscribe();
+                            model.saveToCacheDBAsync(lastQuery, nextPage, imagesNet)
+                                    .subscribe(
+                                            list -> Timber.i("Saved to cache database %d images on query '%s' page %d",
+                                                    list.size(),
+                                                    lastQuery,
+                                                    nextPage),
+                                            throwable -> Timber.e(throwable));
                             doOnSuccess();
                         },
                         this::doOnError);
