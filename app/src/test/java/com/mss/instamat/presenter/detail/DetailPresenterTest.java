@@ -42,9 +42,12 @@ public class DetailPresenterTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         detailPresenter = Mockito.spy(new DetailPresenter(model));
+        detailPresenter.attachView(detailView);
+    }
 
+    private void initImageInfoList() {
         imageInfoList = new ArrayList();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 50; i++) {
             ImageInfo imageInfo = new ImageInfo();
             imageInfo.setId(i);
             imageInfo.setPreviewURL("https:\\\\previewurl" + i);
@@ -53,71 +56,93 @@ public class DetailPresenterTest {
         }
 
         Mockito.when(model.getImages()).thenReturn(imageInfoList);
-        detailPresenter.attachView(detailView);
     }
 
     @Test
-    public void onCreate_isCorrect() {
+    public void onCreate_startShowImageWithStartProgress() {
+        initImageInfoList();
+
         detailPresenter.onCreate(1);
+
         Mockito.verify(detailView).showProgress(true);
         Mockito.verify(detailView).showImage(imageInfoList.get(1).getLargeImageURL());
     }
 
     @Test
-    public void onImageLoaded_isCorrect() {
+    public void onImageLoaded_stopProgress() {
         detailPresenter.onImageLoaded();
+
         Mockito.verify(detailView).showProgress(false);
     }
 
     @Test
-    public void onImageLoadFailed_isCorrect() {
+    public void onImageLoadFailed_stopProgress() {
         detailPresenter.onImageLoadFailed();
+
         Mockito.verify(detailView).showProgress(false);
     }
 
     @Test
-    public void onSaveClick_isCorrect() throws IOException {
+    public void onSaveClick_saveBitmapShowMessage() throws IOException {
+        initImageInfoList();
+
         detailPresenter.onSaveClick(1, null);
+
         Mockito.verify(model).saveBitmap(imageInfoList.get(1), null);
         Mockito.verify(detailView).showSuccessSaveMessage();
     }
 
     @Test
-    public void onSaveClick_throwIOException() throws IOException {
+    public void onSaveClick_throwIOException_saveBitmapShowFailMessage() throws IOException {
+        initImageInfoList();
         Mockito.when(model.saveBitmap(Mockito.any(), Mockito.any())).thenThrow(new IOException());
+
         detailPresenter.onSaveClick(1, null);
+
         Mockito.verify(model).saveBitmap(imageInfoList.get(1), null);
         Mockito.verify(detailView).showFailedSaveMessage();
     }
 
     @Test
-    public void onSaveClick_throwFileNotFoundException() throws IOException {
+    public void onSaveClick_throwFileNotFoundException_saveBitmapShowFailMessage() throws IOException {
+        initImageInfoList();
         Mockito.when(model.saveBitmap(Mockito.any(), Mockito.any())).thenThrow(new FileNotFoundException());
+
         detailPresenter.onSaveClick(1, null);
+
         Mockito.verify(model).saveBitmap(imageInfoList.get(1), null);
         Mockito.verify(detailView).showFailedSaveMessage();
     }
 
     @Test
-    public void onShareClick_isCorrect() throws IOException {
+    public void onShareClick_saveBitmapShareImage() throws IOException {
+        initImageInfoList();
         Mockito.when(model.saveBitmap(Mockito.any(), Mockito.any())).thenReturn("path");
+
         detailPresenter.onShareClick(1, null);
+
         Mockito.verify(model).saveBitmap(imageInfoList.get(1), null);
         Mockito.verify(detailView).shareImage("path");
     }
 
     @Test
-    public void onShareClick_throwIOException() throws IOException {
+    public void onShareClick_throwIOException_saveBitmapShowFailMessage() throws IOException {
+        initImageInfoList();
         Mockito.when(model.saveBitmap(Mockito.any(), Mockito.any())).thenThrow(new IOException());
+
         detailPresenter.onShareClick(1, null);
+
         Mockito.verify(model).saveBitmap(imageInfoList.get(1), null);
         Mockito.verify(detailView).showFailedSaveMessage();
     }
 
     @Test
-    public void onShareClick_throwFileNotFoundException() throws IOException {
+    public void onShareClick_throwFileNotFoundException_saveBitmapShowFailMessage() throws IOException {
+        initImageInfoList();
         Mockito.when(model.saveBitmap(Mockito.any(), Mockito.any())).thenThrow(new FileNotFoundException());
+
         detailPresenter.onShareClick(1, null);
+
         Mockito.verify(model).saveBitmap(imageInfoList.get(1), null);
         Mockito.verify(detailView).showFailedSaveMessage();
     }

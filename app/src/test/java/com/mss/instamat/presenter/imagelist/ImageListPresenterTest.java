@@ -43,7 +43,10 @@ public class ImageListPresenterTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         imageListPresenter = Mockito.spy(new ImageListPresenter(model));
+        imageListPresenter.attachView(imageListView);
+    }
 
+    private void initImageInfoList() {
         imageInfoList = new ArrayList();
         for (int i = 0; i < 50; i++) {
             ImageInfo imageInfo = new ImageInfo();
@@ -52,24 +55,23 @@ public class ImageListPresenterTest {
             imageInfo.setLargeImageURL("https:\\\\largeimagewurl" + i);
             imageInfoList.add(imageInfo);
         }
-
         Mockito.when(model.getImages()).thenReturn(imageInfoList);
-        imageListPresenter.attachView(imageListView);
     }
 
     @Test
-    public void onItemClick_isCorrect() {
+    public void onItemClick_openDetailActivity() {
         imageListPresenter.onItemClick(1);
         Mockito.verify(imageListView).openDetailActivity(1);
     }
 
     @Test
-    public void getRvPresenter_isCorrect() {
+    public void getRvPresenter_returnNotNull() {
         Assert.assertNotNull(imageListPresenter.getRvPresenter());
     }
 
     @Test
-    public void onSearchClick_dbResult_isCorrect() {
+    public void onSearchClick_queryInCache_showResultWithoutNetwork() {
+        initImageInfoList();
         Mockito.when(model.getImagesFromCacheDB(Mockito.anyString(), eq(1))).thenReturn(Single.just(imageInfoList));
 
         imageListPresenter.onSearchClick("one");
@@ -81,7 +83,8 @@ public class ImageListPresenterTest {
     }
 
     @Test
-    public void onSearchClick_netResult_isCorrect() {
+    public void onSearchClick_queryNotInCache_showResultFromNetwork() {
+        initImageInfoList();
         Mockito.when(model.getImagesFromCacheDB(Mockito.anyString(), eq(1))).thenReturn(Single.just(new ArrayList()));
         Mockito.when(model.getImagesFromNetwork(Mockito.anyString(), eq(1))).thenReturn(Maybe.just(imageInfoList));
         Mockito.when(model.saveToCacheDBAsync(Mockito.anyString(), eq(1), Mockito.anyList())).thenReturn(Single.just(new ArrayList<>()));
@@ -97,7 +100,8 @@ public class ImageListPresenterTest {
     }
 
     @Test
-    public void onNeedNextPage_dbResult_isCorrect() {
+    public void onNeedNextPage_queryInCache_showResultWithoutNetwork() {
+        initImageInfoList();
         Mockito.when(model.getImagesFromCacheDB(Mockito.anyString(), eq(1))).thenReturn(Single.just(imageInfoList));
         imageListPresenter.onNeedNextPage();
         Mockito.verify(imageListView).showProgress(true);
