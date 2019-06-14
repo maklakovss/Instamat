@@ -1,10 +1,10 @@
 package com.mss.instamat.repositories.network;
 
-import com.mss.instamat.domain.models.ImageInfo;
 import com.mss.instamat.domain.repositories.ImagesNetRepository;
 import com.mss.instamat.repositories.network.models.ImageInfoNet;
 import com.mss.instamat.repositories.network.models.ImagesResponse;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,7 +29,6 @@ import static org.mockito.Mockito.when;
 public class ImagesNetRepositoryImplTest {
 
     private ImagesNetRepository repository;
-    private List<ImageInfo> images;
 
     @Mock
     private PixabayAPI pixabayAPI;
@@ -40,21 +39,27 @@ public class ImagesNetRepositoryImplTest {
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         repository = new ImagesNetRepositoryImpl(pixabayAPI);
     }
 
     @Test
-    public void findImages() {
+    public void findImages_callAPIAndReturnsMappedImages() {
+        final ImagesResponse imagesResponse = getImagesResponse();
+        when(pixabayAPI.findImages(anyString(), anyString(), anyString(), anyString(), anyInt(), anyInt())).thenReturn(Maybe.just(imagesResponse));
+
+        assertEquals(imagesResponse.getHits().size(), repository.findImages("one", 1).blockingGet().size());
+
+        verify(pixabayAPI).findImages(anyString(), anyString(), anyString(), anyString(), anyInt(), anyInt());
+    }
+
+    @NotNull
+    private ImagesResponse getImagesResponse() {
         ImagesResponse imagesResponse = new ImagesResponse();
         ImageInfoNet imageInfoNet = new ImageInfoNet();
         List<ImageInfoNet> imagesNet = new ArrayList<>();
-        imagesNet.add(new ImageInfoNet());
+        imagesNet.add(imageInfoNet);
         imagesResponse.setHits(imagesNet);
-        when(pixabayAPI.findImages(anyString(), anyString(), anyString(), anyString(), anyInt(), anyInt())).thenReturn(Maybe.just(imagesResponse));
-
-        assertEquals(repository.findImages("one", 1).blockingGet().size(), imagesResponse.getHits().size());
-
-        verify(pixabayAPI).findImages(anyString(), anyString(), anyString(), anyString(), anyInt(), anyInt());
+        return imagesResponse;
     }
 }

@@ -169,7 +169,7 @@ public class ImageListPresenterTest {
     public void RvPresenterGetItemCount_returnImagesCount() {
         initImageInfoList();
 
-        assertEquals(imageListPresenter.getRvPresenter().getItemCount(), imageInfoList.size());
+        assertEquals(imageInfoList.size(), imageListPresenter.getRvPresenter().getItemCount());
     }
 
     @Test

@@ -68,13 +68,13 @@ public class ImageListModelTest {
         initImageInfoList();
         when(imagesNetRepository.findImages(anyString(), anyInt())).thenReturn(Maybe.just(images));
 
-        assertEquals(model.getImagesFromNetwork("one", 1).blockingGet().size(), images.size());
+        assertEquals(images.size(), model.getImagesFromNetwork("one", 1).blockingGet().size());
 
         verify(imagesNetRepository).findImages("one", 1);
-        assertEquals(model.getImages().size(), images.size());
+        assertEquals(images.size(), model.getImages().size());
 
         model.clearImages();
-        assertEquals(model.getImages().size(), 0);
+        assertEquals(0, model.getImages().size());
     }
 
     @Test
@@ -82,10 +82,10 @@ public class ImageListModelTest {
         initImageInfoList();
         when(cacheDBRepository.getImagesInfo(anyString(), anyInt())).thenReturn(Single.just(images));
 
-        assertEquals(model.getImagesFromCacheDB("one", 1).blockingGet().size(), images.size());
+        assertEquals(images.size(), model.getImagesFromCacheDB("one", 1).blockingGet().size());
 
         verify(cacheDBRepository).getImagesInfo("one", 1);
-        assertEquals(model.getImages().size(), images.size());
+        assertEquals(images.size(), model.getImages().size());
     }
 
     @Test
@@ -95,7 +95,7 @@ public class ImageListModelTest {
         ids.add(1L);
         when(cacheDBRepository.insertToCacheDB(anyString(), anyInt(), anyList())).thenReturn(Single.just(ids));
 
-        assertEquals(model.saveToCacheDBAsync("one", 1, images).blockingGet().size(), 1);
+        assertEquals(1, model.saveToCacheDBAsync("one", 1, images).blockingGet().size());
 
         verify(cacheDBRepository).insertToCacheDB("one", 1, images);
     }
@@ -105,7 +105,7 @@ public class ImageListModelTest {
         initImageInfoList();
         when(filesRepository.saveBitmap(any(), any())).thenReturn("path");
 
-        assertEquals(model.saveBitmap(images.get(0), null), "path");
+        assertEquals("path", model.saveBitmap(images.get(0), null));
 
         verify(filesRepository).saveBitmap(images.get(0), null);
     }

@@ -75,7 +75,7 @@ public class CacheDBRepositoryImplTest {
         when(imageInfoDao.getImagesInfo("one", 1))
                 .thenReturn(Single.just(DBMapper.mapToDB("one", 1, images)));
 
-        assertEquals(cacheDBRepository.getImagesInfo("one", 1).blockingGet().size(), images.size());
+        assertEquals(images.size(), cacheDBRepository.getImagesInfo("one", 1).blockingGet().size());
 
         verify(imageInfoDao).getImagesInfo("one", 1);
     }
