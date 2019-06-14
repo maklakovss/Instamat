@@ -5,13 +5,12 @@ import com.mss.instamat.domain.models.ImageInfo;
 import com.mss.instamat.view.imagelist.IImageListViewHolder;
 import com.mss.instamat.view.imagelist.ImageListView;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +31,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ImageListPresenterTest {
 
     @Mock
@@ -50,7 +50,6 @@ public class ImageListPresenterTest {
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
         imageListPresenter = spy(new ImageListPresenter(model));
         imageListPresenter.attachView(imageListView);
     }
