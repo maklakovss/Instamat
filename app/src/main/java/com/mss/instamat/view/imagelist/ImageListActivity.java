@@ -1,6 +1,7 @@
 package com.mss.instamat.view.imagelist;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -28,6 +29,9 @@ import com.mss.instamat.R;
 import com.mss.instamat.presenter.imagelist.ImageListPresenter;
 import com.mss.instamat.view.detail.DetailActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -54,6 +58,8 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
     @BindView(R.id.pbList)
     ProgressBar pbList;
 
+    private static List<Activity> activities = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         App.getAppComponent().inject(this);
@@ -70,6 +76,8 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         etSearch.setOnEditorActionListener(this::onAction);
 
         checkNetworkPermissions();
+
+        activities.add(this);
     }
 
     @Override
