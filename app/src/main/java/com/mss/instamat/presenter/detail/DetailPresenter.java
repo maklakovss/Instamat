@@ -39,7 +39,6 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
     public void onImageLoadFailed() {
         Timber.d("onImageLoadFailed");
         getViewState().showProgress(false);
-        getViewState().showProgress(false);
     }
 
     public void onSaveClick(int position, @NonNull final Bitmap bitmap) {

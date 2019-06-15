@@ -60,7 +60,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
             Timber.d("End results, return");
             return;
         }
-        synchronized (inProgress) {
+        synchronized (this) {
             if (inProgress) {
                 Timber.d("in progress, return");
                 return;
@@ -89,23 +89,38 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
 
     private void getNextPage() {
         getViewState().showProgress(true);
-        model.getImagesFromCacheDB(lastQuery, nextPage)
+        lastDisposableQuery = model.getImagesFromCacheDB(lastQuery, nextPage)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(imagesDB -> {
-                    Timber.d("From cache database returns %d images on query '%s'", imagesDB.size(), lastQuery);
-                    if (imagesDB.size() == 0) {
-                        lastDisposableQuery = model.getImagesFromNetwork(lastQuery, nextPage)
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(imagesNet -> {
-                                            Timber.d("From network returns %d images on query '%s'", imagesNet.size(), lastQuery);
-                                            model.saveToCacheDBAsync(lastQuery, nextPage, imagesNet).subscribe();
-                                            doOnSuccess();
-                                        },
-                                        this::doOnError);
-                    } else {
-                        doOnSuccess();
-                    }
-                });
+                            Timber.d("From cache database returns %d images on query '%s'", imagesDB.size(), lastQuery);
+                            if (imagesDB.size() == 0) {
+                                loadImagesFromNetwork();
+                            } else {
+                                doOnSuccess();
+                            }
+                        },
+                        throwable -> {
+                            Timber.e(throwable);
+                            loadImagesFromNetwork();
+                        }
+                );
+    }
+
+    private void loadImagesFromNetwork() {
+        lastDisposableQuery = model.getImagesFromNetwork(lastQuery, nextPage)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(imagesNet -> {
+                            Timber.d("From network returns %d images on query '%s'", imagesNet.size(), lastQuery);
+                            model.saveToCacheDBAsync(lastQuery, nextPage, imagesNet)
+                                    .subscribe(
+                                            list -> Timber.i("Saved to cache database %d images on query '%s' page %d",
+                                                    list.size(),
+                                                    lastQuery,
+                                                    nextPage),
+                                            throwable -> Timber.e(throwable));
+                            doOnSuccess();
+                        },
+                        this::doOnError);
     }
 
     private void doOnError(@NonNull final Throwable throwable) {
