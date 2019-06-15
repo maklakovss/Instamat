@@ -11,7 +11,7 @@ import retrofit2.http.Query;
 public interface PixabayAPI {
 
     @NonNull
-    @GET("api")
+    @GET("api/")
     Maybe<ImagesResponse> findImages(@NonNull final @Query("key") String key,
                                      @NonNull final @Query("q") String query,
                                      @NonNull final @Query("lang") String lang,

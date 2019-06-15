@@ -8,3 +8,4 @@
 .externalNativeBuild
 /dig/*
 /gradle/wrapper/*
+/app/google-services.json

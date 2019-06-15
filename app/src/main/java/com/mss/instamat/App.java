@@ -3,6 +3,7 @@ package com.mss.instamat;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
+import com.facebook.stetho.Stetho;
 import com.mss.instamat.di.AppComponent;
 import com.mss.instamat.di.AppModule;
 import com.mss.instamat.di.DaggerAppComponent;
@@ -25,6 +26,11 @@ public class App extends Application {
         initLeakCanary();
         initLogging();
         initAppComponent();
+        initStetho();
+    }
+
+    private void initStetho() {
+        Stetho.initializeWithDefaults(this);
     }
 
     private void initLeakCanary() {
