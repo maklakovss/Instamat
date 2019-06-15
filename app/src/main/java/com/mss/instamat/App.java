@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.mss.instamat.di.AppComponent;
 import com.mss.instamat.di.AppModule;
 import com.mss.instamat.di.DaggerAppComponent;
+import com.squareup.leakcanary.LeakCanary;
 
 import timber.log.Timber;
 
@@ -21,8 +22,15 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        initLeakCanary();
         initLogging();
         initAppComponent();
+    }
+
+    private void initLeakCanary() {
+        if (!LeakCanary.isInAnalyzerProcess(this)) {
+            LeakCanary.install(this);
+        }
     }
 
     private void initLogging() {
