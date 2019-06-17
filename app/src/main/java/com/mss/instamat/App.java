@@ -13,7 +13,7 @@ import timber.log.Timber;
 
 public class App extends Application {
 
-    private static AppComponent appComponent;
+    protected static AppComponent appComponent;
 
     @NonNull
     public static AppComponent getAppComponent() {
@@ -23,9 +23,13 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        initLeakCanary();
         initLogging();
         initAppComponent();
+        initDebug();
+    }
+
+    protected void initDebug() {
+        initLeakCanary();
         initStetho();
     }
 
@@ -43,7 +47,7 @@ public class App extends Application {
         Timber.plant(new Timber.DebugTree());
     }
 
-    private void initAppComponent() {
+    protected void initAppComponent() {
         appComponent = DaggerAppComponent
                 .builder()
                 .appModule(new AppModule(getApplicationContext()))
