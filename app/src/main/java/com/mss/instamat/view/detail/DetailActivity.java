@@ -69,10 +69,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
 
-        final Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            position = bundle.getInt(PARAMETER_POSITION_TAG, 0);
-        }
+        getParameters();
         presenter.onCreate(position);
     }
 
@@ -214,5 +211,12 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
                 == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void getParameters() {
+        final Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            position = bundle.getInt(PARAMETER_POSITION_TAG, 0);
+        }
     }
 }
