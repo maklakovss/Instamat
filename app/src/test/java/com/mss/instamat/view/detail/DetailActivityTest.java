@@ -9,6 +9,7 @@ import com.mss.instamat.R;
 import com.mss.instamat.di.RobolectricApp;
 import com.mss.instamat.di.RobolectricComponent;
 import com.mss.instamat.presenter.detail.DetailPresenter;
+import com.mss.instamat.robolectric.ShadowSnackbar;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,12 +24,14 @@ import org.robolectric.shadows.ShadowApplication;
 
 import javax.inject.Inject;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 28, application = RobolectricApp.class)
+@Config(sdk = 28, application = RobolectricApp.class, shadows = {ShadowSnackbar.class})
 public class DetailActivityTest {
 
     private DetailActivity detailActivity;
@@ -78,5 +81,23 @@ public class DetailActivityTest {
         shadowActivity.clickMenuItem(R.id.miShare);
 
         verify(presenter).onShareClick(eq(1), any());
+    }
+
+    @Test
+    public void onShowSuccessSaveMessage_showSnackbar() {
+        ShadowSnackbar.reset();
+
+        detailActivity.showSuccessSaveMessage();
+
+        assertEquals(ShadowSnackbar.getTextOfLatestSnackbar(), detailActivity.getString(R.string.image_saved_message));
+    }
+
+    @Test
+    public void onShowFailSaveMessage_showSnackbar() {
+        ShadowSnackbar.reset();
+
+        detailActivity.showFailedSaveMessage();
+
+        assertEquals(ShadowSnackbar.getTextOfLatestSnackbar(), detailActivity.getString(R.string.image_failed_message));
     }
 }
