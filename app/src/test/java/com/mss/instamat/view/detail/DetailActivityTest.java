@@ -3,7 +3,10 @@ package com.mss.instamat.view.detail;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.mss.instamat.R;
 import com.mss.instamat.di.RobolectricApp;
@@ -99,5 +102,34 @@ public class DetailActivityTest {
         detailActivity.showFailedSaveMessage();
 
         assertEquals(ShadowSnackbar.getTextOfLatestSnackbar(), detailActivity.getString(R.string.image_failed_message));
+    }
+
+    @Test
+    public void shareImage_startIntentChooserImageWithPath() {
+        detailActivity.shareImage("path");
+
+        Intent intent = Shadows.shadowOf(detailActivity).getNextStartedActivity();
+        assertEquals(Intent.ACTION_CHOOSER, intent.getAction());
+        Intent intent1 = (Intent) intent.getExtras().get(Intent.EXTRA_INTENT);
+        assertEquals(Intent.ACTION_SEND, intent1.getAction());
+        assertEquals("image/jpeg", intent1.getType());
+        assertEquals("path", intent1.getExtras().get(Intent.EXTRA_STREAM).toString());
+    }
+
+    @Test
+    public void showProgress_Hide_pbDetailHide() {
+        ProgressBar progressBar = detailActivity.findViewById(R.id.pbDetail);
+
+        detailActivity.showProgress(false);
+
+        assertEquals(View.GONE, progressBar.getVisibility());
+    }
+    @Test
+    public void showProgress_Show_pbDetailShow() {
+        ProgressBar progressBar = detailActivity.findViewById(R.id.pbDetail);
+
+        detailActivity.showProgress(true);
+
+        assertEquals(View.VISIBLE, progressBar.getVisibility());
     }
 }
