@@ -32,11 +32,13 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import pub.devrel.easypermissions.EasyPermissions;
 import timber.log.Timber;
 
 public class ImageListActivity extends MvpAppCompatActivity implements ImageListView, ImageListAdapter.OnItemClickListener {
 
     private static final int PERMISSION_REQUEST_CODE = 777;
+    private static final String[] NETWORK_PERMISSIONS = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE};
 
     @Inject
     @InjectPresenter
@@ -77,11 +79,13 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
                                            @NonNull final String[] permissions,
                                            @NonNull final int[] grantResults) {
         Timber.d("onRequestPermissionsResult requestCode = %d, grantResultsSize = %s", requestCode, grantResults.length);
-        if (requestCode == PERMISSION_REQUEST_CODE
-                && grantResults.length == 2) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+        if (EasyPermissions.hasPermissions(this, NETWORK_PERMISSIONS)) {
+            Timber.d("Access deny Network");
             finish();
         }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
     }
 
     @NonNull
@@ -135,17 +139,9 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
     }
 
     private void checkNetworkPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
-                != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE)
-                        != PackageManager.PERMISSION_GRANTED) {
+        if (EasyPermissions.hasPermissions(this, NETWORK_PERMISSIONS)) {
             Timber.d("Need NetworkPermissions");
-            ActivityCompat.requestPermissions(this,
-                    new String[]{
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    },
-                    PERMISSION_REQUEST_CODE);
+            EasyPermissions.requestPermissions(this, getString(R.string.storage_rationale), PERMISSION_REQUEST_CODE, NETWORK_PERMISSIONS);
         }
     }
 

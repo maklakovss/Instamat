@@ -33,8 +33,11 @@ import javax.inject.Inject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -69,7 +72,7 @@ public class DetailActivityTest {
     }
 
     @Test
-    public void onMenuSaveClick_callPresenterOnCreateWithArgument() {
+    public void onMenuSaveClick_HasPermission_callPresenterOnCSaveClick() {
         ShadowApplication application = new ShadowApplication();
         application.grantPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         ShadowActivity shadowActivity = Shadows.shadowOf(detailActivity);
@@ -82,7 +85,7 @@ public class DetailActivityTest {
     }
 
     @Test
-    public void onMenuShareClick_callPresenterOnCreateWithArgument() {
+    public void onMenuShareClick_callPresenterOnShareClick() {
         ShadowApplication application = new ShadowApplication();
         application.grantPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         ShadowActivity shadowActivity = Shadows.shadowOf(detailActivity);
@@ -166,5 +169,23 @@ public class DetailActivityTest {
         detailActivity.showImage("path");
 
         verify(presenter).onImageLoadFailed();
+    }
+
+    @Test
+    public void onMenuSaveClick_NoPermission_noCallPresenterOnSaveClick() {
+        ShadowActivity shadowActivity = Shadows.shadowOf(detailActivity);
+
+        shadowActivity.clickMenuItem(R.id.miSave);
+
+        verify(presenter, times(0)).onSaveClick(eq(1), any());
+    }
+
+    @Test
+    public void onMenuShareClick_NoPermission_noCallPresenterOnShareClick() {
+        ShadowActivity shadowActivity = Shadows.shadowOf(detailActivity);
+
+        shadowActivity.clickMenuItem(R.id.miSave);
+
+        verify(presenter, times(0)).onShareClick(eq(1), any());
     }
 }
