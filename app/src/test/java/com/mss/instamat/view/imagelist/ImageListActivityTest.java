@@ -1,16 +1,15 @@
 package com.mss.instamat.view.imagelist;
 
-import android.Manifest;
 import android.content.Intent;
+import android.support.design.widget.TextInputEditText;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 
 import com.mss.instamat.R;
 import com.mss.instamat.di.RobolectricApp;
 import com.mss.instamat.di.RobolectricComponent;
-import com.mss.instamat.domain.ImageListModel;
 import com.mss.instamat.domain.models.ImageInfo;
-import com.mss.instamat.presenter.imagelist.IRvImageListPresenter;
 import com.mss.instamat.presenter.imagelist.ImageListPresenter;
 import com.mss.instamat.robolectric.ShadowSnackbar;
 import com.mss.instamat.view.detail.DetailActivity;
@@ -23,15 +22,16 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowApplication;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -44,9 +44,6 @@ public class ImageListActivityTest {
 
     @Inject
     ImageListPresenter presenter;
-
-    @Inject
-    ImageLoader imageLoader;
 
     @Before
     public void setUp() {
@@ -104,8 +101,42 @@ public class ImageListActivityTest {
         imageListActivity.openDetailActivity(1);
 
         Intent intent = Shadows.shadowOf(imageListActivity).getNextStartedActivity();
-        assertEquals("com.mss.instamat.view.detail.DetailActivity",  intent.getComponent().getClassName());
-        assertEquals(1, intent.getIntExtra(DetailActivity.PARAMETER_POSITION_TAG,0));
+        assertEquals("com.mss.instamat.view.detail.DetailActivity", intent.getComponent().getClassName());
+        assertEquals(1, intent.getIntExtra(DetailActivity.PARAMETER_POSITION_TAG, 0));
+    }
+
+    @Test
+    public void onRequestPermissionsResult_NoPermission_FinishActivity() {
+        imageListActivity.onRequestPermissionsResult(ImageListActivity.PERMISSION_REQUEST_CODE, new String[2], new int[2]);
+        assertTrue(Shadows.shadowOf(imageListActivity).isFinishing());
+    }
+
+    @Test
+    public void onRequestPermissionsResult_HasPermission_NoFinishActivity() {
+        ShadowApplication application = new ShadowApplication();
+        for (String p : ImageListActivity.NETWORK_PERMISSIONS) {
+            application.grantPermissions(p);
+        }
+
+        imageListActivity.onRequestPermissionsResult(ImageListActivity.PERMISSION_REQUEST_CODE, new String[2], new int[2]);
+
+        assertTrue(!Shadows.shadowOf(imageListActivity).isFinishing());
+    }
+
+    @Test
+    public void onItemClick_callPresenter() {
+        imageListActivity.onItemClick(null, 1);
+
+        verify(presenter).onItemClick(1);
+    }
+
+    @Test
+    public void onAction_callPresenterOnSearchClick() {
+        TextInputEditText etSearch = imageListActivity.findViewById(R.id.etSearch);
+        etSearch.setText("one");
+        etSearch.onEditorAction(EditorInfo.IME_ACTION_SEARCH);
+
+        verify(presenter).onSearchClick("one");
     }
 
     private void initImageInfoList() {

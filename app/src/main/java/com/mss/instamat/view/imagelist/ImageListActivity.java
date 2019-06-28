@@ -37,8 +37,8 @@ import timber.log.Timber;
 
 public class ImageListActivity extends MvpAppCompatActivity implements ImageListView, ImageListAdapter.OnItemClickListener {
 
-    private static final int PERMISSION_REQUEST_CODE = 777;
-    private static final String[] NETWORK_PERMISSIONS = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE};
+    public static final int PERMISSION_REQUEST_CODE = 777;
+    public static final String[] NETWORK_PERMISSIONS = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE};
 
     @Inject
     @InjectPresenter
@@ -81,7 +81,7 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         Timber.d("onRequestPermissionsResult requestCode = %d, grantResultsSize = %s", requestCode, grantResults.length);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-        if (EasyPermissions.hasPermissions(this, NETWORK_PERMISSIONS)) {
+        if (!EasyPermissions.hasPermissions(this, NETWORK_PERMISSIONS)) {
             Timber.d("Access deny Network");
             finish();
         }
@@ -176,6 +176,4 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
             }
         });
     }
-
-
 }
