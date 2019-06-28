@@ -14,9 +14,9 @@ android {
     }
     buildTypes {
         debug {
-            minifyEnabled true
-            multiDexEnabled true
-            shrinkResources true
+            minifyEnabled false
+            multiDexEnabled false
+            shrinkResources false
             testCoverageEnabled = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

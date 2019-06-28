@@ -13,10 +13,13 @@ import com.mss.instamat.di.RobolectricApp;
 import com.mss.instamat.di.RobolectricComponent;
 import com.mss.instamat.presenter.detail.DetailPresenter;
 import com.mss.instamat.robolectric.ShadowSnackbar;
+import com.mss.instamat.view.helpers.ImageLoader;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -31,7 +34,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28, application = RobolectricApp.class, shadows = {ShadowSnackbar.class})
@@ -41,6 +46,9 @@ public class DetailActivityTest {
 
     @Inject
     DetailPresenter presenter;
+
+    @Inject
+    ImageLoader imageLoader;
 
     @Before
     public void setUp() {
@@ -124,6 +132,7 @@ public class DetailActivityTest {
 
         assertEquals(View.GONE, progressBar.getVisibility());
     }
+
     @Test
     public void showProgress_Show_pbDetailShow() {
         ProgressBar progressBar = detailActivity.findViewById(R.id.pbDetail);
@@ -131,5 +140,31 @@ public class DetailActivityTest {
         detailActivity.showProgress(true);
 
         assertEquals(View.VISIBLE, progressBar.getVisibility());
+    }
+
+    @Test
+    public void showImage_SuccessLoad_callPresenterOnImageLoaded() {
+
+        doAnswer(invocation -> {
+            ((Runnable) invocation.getArguments()[3]).run();
+            return null;
+        }).when(imageLoader).load(any(), any(), any(), any(), any());
+
+        detailActivity.showImage("path");
+
+        verify(presenter).onImageLoaded();
+    }
+
+    @Test
+    public void showImage_FailLoad_callPresenterOnImageLoaded() {
+
+        doAnswer(invocation -> {
+            ((Runnable) invocation.getArguments()[4]).run();
+            return null;
+        }).when(imageLoader).load(any(), any(), any(), any(), any());
+
+        detailActivity.showImage("path");
+
+        verify(presenter).onImageLoadFailed();
     }
 }

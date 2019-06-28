@@ -2,8 +2,13 @@ package com.mss.instamat.di;
 
 import android.support.annotation.NonNull;
 
+import com.mss.instamat.domain.ImageListModel;
+import com.mss.instamat.domain.repositories.CacheDBRepository;
+import com.mss.instamat.domain.repositories.FilesRepository;
+import com.mss.instamat.domain.repositories.ImagesNetRepository;
 import com.mss.instamat.presenter.detail.DetailPresenter;
 import com.mss.instamat.presenter.imagelist.ImageListPresenter;
+import com.mss.instamat.view.helpers.ImageLoader;
 
 import org.mockito.Mockito;
 
@@ -65,6 +70,13 @@ public class MockModule {
 //                                         @NonNull final FilesRepository filesRepository) {
 //        return Mockito.mock(ImageListModel.class);
 //    }
+
+    @Singleton
+    @Provides
+    @NonNull
+    ImageLoader provideImageLoader() {
+        return Mockito.mock(ImageLoader.class);
+    }
 
     @Singleton
     @Provides

@@ -29,6 +29,7 @@ import com.jsibbold.zoomage.ZoomageView;
 import com.mss.instamat.App;
 import com.mss.instamat.R;
 import com.mss.instamat.presenter.detail.DetailPresenter;
+import com.mss.instamat.view.helpers.ImageLoader;
 
 import javax.inject.Inject;
 
@@ -48,6 +49,9 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     @Inject
     @InjectPresenter
     DetailPresenter presenter;
+
+    @Inject
+    ImageLoader imageLoader;
 
     @BindView(R.id.pbDetail)
     ProgressBar pbDetail;
@@ -113,24 +117,11 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     @Override
     public void showImage(@NonNull final String imageURL) {
         Timber.d("showImage");
-        Glide
-                .with(this)
-                .load(imageURL)
-                .addListener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        Timber.e(e);
-                        presenter.onImageLoadFailed();
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        presenter.onImageLoaded();
-                        return false;
-                    }
-                })
-                .into(imageView);
+        imageLoader.load(this,
+                imageURL,
+                imageView,
+                () -> presenter.onImageLoaded(),
+                () -> presenter.onImageLoadFailed());
     }
 
     @Override
