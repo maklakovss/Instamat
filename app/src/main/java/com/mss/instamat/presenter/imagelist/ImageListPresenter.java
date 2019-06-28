@@ -150,7 +150,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
     }
 
 
-    class RvPresenter implements IRvImageListPresenter {
+    public class RvPresenter implements IRvImageListPresenter {
 
         @Override
         public void bindView(@NonNull final IImageListViewHolder viewHolder) {
