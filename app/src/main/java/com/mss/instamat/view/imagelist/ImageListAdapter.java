@@ -15,8 +15,12 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.mss.instamat.App;
 import com.mss.instamat.R;
 import com.mss.instamat.presenter.imagelist.IRvImageListPresenter;
+import com.mss.instamat.view.helpers.ImageLoader;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +31,11 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
     private final IRvImageListPresenter rvPresenter;
     private OnItemClickListener onItemClickListener;
 
+    @Inject
+    ImageLoader imageLoader;
+
     public ImageListAdapter(@NonNull final IRvImageListPresenter rvPresenter) {
+        App.getAppComponent().inject(this);
         this.rvPresenter = rvPresenter;
     }
 
@@ -86,32 +94,11 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
 
         @Override
         public void setImage(String imageURL) {
-            Glide
-                    .with(itemView)
-                    .load(imageURL)
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(
-                                @Nullable GlideException e,
-                                Object model,
-                                Target<Drawable> target,
-                                boolean isFirstResource) {
-                            rvPresenter.onImageLoadFailed(ViewHolder.this);
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onResourceReady(
-                                Drawable resource,
-                                Object model,
-                                Target<Drawable> target,
-                                DataSource dataSource,
-                                boolean isFirstResource) {
-                            rvPresenter.onImageLoaded(ViewHolder.this);
-                            return false;
-                        }
-                    })
-                    .into(ivItem);
+            imageLoader.load(itemView.getContext(),
+                    imageURL,
+                    ivItem,
+                    () -> rvPresenter.onImageLoaded(ViewHolder.this),
+                    () -> rvPresenter.onImageLoadFailed(ViewHolder.this));
         }
 
         @Override
