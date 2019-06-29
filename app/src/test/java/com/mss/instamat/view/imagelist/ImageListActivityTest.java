@@ -2,6 +2,8 @@ package com.mss.instamat.view.imagelist;
 
 import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.Recycler;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
@@ -31,6 +33,8 @@ import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -44,6 +48,9 @@ public class ImageListActivityTest {
 
     @Inject
     ImageListPresenter presenter;
+
+    @Inject
+    ImageLoader imageLoader;
 
     @Before
     public void setUp() {
@@ -125,9 +132,96 @@ public class ImageListActivityTest {
 
     @Test
     public void onItemClick_callPresenter() {
-        imageListActivity.onItemClick(null, 1);
+        initImageInfoList();
+        ImageListPresenter.RvPresenter rvPresenter = mock(ImageListPresenter.RvPresenter.class);
+        when(presenter.getRvPresenter()).thenReturn(rvPresenter);
+        when(rvPresenter.getItemCount()).thenReturn(imageInfoList.size());
+        RecyclerView recyclerView = imageListActivity.findViewById(R.id.rvImages);
+        recyclerView.measure(0, 0);
+        recyclerView.layout(0, 0, 100, 800);
+        imageListActivity.refreshImageList();
+        ImageListAdapter.ViewHolder viewHolder = (ImageListAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(1);
+
+        viewHolder.ivItem.performClick();
 
         verify(presenter).onItemClick(1);
+    }
+
+    @Test
+    public void holderSetImage_SuccessLoad_callPresenterOnImageLoaded() {
+        initImageInfoList();
+        ImageListPresenter.RvPresenter rvPresenter = mock(ImageListPresenter.RvPresenter.class);
+        when(presenter.getRvPresenter()).thenReturn(rvPresenter);
+        when(rvPresenter.getItemCount()).thenReturn(imageInfoList.size());
+        RecyclerView recyclerView = imageListActivity.findViewById(R.id.rvImages);
+        recyclerView.measure(0, 0);
+        recyclerView.layout(0, 0, 100, 200);
+        imageListActivity.refreshImageList();
+        ImageListAdapter.ViewHolder viewHolder = (ImageListAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(1);
+        doAnswer(answer -> {
+            ((Runnable) answer.getArgument(3)).run();
+            return null;
+        }).when(imageLoader).load(any(), any(), any(), any(), any());
+
+        viewHolder.setImage("path");
+
+        assertEquals(1, viewHolder.getPos());
+        verify(rvPresenter).onImageLoaded(any());
+    }
+
+    @Test
+    public void holderSetImage_FailLoad_callPresenterOnImageLoaded() {
+        initImageInfoList();
+        ImageListPresenter.RvPresenter rvPresenter = mock(ImageListPresenter.RvPresenter.class);
+        when(presenter.getRvPresenter()).thenReturn(rvPresenter);
+        when(rvPresenter.getItemCount()).thenReturn(imageInfoList.size());
+        RecyclerView recyclerView = imageListActivity.findViewById(R.id.rvImages);
+        recyclerView.measure(0, 0);
+        recyclerView.layout(0, 0, 100, 200);
+        imageListActivity.refreshImageList();
+        ImageListAdapter.ViewHolder viewHolder = (ImageListAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(1);
+        doAnswer(answer -> {
+            ((Runnable) answer.getArgument(4)).run();
+            return null;
+        }).when(imageLoader).load(any(), any(), any(), any(), any());
+
+        viewHolder.setImage("path");
+
+        verify(rvPresenter).onImageLoadFailed(any());
+    }
+
+    @Test
+    public void holderShowProgress_True_ProgressBarVisible() {
+        initImageInfoList();
+        ImageListPresenter.RvPresenter rvPresenter = mock(ImageListPresenter.RvPresenter.class);
+        when(presenter.getRvPresenter()).thenReturn(rvPresenter);
+        when(rvPresenter.getItemCount()).thenReturn(imageInfoList.size());
+        RecyclerView recyclerView = imageListActivity.findViewById(R.id.rvImages);
+        recyclerView.measure(0, 0);
+        recyclerView.layout(0, 0, 100, 200);
+        imageListActivity.refreshImageList();
+        ImageListAdapter.ViewHolder viewHolder = (ImageListAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(1);
+
+        viewHolder.showProgress(true);
+
+        assertEquals(View.VISIBLE, viewHolder.pbItem.getVisibility());
+    }
+
+    @Test
+    public void holderShowProgress_False_ProgressBarVisible() {
+        initImageInfoList();
+        ImageListPresenter.RvPresenter rvPresenter = mock(ImageListPresenter.RvPresenter.class);
+        when(presenter.getRvPresenter()).thenReturn(rvPresenter);
+        when(rvPresenter.getItemCount()).thenReturn(imageInfoList.size());
+        RecyclerView recyclerView = imageListActivity.findViewById(R.id.rvImages);
+        recyclerView.measure(0, 0);
+        recyclerView.layout(0, 0, 100, 200);
+        imageListActivity.refreshImageList();
+        ImageListAdapter.ViewHolder viewHolder = (ImageListAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(1);
+
+        viewHolder.showProgress(false);
+
+        assertEquals(View.GONE, viewHolder.pbItem.getVisibility());
     }
 
     @Test
