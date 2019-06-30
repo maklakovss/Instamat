@@ -15,7 +15,7 @@ import java.io.IOException;
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
-public class FilesHelperTest {
+public class FilesHelperAndroidTest {
 
     private FilesHelper filesHelper;
 
