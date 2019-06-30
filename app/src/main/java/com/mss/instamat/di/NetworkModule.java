@@ -25,7 +25,7 @@ public class NetworkModule {
     @Singleton
     @Provides
     @NonNull
-    PixabayAPI providePixabayAPI() {
+    public PixabayAPI providePixabayAPI() {
         return new Retrofit.Builder()
                 .baseUrl(URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -39,7 +39,7 @@ public class NetworkModule {
     @Singleton
     @Provides
     @NonNull
-    ImagesNetRepository provideImagesRepository(@NonNull final PixabayAPI pixabayAPI) {
+    public ImagesNetRepository provideImagesRepository(@NonNull final PixabayAPI pixabayAPI) {
         return new ImagesNetRepositoryImpl(pixabayAPI);
     }
 }
