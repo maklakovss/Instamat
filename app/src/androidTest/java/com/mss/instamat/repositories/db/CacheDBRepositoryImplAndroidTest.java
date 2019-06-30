@@ -1,12 +1,10 @@
 package com.mss.instamat.repositories.db;
 
-import android.app.Application;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.mss.instamat.App;
 import com.mss.instamat.domain.models.ImageInfo;
 import com.mss.instamat.domain.repositories.CacheDBRepository;
 
@@ -17,9 +15,7 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 public class CacheDBRepositoryImplAndroidTest {
