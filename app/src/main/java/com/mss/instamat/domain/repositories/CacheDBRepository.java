@@ -6,6 +6,7 @@ import com.mss.instamat.domain.models.ImageInfo;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public interface CacheDBRepository {
@@ -17,4 +18,7 @@ public interface CacheDBRepository {
 
     @NonNull
     Single<List<ImageInfo>> getImagesInfo(@NonNull final String searchText, int page);
+
+    @NonNull
+    Completable deleteImages(@NonNull final String searchText);
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
@@ -52,5 +53,18 @@ public class CacheDBRepositoryImpl implements CacheDBRepository {
                 .doOnSubscribe(disposable -> Timber.d("Select started on '%s' page %d", searchText, page))
                 .doOnSuccess(imageInfos -> Timber.d("Selected %d rows on '%s' page %d", imageInfos.size(), searchText, page))
                 .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Completable deleteImages(@NonNull String searchText) {
+        Completable completable = Completable.create(emitter -> {
+            Timber.d("Delete started on '%s'", searchText);
+            final int count = cacheDB
+                    .productDao()
+                    .deleteQuery(searchText);
+            Timber.d("Deleted %d rows on '%s'", count, searchText);
+            emitter.onComplete();
+        });
+        return completable.subscribeOn(Schedulers.io());
     }
 }

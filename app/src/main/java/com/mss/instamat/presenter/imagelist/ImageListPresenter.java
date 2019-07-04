@@ -48,10 +48,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
             Timber.d("Query not changed, return");
             return;
         }
-        inProgress = true;
-        stopNetworkQuery();
-        initNewQuery(searchText);
-        getNextPage();
+        startSearch(searchText);
     }
 
     public void onNeedNextPage() {
@@ -67,6 +64,29 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
             }
             inProgress = true;
         }
+        getNextPage();
+    }
+
+    public void onRefresh(String searchText) {
+        model.clearImages();
+        model
+                .deleteImagesFromCache(searchText)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                            getViewState().stopRefreshing();
+                            startSearch(searchText);
+                        },
+                        throwable -> {
+                            Timber.e(throwable);
+                            doOnError(throwable);
+                        });
+    }
+
+
+    private void startSearch(String searchText) {
+        inProgress = true;
+        stopNetworkQuery();
+        initNewQuery(searchText);
         getNextPage();
     }
 

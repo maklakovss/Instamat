@@ -2,8 +2,8 @@ package com.mss.instamat.view.imagelist;
 
 import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.Recycler;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
@@ -32,6 +32,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -79,6 +80,16 @@ public class ImageListActivityTest {
         imageListActivity.showProgress(true);
 
         assertEquals(View.VISIBLE, progressBar.getVisibility());
+    }
+
+    @Test
+    public void stopRefreshing_pbDetailShow() {
+        SwipeRefreshLayout swipeRefreshLayout = imageListActivity.findViewById(R.id.srlImages);
+        swipeRefreshLayout.setRefreshing(true);
+
+        imageListActivity.stopRefreshing();
+
+        assertFalse(swipeRefreshLayout.isRefreshing());
     }
 
     @Test

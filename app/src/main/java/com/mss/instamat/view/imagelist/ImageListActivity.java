@@ -2,14 +2,12 @@ package com.mss.instamat.view.imagelist;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -56,6 +54,9 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
     @BindView(R.id.pbList)
     ProgressBar pbList;
 
+    @BindView(R.id.srlImages)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         App.getAppComponent().inject(this);
@@ -70,6 +71,7 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         recyclerViewInit();
 
         etSearch.setOnEditorActionListener(this::onAction);
+        swipeRefreshLayout.setOnRefreshListener(this::onRefresh);
 
         checkNetworkPermissions();
     }
@@ -133,6 +135,11 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
     }
 
     @Override
+    public void stopRefreshing() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
     public void onItemClick(View view, int position) {
         Timber.d("onItemClick");
         presenter.onItemClick(position);
@@ -155,6 +162,11 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
             presenter.onSearchClick(etSearch.getText().toString());
         }
         return false;
+    }
+
+    private void onRefresh() {
+        Timber.d("onRefresh");
+        presenter.onRefresh(etSearch.getText().toString());
     }
 
     private void recyclerViewInit() {

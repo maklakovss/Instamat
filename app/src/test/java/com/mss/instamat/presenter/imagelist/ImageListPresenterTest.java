@@ -15,6 +15,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.android.plugins.RxAndroidPlugins;
@@ -149,6 +150,25 @@ public class ImageListPresenterTest {
         verify(imageListView).showProgress(true);
         verify(model, times(0)).getImagesFromNetwork("one", 1);
         verify(imageListView).refreshImageList();
+        verify(imageListView).showProgress(false);
+    }
+
+    @Test
+    public void onRefresh_showResultFromNetwork() {
+        initImageInfoList();
+        when(model.deleteImagesFromCache(anyString())).thenReturn(Completable.complete());
+        when(model.getImagesFromCacheDB(anyString(), eq(1))).thenReturn(Single.just(new ArrayList<>()));
+        when(model.getImagesFromNetwork(anyString(), eq(1))).thenReturn(Maybe.just(imageInfoList));
+        when(model.saveToCacheDBAsync(anyString(), eq(1), anyList())).thenReturn(Single.just(new ArrayList<>()));
+
+        imageListPresenter.onRefresh("one");
+
+        verify(model).deleteImagesFromCache("one");
+        verify(imageListView).showProgress(true);
+        verify(model).getImagesFromCacheDB("one", 1);
+        verify(model).getImagesFromNetwork("one", 1);
+        verify(model).saveToCacheDBAsync("one", 1, imageInfoList);
+        verify(imageListView, times(2)).refreshImageList();
         verify(imageListView).showProgress(false);
     }
 
