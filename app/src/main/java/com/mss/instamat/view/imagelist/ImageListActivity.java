@@ -2,14 +2,12 @@ package com.mss.instamat.view.imagelist;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,11 +30,13 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import pub.devrel.easypermissions.EasyPermissions;
 import timber.log.Timber;
 
 public class ImageListActivity extends MvpAppCompatActivity implements ImageListView, ImageListAdapter.OnItemClickListener {
 
-    private static final int PERMISSION_REQUEST_CODE = 777;
+    public static final int PERMISSION_REQUEST_CODE = 777;
+    public static final String[] NETWORK_PERMISSIONS = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE};
 
     @Inject
     @InjectPresenter
@@ -54,6 +54,9 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
     @BindView(R.id.pbList)
     ProgressBar pbList;
 
+    @BindView(R.id.srlImages)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         App.getAppComponent().inject(this);
@@ -68,6 +71,7 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         recyclerViewInit();
 
         etSearch.setOnEditorActionListener(this::onAction);
+        swipeRefreshLayout.setOnRefreshListener(this::onRefresh);
 
         checkNetworkPermissions();
     }
@@ -77,11 +81,13 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
                                            @NonNull final String[] permissions,
                                            @NonNull final int[] grantResults) {
         Timber.d("onRequestPermissionsResult requestCode = %d, grantResultsSize = %s", requestCode, grantResults.length);
-        if (requestCode == PERMISSION_REQUEST_CODE
-                && grantResults.length == 2) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+        if (!EasyPermissions.hasPermissions(this, NETWORK_PERMISSIONS)) {
+            Timber.d("Access deny Network");
             finish();
         }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
     }
 
     @NonNull
@@ -129,23 +135,20 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
     }
 
     @Override
+    public void stopRefreshing() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
     public void onItemClick(View view, int position) {
         Timber.d("onItemClick");
         presenter.onItemClick(position);
     }
 
     private void checkNetworkPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
-                != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE)
-                        != PackageManager.PERMISSION_GRANTED) {
+        if (EasyPermissions.hasPermissions(this, NETWORK_PERMISSIONS)) {
             Timber.d("Need NetworkPermissions");
-            ActivityCompat.requestPermissions(this,
-                    new String[]{
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    },
-                    PERMISSION_REQUEST_CODE);
+            EasyPermissions.requestPermissions(this, getString(R.string.storage_rationale), PERMISSION_REQUEST_CODE, NETWORK_PERMISSIONS);
         }
     }
 
@@ -159,6 +162,11 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
             presenter.onSearchClick(etSearch.getText().toString());
         }
         return false;
+    }
+
+    private void onRefresh() {
+        Timber.d("onRefresh");
+        presenter.onRefresh(etSearch.getText().toString());
     }
 
     private void recyclerViewInit() {
@@ -180,6 +188,4 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
             }
         });
     }
-
-
 }

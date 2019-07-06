@@ -7,4 +7,5 @@
     <string name="image_failed_message">Не удалось сохранить изображение</string>
     <string name="item_image">Item Image</string>
     <string name="share_label">Share</string>
+    <string name="storage_rationale">Need permission to local storage</string>
 </resources>

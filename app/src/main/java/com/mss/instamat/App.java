@@ -3,15 +3,17 @@ package com.mss.instamat;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
+import com.facebook.stetho.Stetho;
 import com.mss.instamat.di.AppComponent;
 import com.mss.instamat.di.AppModule;
 import com.mss.instamat.di.DaggerAppComponent;
+import com.squareup.leakcanary.LeakCanary;
 
 import timber.log.Timber;
 
 public class App extends Application {
 
-    private static AppComponent appComponent;
+    protected static AppComponent appComponent;
 
     @NonNull
     public static AppComponent getAppComponent() {
@@ -23,13 +25,29 @@ public class App extends Application {
         super.onCreate();
         initLogging();
         initAppComponent();
+        initDebug();
+    }
+
+    protected void initDebug() {
+        initLeakCanary();
+        initStetho();
+    }
+
+    private void initStetho() {
+        Stetho.initializeWithDefaults(this);
+    }
+
+    private void initLeakCanary() {
+        if (!LeakCanary.isInAnalyzerProcess(this)) {
+            LeakCanary.install(this);
+        }
     }
 
     private void initLogging() {
         Timber.plant(new Timber.DebugTree());
     }
 
-    private void initAppComponent() {
+    protected void initAppComponent() {
         appComponent = DaggerAppComponent
                 .builder()
                 .appModule(new AppModule(getApplicationContext()))

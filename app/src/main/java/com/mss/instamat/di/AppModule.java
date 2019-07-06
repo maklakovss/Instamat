@@ -8,6 +8,8 @@ import com.mss.instamat.domain.repositories.CacheDBRepository;
 import com.mss.instamat.domain.repositories.FilesRepository;
 import com.mss.instamat.domain.repositories.ImagesNetRepository;
 import com.mss.instamat.presenter.imagelist.ImageListPresenter;
+import com.mss.instamat.view.helpers.ImageLoader;
+import com.mss.instamat.view.helpers.ImageLoaderImpl;
 
 import javax.inject.Singleton;
 
@@ -44,5 +46,12 @@ public class AppModule {
     @NonNull
     ImageListPresenter provideImageListPresenter(@NonNull final ImageListModel model) {
         return new ImageListPresenter(model);
+    }
+
+    @Singleton
+    @Provides
+    @NonNull
+    ImageLoader provideImageLoader() {
+        return new ImageLoaderImpl();
     }
 }

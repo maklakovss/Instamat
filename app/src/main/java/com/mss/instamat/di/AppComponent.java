@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.mss.instamat.view.detail.DetailActivity;
 import com.mss.instamat.view.imagelist.ImageListActivity;
+import com.mss.instamat.view.imagelist.ImageListAdapter;
 
 import javax.inject.Singleton;
 
@@ -17,4 +18,6 @@ public interface AppComponent {
     void inject(@NonNull final ImageListActivity imageListActivity);
 
     void inject(@NonNull final DetailActivity detailActivity);
+
+    void inject(@NonNull final ImageListAdapter imageListAdapter);
 }

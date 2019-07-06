@@ -4,6 +4,8 @@ import com.mss.instamat.domain.models.ImageInfo;
 
 import org.junit.Test;
 
+import java.io.File;
+
 import static org.junit.Assert.*;
 
 public class FilesHelperTest {
@@ -14,6 +16,6 @@ public class FilesHelperTest {
         imageInfo.setId(1);
         FilesHelper filesHelper = new FilesHelper();
 
-        assertEquals("path\\1.jpg", filesHelper.getFilePath("path", imageInfo));
+        assertEquals("path" + File.separator + "1.jpg", filesHelper.getFilePath("path", imageInfo));
     }
 }

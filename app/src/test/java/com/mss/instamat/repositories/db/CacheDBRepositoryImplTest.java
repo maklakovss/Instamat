@@ -79,4 +79,13 @@ public class CacheDBRepositoryImplTest {
 
         verify(imageInfoDao).getImagesInfo("one", 1);
     }
+
+    @Test
+    public void deleteImages_callImageInfoDao() {
+        when(cacheDB.productDao()).thenReturn(imageInfoDao);
+
+        cacheDBRepository.deleteImages("one").blockingGet();
+
+        verify(imageInfoDao).deleteQuery("one");
+    }
 }
