@@ -21,6 +21,10 @@ import android.widget.TextView;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.mss.instamat.App;
 import com.mss.instamat.R;
 import com.mss.instamat.presenter.imagelist.ImageListPresenter;
@@ -57,6 +61,9 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
     @BindView(R.id.srlImages)
     SwipeRefreshLayout swipeRefreshLayout;
 
+    @BindView(R.id.adView)
+    AdView adView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         App.getAppComponent().inject(this);
@@ -68,12 +75,69 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        MobileAds.initialize(this, "ca-app-pub-5983720442782376~4164669276");
+        adView.loadAd(new AdRequest.Builder().build());
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                super.onAdLeftApplication();
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+            }
+
+            @Override
+            public void onAdClicked() {
+                super.onAdClicked();
+            }
+
+            @Override
+            public void onAdImpression() {
+                super.onAdImpression();
+            }
+        });
+
         recyclerViewInit();
 
         etSearch.setOnEditorActionListener(this::onAction);
         swipeRefreshLayout.setOnRefreshListener(this::onRefresh);
 
         checkNetworkPermissions();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adView.resume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        adView.pause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        adView.destroy();
     }
 
     @Override

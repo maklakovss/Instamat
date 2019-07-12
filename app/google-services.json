@@ -1,5 +1,5 @@
 {
-   "project_info": {
+  "project_info": {
     "project_number": "656899351819",
     "firebase_url": "https://instamat-1cf63.firebaseio.com",
     "project_id": "instamat-1cf63",
@@ -14,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "656899351819-cvpc2leskt5kq37b7fegbpj43a5dn0at.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mss.instamat",
+            "certificate_hash": "1c05ec1e016e86908279ac235a50fdd6b105ecf6"
+          }
+        },
         {
           "client_id": "656899351819-uo85emojpbuul3pre5b4dng5im6dje1e.apps.googleusercontent.com",
           "client_type": 3
@@ -33,7 +41,8 @@
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-5983720442782376~4164669276"
     }
   ],
   "configuration_version": "1"

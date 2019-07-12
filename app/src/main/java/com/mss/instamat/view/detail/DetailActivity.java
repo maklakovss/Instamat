@@ -15,6 +15,8 @@ import android.widget.ProgressBar;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.jsibbold.zoomage.ZoomageView;
 import com.mss.instamat.App;
 import com.mss.instamat.R;
@@ -52,6 +54,9 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     @BindView(R.id.imageView)
     ZoomageView imageView;
 
+    @BindView(R.id.adView)
+    AdView adView;
+
     @NonNull
     @ProvidePresenter
     DetailPresenter providePresenter() {
@@ -65,6 +70,8 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
+
+        adView.loadAd(new AdRequest.Builder().build());
 
         getParameters();
         presenter.onCreate(position);
@@ -100,8 +107,8 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     }
 
     @Override
-    public void showImage(@NonNull final String imageURL) {
-        Timber.d("showImage");
+    public void startLoadImage(@NonNull final String imageURL) {
+        Timber.d("startLoadImage " + imageURL);
         imageLoader.load(this,
                 imageURL,
                 imageView,
@@ -138,6 +145,16 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
         intent.setType("image/jpeg");
         intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
         startActivity(Intent.createChooser(intent, "Share Image"));
+    }
+
+    @Override
+    public void showImage(boolean visible) {
+        Timber.d("showImage %b", visible);
+        if (visible) {
+            imageView.setVisibility(View.VISIBLE);
+        } else {
+            imageView.setVisibility(View.INVISIBLE);
+        }
     }
 
     @AfterPermissionGranted(PERMISSION_REQUEST_SAVE)

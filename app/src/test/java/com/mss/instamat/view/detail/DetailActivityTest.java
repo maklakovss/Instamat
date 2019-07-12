@@ -3,7 +3,6 @@ package com.mss.instamat.view.detail;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -18,8 +17,6 @@ import com.mss.instamat.view.helpers.ImageLoader;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -31,15 +28,11 @@ import org.robolectric.shadows.ShadowApplication;
 import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28, application = RobolectricApp.class, shadows = {ShadowSnackbar.class})
@@ -153,7 +146,7 @@ public class DetailActivityTest {
             return null;
         }).when(imageLoader).load(any(), any(), any(), any(), any());
 
-        detailActivity.showImage("path");
+        detailActivity.startLoadImage("path");
 
         verify(presenter).onImageLoaded();
     }
@@ -166,7 +159,7 @@ public class DetailActivityTest {
             return null;
         }).when(imageLoader).load(any(), any(), any(), any(), any());
 
-        detailActivity.showImage("path");
+        detailActivity.startLoadImage("path");
 
         verify(presenter).onImageLoadFailed();
     }

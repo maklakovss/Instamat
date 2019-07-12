@@ -27,13 +27,15 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
 
     public void onCreate(int position) {
         Timber.d("onCreate %d", position);
+        getViewState().showImage(false);
         getViewState().showProgress(true);
-        getViewState().showImage(model.getImages().get(position).getLargeImageURL());
+        getViewState().startLoadImage(model.getImages().get(position).getLargeImageURL());
     }
 
     public void onImageLoaded() {
         Timber.d("onImageLoaded");
         getViewState().showProgress(false);
+        getViewState().showImage(true);
     }
 
     public void onImageLoadFailed() {

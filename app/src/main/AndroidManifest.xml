@@ -25,6 +25,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.detail.DetailActivity" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-5983720442782376~4164669276" />
     </application>
 
 </manifest>
