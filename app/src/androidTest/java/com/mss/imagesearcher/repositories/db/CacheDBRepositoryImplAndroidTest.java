@@ -48,6 +48,12 @@ public class CacheDBRepositoryImplAndroidTest {
         images = repository.getImagesInfo("query",1).blockingGet();
 
         assertEquals(50, images.size());
+
+        repository.deleteImages("query").blockingGet();
+
+        images = repository.getImagesInfo("query", 1).blockingGet();
+
+        assertEquals(0, images.size());
     }
 
     private void initImageInfoList() {

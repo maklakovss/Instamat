@@ -146,7 +146,7 @@ public class DetailActivityTest {
             return null;
         }).when(imageLoader).load(any(), any(), any(), any(), any());
 
-        detailActivity.showImage("path");
+        detailActivity.startLoadImage("path");
 
         verify(presenter).onImageLoaded();
     }
@@ -159,7 +159,7 @@ public class DetailActivityTest {
             return null;
         }).when(imageLoader).load(any(), any(), any(), any(), any());
 
-        detailActivity.showImage("path");
+        detailActivity.startLoadImage("path");
 
         verify(presenter).onImageLoadFailed();
     }

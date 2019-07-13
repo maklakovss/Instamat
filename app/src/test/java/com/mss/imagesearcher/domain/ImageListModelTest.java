@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.android.plugins.RxAndroidPlugins;
@@ -78,7 +79,7 @@ public class ImageListModelTest {
     }
 
     @Test
-    public void getImagesFromCacheDB_callBDRepositoryAndSaveResult() {
+    public void getImagesFromCacheDB_callDBRepositoryAndSaveResult() {
         initImageInfoList();
         when(cacheDBRepository.getImagesInfo(anyString(), anyInt())).thenReturn(Single.just(images));
 
@@ -89,7 +90,7 @@ public class ImageListModelTest {
     }
 
     @Test
-    public void saveToCacheDBAsync() {
+    public void saveToCacheDBAsync_callDBRepository() {
         initImageInfoList();
         List<Long> ids = new ArrayList<>();
         ids.add(1L);
@@ -98,6 +99,15 @@ public class ImageListModelTest {
         assertEquals(1, model.saveToCacheDBAsync("one", 1, images).blockingGet().size());
 
         verify(cacheDBRepository).insertToCacheDB("one", 1, images);
+    }
+
+    @Test
+    public void deleteImagesFromCache_callDBRepository() {
+        when(cacheDBRepository.deleteImages(anyString())).thenReturn(Completable.complete());
+
+        model.deleteImagesFromCache("one").blockingGet();
+
+        verify(cacheDBRepository).deleteImages("one");
     }
 
     @Test

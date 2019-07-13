@@ -1,25 +1,40 @@
 package com.mss.imagesearcher.repositories.network;
 
+import android.support.test.runner.AndroidJUnit4;
+
 import com.google.gson.GsonBuilder;
 import com.mss.imagesearcher.domain.models.ImageInfo;
 import com.mss.imagesearcher.domain.repositories.ImagesNetRepository;
 
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import java.io.IOException;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import okhttp3.mockwebserver.MockWebServer;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static org.junit.Assert.assertEquals;
 
+@RunWith(AndroidJUnit4.class)
 public class ImagesNetRepositoryImplAndroidTest {
 
     private ImagesNetRepository repository;
+    private static MockWebServer mockWebServer;
+
+    @BeforeClass
+    public static void setupServer() throws IOException {
+        mockWebServer = new MockWebServer();
+        mockWebServer.start();
+    }
 
     @Before
     public void setUp() {
@@ -37,5 +52,10 @@ public class ImagesNetRepositoryImplAndroidTest {
         List<ImageInfo> images = repository.findImages("one", 1).blockingGet();
 
         assertEquals(50, images.size());
+    }
+
+    @AfterClass
+    public static void shutdownServer() throws IOException {
+        mockWebServer.shutdown();
     }
 }

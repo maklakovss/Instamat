@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import timber.log.Timber;
@@ -91,5 +92,9 @@ public class ImageListModel {
         final String path = filesRepository.saveBitmap(imageInfo, bitmap);
         Timber.d("Image saved to path - %s", path);
         return path;
+    }
+
+    public Completable deleteImagesFromCache(String searchText) {
+        return cacheDBRepository.deleteImages(searchText);
     }
 }

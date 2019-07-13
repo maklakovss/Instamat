@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,9 @@ import android.widget.TextView;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.mss.imagesearcher.App;
 import com.mss.imagesearcher.R;
 import com.mss.imagesearcher.presenter.imagelist.ImageListPresenter;
@@ -53,6 +57,12 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
     @BindView(R.id.pbList)
     ProgressBar pbList;
 
+    @BindView(R.id.srlImages)
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.adView)
+    AdView adView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         App.getAppComponent().inject(this);
@@ -64,9 +74,12 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        adViewInit();
+
         recyclerViewInit();
 
         etSearch.setOnEditorActionListener(this::onAction);
+        swipeRefreshLayout.setOnRefreshListener(this::onRefresh);
 
         checkNetworkPermissions();
     }
@@ -130,6 +143,11 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
     }
 
     @Override
+    public void stopRefreshing() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
     public void onItemClick(View view, int position) {
         Timber.d("onItemClick");
         presenter.onItemClick(position);
@@ -154,6 +172,11 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         return false;
     }
 
+    private void onRefresh() {
+        Timber.d("onRefresh");
+        presenter.onRefresh(etSearch.getText().toString());
+    }
+
     private void recyclerViewInit() {
         rvImages.setItemAnimator(new DefaultItemAnimator());
         rvImages.setHasFixedSize(true);
@@ -172,5 +195,13 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
                 }
             }
         });
+    }
+
+    private void adViewInit() {
+        MobileAds.initialize(this, "ca-app-pub-8601890205077009~6067851844");
+        final AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        adView.loadAd(adRequest);
     }
 }

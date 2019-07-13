@@ -66,7 +66,7 @@ public class DetailPresenterTest {
         detailPresenter.onCreate(1);
 
         verify(detailView).showProgress(true);
-        verify(detailView).showImage(imageInfoList.get(1).getLargeImageURL());
+        verify(detailView).startLoadImage(imageInfoList.get(1).getLargeImageURL());
     }
 
     @Test

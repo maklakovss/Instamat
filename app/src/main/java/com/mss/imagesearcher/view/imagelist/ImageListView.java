@@ -18,4 +18,7 @@ public interface ImageListView extends MvpView {
 
     @StateStrategyType(value = OneExecutionStateStrategy.class)
     void showNotFoundMessage();
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void stopRefreshing();
 }
