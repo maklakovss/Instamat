@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Instamat</string>
+    <string name="app_name">Image Searcher</string>
     <string name="search_hint">Введите строку для поиска картинок</string>
     <string name="not_found_message">Подходящих картинок не найдено</string>
     <string name="save_label">Сохранить</string>

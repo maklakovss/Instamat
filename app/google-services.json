@@ -1,34 +1,34 @@
 {
-   "project_info": {
-    "project_number": "656899351819",
-    "firebase_url": "https://instamat-1cf63.firebaseio.com",
-    "project_id": "instamat-1cf63",
-    "storage_bucket": "instamat-1cf63.appspot.com"
+  "project_info": {
+    "project_number": "923583263765",
+    "firebase_url": "https://imagesearcher-447b4.firebaseio.com",
+    "project_id": "imagesearcher-447b4",
+    "storage_bucket": "imagesearcher-447b4.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:656899351819:android:20377b6a8c1ac013",
+        "mobilesdk_app_id": "1:923583263765:android:470bfeb9a5dd7644",
         "android_client_info": {
-          "package_name": "com.mss.instamat"
+          "package_name": "com.mss.imagesearcher"
         }
       },
       "oauth_client": [
         {
-          "client_id": "656899351819-uo85emojpbuul3pre5b4dng5im6dje1e.apps.googleusercontent.com",
+          "client_id": "923583263765-mrgrdp607f79bpkorkmmkbi3a1p1t3ev.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDy8Xjcs0dOFMRopWGdwbBdCBqaQha3xjI"
+          "current_key": "AIzaSyBmUz3QTdcDbXt5Zm9VAxHIMbHic3q6bmI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "656899351819-uo85emojpbuul3pre5b4dng5im6dje1e.apps.googleusercontent.com",
+              "client_id": "923583263765-mrgrdp607f79bpkorkmmkbi3a1p1t3ev.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
