@@ -34,12 +34,16 @@ public class App extends Application {
     }
 
     private void initStetho() {
-        Stetho.initializeWithDefaults(this);
+        if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(this);
+        }
     }
 
     private void initLeakCanary() {
-        if (!LeakCanary.isInAnalyzerProcess(this)) {
-            LeakCanary.install(this);
+        if (BuildConfig.DEBUG) {
+            if (!LeakCanary.isInAnalyzerProcess(this)) {
+                LeakCanary.install(this);
+            }
         }
     }
 
