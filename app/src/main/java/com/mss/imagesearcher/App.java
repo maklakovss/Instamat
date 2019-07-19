@@ -1,7 +1,7 @@
 package com.mss.imagesearcher;
 
-import android.app.Application;
 import android.support.annotation.NonNull;
+import android.support.multidex.MultiDexApplication;
 
 import com.facebook.stetho.Stetho;
 import com.mss.imagesearcher.di.AppComponent;
@@ -11,7 +11,7 @@ import com.squareup.leakcanary.LeakCanary;
 
 import timber.log.Timber;
 
-public class App extends Application {
+public class App extends MultiDexApplication {
 
     protected static AppComponent appComponent;
 
