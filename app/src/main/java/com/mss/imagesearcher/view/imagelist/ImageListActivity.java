@@ -75,14 +75,14 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        adViewInit();
-
         recyclerViewInit();
 
         etSearch.setOnEditorActionListener(this::onAction);
         swipeRefreshLayout.setOnRefreshListener(this::onRefresh);
 
         checkNetworkPermissions();
+
+        presenter.onCreate();
     }
 
     @Override
@@ -198,7 +198,8 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         });
     }
 
-    private void adViewInit() {
+    @Override
+    public void initAdMob() {
         MobileAds.initialize(this, "ca-app-pub-8601890205077009~6067851844");
         final AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)

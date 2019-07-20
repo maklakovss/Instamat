@@ -169,6 +169,10 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
         showMessageListEmpty();
     }
 
+    public void onCreate() {
+        getViewState().initAdMob();
+    }
+
 
     public class RvPresenter implements IRvImageListPresenter {
 

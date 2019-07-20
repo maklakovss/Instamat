@@ -26,4 +26,7 @@ public interface DetailView extends MvpView {
 
     @StateStrategyType(value = AddToEndSingleStrategy.class)
     void showImage(boolean visible);
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void initAdMob();
 }

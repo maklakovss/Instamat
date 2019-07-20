@@ -72,10 +72,13 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
 
-        adView.loadAd(new AdRequest.Builder().build());
-
         getParameters();
         presenter.onCreate(position);
+    }
+
+    @Override
+    public void initAdMob() {
+        adView.loadAd(new AdRequest.Builder().build());
     }
 
     @Override

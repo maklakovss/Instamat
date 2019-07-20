@@ -21,4 +21,7 @@ public interface ImageListView extends MvpView {
 
     @StateStrategyType(value = OneExecutionStateStrategy.class)
     void stopRefreshing();
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void initAdMob();
 }

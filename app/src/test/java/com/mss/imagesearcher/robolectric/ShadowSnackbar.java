@@ -1,6 +1,5 @@
 package com.mss.imagesearcher.robolectric;
 
-import android.support.design.widget.SnackbarContentLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.snackbar.ContentViewCallback;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.snackbar.SnackbarContentLayout;
 
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
@@ -57,7 +57,7 @@ public class ShadowSnackbar {
             ViewGroup parent = findSuitableParent(view);
             final SnackbarContentLayout content =
                     (SnackbarContentLayout)
-                            LayoutInflater.from(parent.getContext()).inflate(android.support.design.R.layout.design_layout_snackbar_include, parent, false);
+                            LayoutInflater.from(parent.getContext()).inflate(com.google.android.material.R.layout.design_layout_snackbar_include, parent, false);
 
             snackbar = constructor.newInstance(parent, content, content);
             snackbar.setText(text);

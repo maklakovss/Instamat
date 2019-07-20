@@ -28,6 +28,7 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
 
     public void onCreate(int position) {
         Timber.d("onCreate %d", position);
+        getViewState().initAdMob();
         getViewState().showImage(false);
         getViewState().showProgress(true);
         getViewState().startLoadImage(model.getImages().get(position).getLargeImageURL());
