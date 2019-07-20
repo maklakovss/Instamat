@@ -3,7 +3,7 @@ package com.mss.imagesearcher.view.imagelist;
 import android.support.test.rule.ActivityTestRule;
 import android.view.KeyEvent;
 
-import com.mss.instamat.R;
+import com.mss.imagesearcher.R;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,6 +16,7 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 public class ImageListActivityAndroidTest {
 
