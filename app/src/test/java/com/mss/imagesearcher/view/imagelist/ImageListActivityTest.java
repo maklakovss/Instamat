@@ -1,13 +1,14 @@
 package com.mss.imagesearcher.view.imagelist;
 
 import android.content.Intent;
-import android.support.design.widget.TextInputEditText;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.textfield.TextInputEditText;
 import com.mss.imagesearcher.R;
 import com.mss.imagesearcher.di.RobolectricApp;
 import com.mss.imagesearcher.di.RobolectricComponent;

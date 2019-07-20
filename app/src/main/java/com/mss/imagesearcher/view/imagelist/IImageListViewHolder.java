@@ -1,6 +1,6 @@
 package com.mss.imagesearcher.view.imagelist;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public interface IImageListViewHolder {
 

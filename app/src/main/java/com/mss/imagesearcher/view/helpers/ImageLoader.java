@@ -1,9 +1,10 @@
 package com.mss.imagesearcher.view.helpers;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public interface ImageLoader {
 

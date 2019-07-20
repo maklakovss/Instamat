@@ -1,7 +1,8 @@
 package com.mss.imagesearcher.repositories.files;
 
 import android.graphics.Bitmap;
-import android.support.test.runner.AndroidJUnit4;
+
+import androidx.test.runner.AndroidJUnit4;
 
 import com.mss.imagesearcher.domain.models.ImageInfo;
 

@@ -1,6 +1,6 @@
 package com.mss.imagesearcher.repositories.network;
 
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.runner.AndroidJUnit4;
 
 import com.google.gson.GsonBuilder;
 import com.mss.imagesearcher.domain.models.ImageInfo;

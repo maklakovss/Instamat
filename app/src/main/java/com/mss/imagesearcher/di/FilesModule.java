@@ -1,6 +1,6 @@
 package com.mss.imagesearcher.di;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.mss.imagesearcher.domain.repositories.FilesRepository;
 import com.mss.imagesearcher.repositories.files.FilesHelper;

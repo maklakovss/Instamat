@@ -1,6 +1,6 @@
 package com.mss.imagesearcher.di;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.gson.GsonBuilder;
 import com.mss.imagesearcher.domain.repositories.ImagesNetRepository;

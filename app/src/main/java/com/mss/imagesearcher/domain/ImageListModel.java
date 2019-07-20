@@ -1,7 +1,8 @@
 package com.mss.imagesearcher.domain;
 
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.mss.imagesearcher.domain.models.ImageInfo;
 import com.mss.imagesearcher.domain.repositories.CacheDBRepository;

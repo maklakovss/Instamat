@@ -1,8 +1,8 @@
 package com.mss.imagesearcher.repositories.db;
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.RoomDatabase;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
 
 import com.mss.imagesearcher.repositories.db.models.ImageInfoDB;
 

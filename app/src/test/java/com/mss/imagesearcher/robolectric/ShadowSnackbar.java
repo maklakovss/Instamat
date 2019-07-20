@@ -1,16 +1,18 @@
 package com.mss.imagesearcher.robolectric;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.design.snackbar.ContentViewCallback;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.SnackbarContentLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import com.google.android.material.snackbar.ContentViewCallback;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;

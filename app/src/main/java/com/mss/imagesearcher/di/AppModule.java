@@ -1,7 +1,8 @@
 package com.mss.imagesearcher.di;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.mss.imagesearcher.domain.ImageListModel;
 import com.mss.imagesearcher.domain.repositories.CacheDBRepository;

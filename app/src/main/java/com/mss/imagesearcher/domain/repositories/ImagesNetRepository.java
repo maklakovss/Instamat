@@ -1,6 +1,6 @@
 package com.mss.imagesearcher.domain.repositories;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.mss.imagesearcher.domain.models.ImageInfo;
 

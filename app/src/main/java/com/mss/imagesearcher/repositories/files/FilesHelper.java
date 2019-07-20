@@ -2,7 +2,8 @@ package com.mss.imagesearcher.repositories.files;
 
 import android.graphics.Bitmap;
 import android.os.Environment;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.mss.imagesearcher.domain.models.ImageInfo;
 
