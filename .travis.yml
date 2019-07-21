@@ -26,6 +26,10 @@ android:
   - android-${ANDROID_API}
   - build-tools-${ANDROID_BUILD_TOOLS}
   - extra
+  
+branches:
+ only:
+ - dev
 
 script:
 - ./gradlew clean test build
