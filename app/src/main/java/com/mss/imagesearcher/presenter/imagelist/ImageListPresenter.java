@@ -45,10 +45,10 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
     public void onSearchClick(String searchText) {
         Timber.d("onSearchClick");
         if (searchText.equals(lastQuery)) {
-            Timber.d("Query not changed, return");
-            return;
+            onRefresh(searchText);
+        } else {
+            startSearch(searchText);
         }
-        startSearch(searchText);
     }
 
     public void onNeedNextPage() {
