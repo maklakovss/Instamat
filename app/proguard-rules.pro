@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+
+# Retrofit
+# Add any classes the interact with gson
+# the following line is for illustration purposes
+-keep class com.mss.imagesearcher.repositories.network.models.** { *; }
