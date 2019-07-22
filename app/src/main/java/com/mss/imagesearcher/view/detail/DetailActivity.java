@@ -112,7 +112,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
     @Override
     public void startLoadImage(@NonNull final String imageURL) {
-        Timber.d("startLoadImage " + imageURL);
+        Timber.d("startLoadImage %s", imageURL);
         imageLoader.load(this,
                 imageURL,
                 imageView,

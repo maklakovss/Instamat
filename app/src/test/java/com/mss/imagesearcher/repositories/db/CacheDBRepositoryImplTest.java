@@ -42,7 +42,7 @@ public class CacheDBRepositoryImplTest {
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         cacheDBRepository = spy(new CacheDBRepositoryImpl(cacheDB));
     }
 

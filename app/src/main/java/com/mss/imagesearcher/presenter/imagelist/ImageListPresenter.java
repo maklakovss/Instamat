@@ -137,7 +137,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
                                                     list.size(),
                                                     lastQuery,
                                                     nextPage),
-                                            throwable -> Timber.e(throwable));
+                                            Timber::e);
                             doOnSuccess();
                         },
                         this::doOnError);

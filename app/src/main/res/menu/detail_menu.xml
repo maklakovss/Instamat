@@ -6,11 +6,11 @@
         android:id="@+id/miSave"
         android:icon="@android:drawable/ic_menu_save"
         android:title="@string/save_label"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/miShare"
         android:icon="@android:drawable/ic_menu_share"
         android:title="@string/share_label"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>

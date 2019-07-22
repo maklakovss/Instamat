@@ -49,7 +49,7 @@ public class ImageListModelTest {
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         model = new ImageListModel(cacheDBRepository, imagesNetRepository, filesRepository);
     }
 

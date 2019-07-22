@@ -12,7 +12,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class FilesModule {
+class FilesModule {
 
     @Provides
     @Singleton

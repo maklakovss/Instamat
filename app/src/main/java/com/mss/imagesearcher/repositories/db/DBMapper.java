@@ -8,10 +8,10 @@ import com.mss.imagesearcher.repositories.db.models.ImageInfoDB;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DBMapper {
+class DBMapper {
 
     @NonNull
-    public static List<ImageInfo> mapFromDb(@NonNull final List<ImageInfoDB> imagesDB) {
+    static List<ImageInfo> mapFromDb(@NonNull final List<ImageInfoDB> imagesDB) {
         final List<ImageInfo> images = new ArrayList<>();
         for (ImageInfoDB imageInfoDB : imagesDB) {
             images.add(mapFromDB(imageInfoDB));
@@ -20,7 +20,7 @@ public class DBMapper {
     }
 
     @NonNull
-    public static ImageInfo mapFromDB(@NonNull final ImageInfoDB imageInfoDB) {
+    private static ImageInfo mapFromDB(@NonNull final ImageInfoDB imageInfoDB) {
         final ImageInfo imageInfo = new ImageInfo();
         imageInfo.setId(imageInfoDB.getId());
         imageInfo.setLargeImageURL(imageInfoDB.getLargeImageURL());
@@ -29,9 +29,9 @@ public class DBMapper {
     }
 
     @NonNull
-    public static List<ImageInfoDB> mapToDB(@NonNull final String searchText,
-                                            int page,
-                                            @NonNull final List<ImageInfo> images) {
+    static List<ImageInfoDB> mapToDB(@NonNull final String searchText,
+                                     int page,
+                                     @NonNull final List<ImageInfo> images) {
         final List<ImageInfoDB> imagesDB = new ArrayList<>();
         for (ImageInfo imageInfo : images) {
             imagesDB.add(mapToDB(searchText, page, imageInfo));
@@ -40,9 +40,9 @@ public class DBMapper {
     }
 
     @NonNull
-    public static ImageInfoDB mapToDB(@NonNull final String searchText,
-                                      int page,
-                                      @NonNull final ImageInfo imageInfo) {
+    private static ImageInfoDB mapToDB(@NonNull final String searchText,
+                                       int page,
+                                       @NonNull final ImageInfo imageInfo) {
         final ImageInfoDB imageInfoDB = new ImageInfoDB();
         imageInfoDB.setId(imageInfo.getId());
         imageInfoDB.setLargeImageURL(imageInfo.getLargeImageURL());

@@ -1,6 +1,6 @@
 package com.mss.imagesearcher.repositories.network;
 
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
 import com.google.gson.GsonBuilder;
 import com.mss.imagesearcher.domain.models.ImageInfo;
@@ -24,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(AndroidJUnit4.class)
+@RunWith(AndroidJUnit4ClassRunner.class)
 public class ImagesNetRepositoryImplAndroidTest {
 
     private ImagesNetRepository repository;

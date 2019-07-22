@@ -28,7 +28,7 @@ import java.util.List;
 @Implements(Snackbar.class)
 public class ShadowSnackbar {
 
-    static List<ShadowSnackbar> shadowSnackbars = new ArrayList<>();
+    static final List<ShadowSnackbar> shadowSnackbars = new ArrayList<>();
 
     @RealObject
     Snackbar snackbar;

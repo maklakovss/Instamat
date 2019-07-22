@@ -47,7 +47,7 @@ public class ImageListModel {
                             page,
                             imageInfoList.size());
                 })
-                .doOnError(throwable -> Timber.e(throwable));
+                .doOnError(Timber::e);
     }
 
     @NonNull
@@ -71,7 +71,7 @@ public class ImageListModel {
                             page,
                             imageInfoList.size());
                 })
-                .doOnError(throwable -> Timber.e(throwable));
+                .doOnError(Timber::e);
     }
 
     @NonNull
@@ -85,7 +85,7 @@ public class ImageListModel {
                                 list.size(),
                                 searchText,
                                 page))
-                .doOnError(throwable -> Timber.e(throwable));
+                .doOnError(Timber::e);
     }
 
     @NonNull

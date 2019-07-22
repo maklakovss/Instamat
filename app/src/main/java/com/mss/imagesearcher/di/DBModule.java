@@ -15,7 +15,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class DBModule {
+class DBModule {
 
     private static final String DATABASE_NAME = "CACHE";
 

@@ -2,7 +2,7 @@ package com.mss.imagesearcher.repositories.files;
 
 import android.graphics.Bitmap;
 
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
 import com.mss.imagesearcher.domain.models.ImageInfo;
 
@@ -18,7 +18,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(AndroidJUnit4.class)
+@RunWith(AndroidJUnit4ClassRunner.class)
 public class FilesHelperAndroidTest {
 
     private FilesHelper filesHelper;

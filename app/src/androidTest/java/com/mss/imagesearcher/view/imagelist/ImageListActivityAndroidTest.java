@@ -6,7 +6,6 @@ import androidx.test.rule.ActivityTestRule;
 
 import com.mss.imagesearcher.R;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -24,10 +23,6 @@ public class ImageListActivityAndroidTest {
     @Rule
     public ActivityTestRule<ImageListActivity> mActivityRule = new ActivityTestRule<>(
             ImageListActivity.class);
-
-    @Before
-    public void setUp() throws Exception {
-    }
 
     @Test
     public void onSearchAndDetail_loadImagesAndShowDetailImage() {

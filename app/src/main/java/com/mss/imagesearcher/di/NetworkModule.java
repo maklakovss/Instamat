@@ -16,14 +16,14 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
-public class NetworkModule {
+class NetworkModule {
 
     private static final String URL = "https://pixabay.com/";
 
     @Singleton
     @Provides
     @NonNull
-    public PixabayAPI providePixabayAPI() {
+    PixabayAPI providePixabayAPI() {
         return new Retrofit.Builder()
                 .baseUrl(URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -37,7 +37,7 @@ public class NetworkModule {
     @Singleton
     @Provides
     @NonNull
-    public ImagesNetRepository provideImagesRepository(@NonNull final PixabayAPI pixabayAPI) {
+    ImagesNetRepository provideImagesRepository(@NonNull final PixabayAPI pixabayAPI) {
         return new ImagesNetRepositoryImpl(pixabayAPI);
     }
 }

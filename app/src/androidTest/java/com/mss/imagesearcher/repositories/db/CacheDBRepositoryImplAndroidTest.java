@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.room.Room;
 import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
 import com.mss.imagesearcher.domain.models.ImageInfo;
 import com.mss.imagesearcher.domain.repositories.CacheDBRepository;
@@ -18,7 +18,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(AndroidJUnit4.class)
+@RunWith(AndroidJUnit4ClassRunner.class)
 public class CacheDBRepositoryImplAndroidTest {
 
     private CacheDBRepository repository;
