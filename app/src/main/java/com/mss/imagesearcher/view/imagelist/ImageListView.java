@@ -24,4 +24,7 @@ public interface ImageListView extends MvpView {
 
     @StateStrategyType(value = OneExecutionStateStrategy.class)
     void initAdMob();
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void showPrivacyPolicy();
 }

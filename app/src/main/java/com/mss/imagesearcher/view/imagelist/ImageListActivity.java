@@ -2,8 +2,11 @@ package com.mss.imagesearcher.view.imagelist;
 
 import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
@@ -83,6 +86,22 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         checkNetworkPermissions();
 
         presenter.onCreate();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.imagelist_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.miPrivacyPolicy:
+                presenter.onPrivacyPolicyClick();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -205,5 +224,11 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
         adView.loadAd(adRequest);
+    }
+
+    @Override
+    public void showPrivacyPolicy() {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_policy_url)));
+        startActivity(browserIntent);
     }
 }

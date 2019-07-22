@@ -173,6 +173,10 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
         getViewState().initAdMob();
     }
 
+    public void onPrivacyPolicyClick() {
+        getViewState().showPrivacyPolicy();
+    }
+
 
     public class RvPresenter implements IRvImageListPresenter {
 

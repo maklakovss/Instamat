@@ -5,17 +5,18 @@ import androidx.annotation.NonNull;
 import com.mss.imagesearcher.domain.models.ImageInfo;
 import com.mss.imagesearcher.repositories.db.models.ImageInfoDB;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DBMapper {
 
     @NonNull
     public static List<ImageInfo> mapFromDb(@NonNull final List<ImageInfoDB> imagesDB) {
-        return imagesDB
-                .stream()
-                .map(imageInfoDB -> mapFromDB(imageInfoDB))
-                .collect(Collectors.toList());
+        final List<ImageInfo> images = new ArrayList<>();
+        for (ImageInfoDB imageInfoDB : imagesDB) {
+            images.add(mapFromDB(imageInfoDB));
+        }
+        return images;
     }
 
     @NonNull
@@ -31,10 +32,11 @@ public class DBMapper {
     public static List<ImageInfoDB> mapToDB(@NonNull final String searchText,
                                             int page,
                                             @NonNull final List<ImageInfo> images) {
-        return images
-                .stream()
-                .map(imageInfo -> mapToDB(searchText, page, imageInfo))
-                .collect(Collectors.toList());
+        final List<ImageInfoDB> imagesDB = new ArrayList<>();
+        for (ImageInfo imageInfo : images) {
+            imagesDB.add(mapToDB(searchText, page, imageInfo));
+        }
+        return imagesDB;
     }
 
     @NonNull

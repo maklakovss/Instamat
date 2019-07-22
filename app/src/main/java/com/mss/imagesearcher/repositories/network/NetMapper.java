@@ -5,17 +5,18 @@ import androidx.annotation.NonNull;
 import com.mss.imagesearcher.domain.models.ImageInfo;
 import com.mss.imagesearcher.repositories.network.models.ImageInfoNet;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 class NetMapper {
 
     @NonNull
     public static List<ImageInfo> mapFromNet(@NonNull final List<ImageInfoNet> imagesNet) {
-        return imagesNet
-                .stream()
-                .map(imageInfoDB -> mapFromNet(imageInfoDB))
-                .collect(Collectors.toList());
+        List<ImageInfo> images = new ArrayList<>();
+        for (ImageInfoNet imageNet : imagesNet) {
+            images.add(mapFromNet(imageNet));
+        }
+        return images;
     }
 
     @NonNull
