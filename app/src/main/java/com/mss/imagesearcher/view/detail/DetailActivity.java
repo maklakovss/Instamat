@@ -17,6 +17,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.material.snackbar.Snackbar;
 import com.jsibbold.zoomage.ZoomageView;
 import com.mss.imagesearcher.App;
@@ -41,7 +42,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     private static final String[] STORAGE_PERMISSIONS = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     private int position = 0;
-
+    private InterstitialAd interstitialAd;
     @Inject
     @InjectPresenter
     DetailPresenter presenter;
@@ -78,7 +79,23 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
     @Override
     public void initAdMob() {
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.banner_between_page_id));
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        interstitialAd.loadAd(adRequest);
+
         adView.loadAd(new AdRequest.Builder().build());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (interstitialAd != null) {
+            // if (interstitialAd.isLoaded()) {
+            interstitialAd.show();
+            //}
+        }
     }
 
     @Override
