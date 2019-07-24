@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
@@ -43,6 +44,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
     private int position = 0;
     private InterstitialAd interstitialAd;
+
     @Inject
     @InjectPresenter
     DetailPresenter presenter;
@@ -79,9 +81,34 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
     @Override
     public void initAdMob() {
-        interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId(getString(R.string.banner_between_page_id));
+        interstitialAd = new InterstitialAd(getApplicationContext());
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                Timber.d("onAdClosed");
+            }
 
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                Timber.d("onAdFailedToLoad %d", i);
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                Timber.d("onAdLoaded");
+                presenter.onAdLoaded();
+            }
+
+            @Override
+            public void onAdClicked() {
+                super.onAdClicked();
+                Timber.d("onAdClicked");
+            }
+        });
+        interstitialAd.setAdUnitId(getString(R.string.banner_between_page_id));
         AdRequest adRequest = new AdRequest.Builder().build();
         interstitialAd.loadAd(adRequest);
 
@@ -89,12 +116,20 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void showFullScreenAd() {
         if (interstitialAd != null) {
-            // if (interstitialAd.isLoaded()) {
-            interstitialAd.show();
-            //}
+            if (interstitialAd.isLoaded()) {
+                interstitialAd.show();
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (interstitialAd != null) {
+            interstitialAd.setAdListener(null);
+            interstitialAd = null;
         }
     }
 

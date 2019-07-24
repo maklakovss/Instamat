@@ -72,4 +72,8 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
             getViewState().showFailedSaveMessage();
         }
     }
+
+    public void onAdLoaded() {
+        getViewState().showFullScreenAd();
+    }
 }
