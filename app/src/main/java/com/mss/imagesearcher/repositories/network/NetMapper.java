@@ -23,8 +23,17 @@ class NetMapper {
     private static ImageInfo mapFromNet(@NonNull final ImageInfoNet imageInfoDB) {
         final ImageInfo imageInfo = new ImageInfo();
         imageInfo.setId(imageInfoDB.getId());
+        imageInfo.setType(imageInfoDB.getType());
+        imageInfo.setTags(imageInfoDB.getTags());
+        imageInfo.setPageUrl(imageInfoDB.getPageUrl());
         imageInfo.setLargeImageURL(imageInfoDB.getLargeImageURL());
+        imageInfo.setWebFormatURL(imageInfoDB.getWebFormatURL());
         imageInfo.setPreviewURL(imageInfoDB.getPreviewURL());
+        imageInfo.setComments(imageInfoDB.getComments());
+        imageInfo.setLikes(imageInfoDB.getLikes());
+        imageInfo.setViews(imageInfoDB.getViews());
+        imageInfo.setHeight(imageInfoDB.getHeight());
+        imageInfo.setWidth(imageInfoDB.getWidth());
         return imageInfo;
     }
 }

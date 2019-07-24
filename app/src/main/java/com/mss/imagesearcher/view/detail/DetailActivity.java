@@ -25,6 +25,7 @@ import com.mss.imagesearcher.App;
 import com.mss.imagesearcher.R;
 import com.mss.imagesearcher.presenter.detail.DetailPresenter;
 import com.mss.imagesearcher.view.helpers.ImageLoader;
+import com.mss.imagesearcher.view.info.InfoActivity;
 
 import javax.inject.Inject;
 
@@ -125,6 +126,14 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     }
 
     @Override
+    public void showInfo() {
+        Timber.d("openDetailActivity");
+        final Intent intent = new Intent(this, InfoActivity.class);
+        intent.putExtra(InfoActivity.PARAMETER_POSITION_TAG, position);
+        startActivity(intent);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (interstitialAd != null) {
@@ -142,6 +151,9 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.miInfo:
+                presenter.onInfoClick();
+                return true;
             case R.id.miSave:
                 saveImageWithCheckPermission();
                 return true;

@@ -32,4 +32,7 @@ public interface DetailView extends MvpView {
 
     @StateStrategyType(value = OneExecutionStateStrategy.class)
     void showFullScreenAd();
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void showInfo();
 }

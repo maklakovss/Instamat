@@ -8,6 +8,7 @@ import com.mss.imagesearcher.domain.ImageListModel;
 import com.mss.imagesearcher.domain.repositories.FilesRepository;
 import com.mss.imagesearcher.domain.repositories.ImagesNetRepository;
 import com.mss.imagesearcher.presenter.imagelist.ImageListPresenter;
+import com.mss.imagesearcher.presenter.info.InfoPresenter;
 import com.mss.imagesearcher.view.helpers.ImageLoader;
 import com.mss.imagesearcher.view.helpers.ImageLoaderImpl;
 
@@ -48,6 +49,13 @@ public class AppModule {
     @NonNull
     ImageListPresenter provideImageListPresenter(@NonNull final ImageListModel model) {
         return new ImageListPresenter(model);
+    }
+
+    @Singleton
+    @Provides
+    @NonNull
+    InfoPresenter provideInfoPresenter(@NonNull final ImageListModel model) {
+        return new InfoPresenter(model);
     }
 
     @Singleton

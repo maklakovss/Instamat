@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import com.mss.imagesearcher.view.detail.DetailActivity;
 import com.mss.imagesearcher.view.imagelist.ImageListActivity;
 import com.mss.imagesearcher.view.imagelist.ImageListAdapter;
+import com.mss.imagesearcher.view.info.InfoActivity;
 
 import javax.inject.Singleton;
 
@@ -20,4 +21,6 @@ public interface AppComponent {
     void inject(@NonNull final DetailActivity detailActivity);
 
     void inject(@NonNull final ImageListAdapter imageListAdapter);
+
+    void inject(@NonNull final InfoActivity infoActivity);
 }

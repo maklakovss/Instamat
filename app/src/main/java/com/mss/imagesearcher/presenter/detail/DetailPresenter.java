@@ -76,4 +76,8 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
     public void onAdLoaded() {
         getViewState().showFullScreenAd();
     }
+
+    public void onInfoClick() {
+        getViewState().showInfo();
+    }
 }

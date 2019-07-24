@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Поисковик картинок</string>
-    <string name="image_failed_message">Не удалось сохранить изображение</string>
-    <string name="image_saved_message">Изображение сохранено</string>
+    <string name="search_hint">Введите строку для поиска</string>
     <string name="item_image">Картинка</string>
     <string name="not_found_message">Подходящих картинок не найдено</string>
-    <string name="save_label">Сохранить</string>
-    <string name="search_hint">Введите строку для поиска</string>
-    <string name="share_label">Поделиться</string>
-    <string name="storage_rationale">Требуется доступ к локальному хранилищу</string>
     <string name="privacy_policy">Политика конфиденциальности</string>
+    <string name="info_label">Информация</string>
+    <string name="save_label">Сохранить</string>
+    <string name="share_label">Поделиться</string>
+    <string name="image_failed_message">Не удалось сохранить изображение</string>
+    <string name="image_saved_message">Изображение сохранено</string>
+    <string name="storage_rationale">Требуется доступ к локальному хранилищу</string>
 </resources>
