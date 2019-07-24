@@ -5,7 +5,6 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.mss.imagesearcher.domain.ImageListModel;
-import com.mss.imagesearcher.domain.repositories.CacheDBRepository;
 import com.mss.imagesearcher.domain.repositories.FilesRepository;
 import com.mss.imagesearcher.domain.repositories.ImagesNetRepository;
 import com.mss.imagesearcher.presenter.imagelist.ImageListPresenter;
@@ -36,10 +35,12 @@ public class AppModule {
     @Singleton
     @Provides
     @NonNull
-    ImageListModel provideImageListModel(@NonNull final CacheDBRepository cacheDBRepository,
+    ImageListModel provideImageListModel(//@NonNull final CacheDBRepository cacheDBRepository,
                                          @NonNull final ImagesNetRepository imagesNetRepository,
                                          @NonNull final FilesRepository filesRepository) {
-        return new ImageListModel(cacheDBRepository, imagesNetRepository, filesRepository);
+        return new ImageListModel(//cacheDBRepository,
+                imagesNetRepository,
+                filesRepository);
     }
 
     @Singleton

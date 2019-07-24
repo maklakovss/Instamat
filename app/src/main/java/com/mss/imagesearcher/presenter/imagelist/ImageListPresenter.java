@@ -69,17 +69,18 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
 
     public void onRefresh(String searchText) {
         model.clearImages();
-        model
-                .deleteImagesFromCache(searchText)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                            getViewState().stopRefreshing();
-                            startSearch(searchText);
-                        },
-                        throwable -> {
-                            Timber.e(throwable);
-                            doOnError(throwable);
-                        });
+        startSearch(searchText);
+//        model
+//                .deleteImagesFromCache(searchText)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(() -> {
+//                            getViewState().stopRefreshing();
+//                            startSearch(searchText);
+//                        },
+//                        throwable -> {
+//                            Timber.e(throwable);
+//                            doOnError(throwable);
+//                        });
     }
 
 
@@ -109,21 +110,22 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
 
     private void getNextPage() {
         getViewState().showProgress(true);
-        lastDisposableQuery = model.getImagesFromCacheDB(lastQuery, nextPage)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(imagesDB -> {
-                            Timber.d("From cache database returns %d images on query '%s'", imagesDB.size(), lastQuery);
-                            if (imagesDB.size() == 0) {
-                                loadImagesFromNetwork();
-                            } else {
-                                doOnSuccess();
-                            }
-                        },
-                        throwable -> {
-                            Timber.e(throwable);
-                            loadImagesFromNetwork();
-                        }
-                );
+        loadImagesFromNetwork();
+//        lastDisposableQuery = model.getImagesFromCacheDB(lastQuery, nextPage)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(imagesDB -> {
+//                            Timber.d("From cache database returns %d images on query '%s'", imagesDB.size(), lastQuery);
+//                            if (imagesDB.size() == 0) {
+//                                loadImagesFromNetwork();
+//                            } else {
+//                                doOnSuccess();
+//                            }
+//                        },
+//                        throwable -> {
+//                            Timber.e(throwable);
+//                            loadImagesFromNetwork();
+//                        }
+//                );
     }
 
     private void loadImagesFromNetwork() {
@@ -131,13 +133,13 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(imagesNet -> {
                             Timber.d("From network returns %d images on query '%s'", imagesNet.size(), lastQuery);
-                            model.saveToCacheDBAsync(lastQuery, nextPage, imagesNet)
-                                    .subscribe(
-                                            list -> Timber.i("Saved to cache database %d images on query '%s' page %d",
-                                                    list.size(),
-                                                    lastQuery,
-                                                    nextPage),
-                                            Timber::e);
+//                            model.saveToCacheDBAsync(lastQuery, nextPage, imagesNet)
+//                                    .subscribe(
+//                                            list -> Timber.i("Saved to cache database %d images on query '%s' page %d",
+//                                                    list.size(),
+//                                                    lastQuery,
+//                                                    nextPage),
+//                                            Timber::e);
                             doOnSuccess();
                         },
                         this::doOnError);
