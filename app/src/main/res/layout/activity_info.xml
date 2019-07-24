@@ -7,6 +7,151 @@
     android:layout_height="match_parent"
     tools:context=".view.info.InfoActivity">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        ads:layout_constraintGuide_percent="0.50121653" />
+
+    <TextView
+        android:id="@+id/tvSizeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Size"
+        ads:layout_constraintEnd_toStartOf="@+id/guideline"
+        ads:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        ads:layout_constraintStart_toStartOf="@+id/guideline"
+        ads:layout_constraintTop_toTopOf="parent"
+        tools:text="1600*1200" />
+
+    <TextView
+        android:id="@+id/tvTypeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Type"
+        ads:layout_constraintEnd_toStartOf="@+id/guideline"
+        ads:layout_constraintStart_toStartOf="@+id/tvSizeLabel"
+        ads:layout_constraintTop_toBottomOf="@+id/tvSize" />
+
+    <TextView
+        android:id="@+id/tvType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        ads:layout_constraintStart_toStartOf="@+id/tvSize"
+        ads:layout_constraintTop_toBottomOf="@+id/tvSize"
+        tools:text="image" />
+
+    <TextView
+        android:id="@+id/tvTagsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Tags"
+        ads:layout_constraintEnd_toStartOf="@+id/guideline"
+        ads:layout_constraintStart_toStartOf="@+id/tvTypeLabel"
+        ads:layout_constraintTop_toBottomOf="@+id/tvType" />
+
+    <TextView
+        android:id="@+id/tvTags"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        ads:layout_constraintStart_toStartOf="@+id/tvType"
+        ads:layout_constraintTop_toBottomOf="@+id/tvType"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/tvLikesLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Likes"
+        ads:layout_constraintEnd_toStartOf="@+id/guideline"
+        ads:layout_constraintStart_toStartOf="@+id/tvTagsLabel"
+        ads:layout_constraintTop_toBottomOf="@+id/tvTags" />
+
+    <TextView
+        android:id="@+id/tvLikes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        ads:layout_constraintStart_toStartOf="@+id/tvTags"
+        ads:layout_constraintTop_toBottomOf="@+id/tvTags"
+        tools:text="10" />
+
+    <TextView
+        android:id="@+id/tvViewsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Views"
+        ads:layout_constraintEnd_toStartOf="@+id/guideline"
+        ads:layout_constraintStart_toStartOf="@+id/tvLikesLabel"
+        ads:layout_constraintTop_toBottomOf="@+id/tvLikes" />
+
+    <TextView
+        android:id="@+id/tvViews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        ads:layout_constraintStart_toStartOf="@+id/tvLikes"
+        ads:layout_constraintTop_toBottomOf="@+id/tvLikes"
+        tools:text="100" />
+
+    <TextView
+        android:id="@+id/tvCommentsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Comments"
+        ads:layout_constraintEnd_toStartOf="@+id/guideline"
+        ads:layout_constraintTop_toBottomOf="@+id/tvViews" />
+
+    <TextView
+        android:id="@+id/tvComments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        ads:layout_constraintStart_toStartOf="@+id/tvViews"
+        ads:layout_constraintTop_toBottomOf="@+id/tvViews"
+        tools:text="5" />
+
+    <TextView
+        android:id="@+id/tvUrl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:autoLink="web"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/tvComments"
+        tools:text="URL" />
+
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="0dp"
