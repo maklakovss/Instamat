@@ -8,7 +8,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -186,7 +185,9 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
             keyCode = keyEvent.getKeyCode();
         }
         Timber.d("setOnEditorActionListener actionId = %d keyCode = %d", actionId, keyCode);
-        if (actionId == EditorInfo.IME_ACTION_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER) {
+        if (//actionId == EditorInfo.IME_ACTION_SEARCH ||
+                keyCode == KeyEvent.KEYCODE_ENTER
+        ) {
             presenter.onSearchClick(etSearch.getText().toString());
         }
         return false;

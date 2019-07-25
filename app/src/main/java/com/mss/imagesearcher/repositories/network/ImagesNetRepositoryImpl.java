@@ -6,6 +6,7 @@ import com.mss.imagesearcher.domain.models.ImageInfo;
 import com.mss.imagesearcher.domain.repositories.ImagesNetRepository;
 
 import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.Maybe;
 import io.reactivex.schedulers.Schedulers;
@@ -14,7 +15,8 @@ import timber.log.Timber;
 public class ImagesNetRepositoryImpl implements ImagesNetRepository {
 
     private static final String KEY = "12657704-170e4200b7841bc79a107ea6e";
-    private static final String LANG = "ru";
+    private static final String LANG_RU = "ru";
+    private static final String LANG_EN = "en";
     private static final String IMAGE_TYPE = "photo";
     private static final int IMAGES_PER_PAGE = 50;
 
@@ -28,10 +30,18 @@ public class ImagesNetRepositoryImpl implements ImagesNetRepository {
     @Override
     public Maybe<List<ImageInfo>> findImages(@NonNull final String query, int pageNumber) {
         return pixabayAPI
-                .findImages(KEY, query, LANG, IMAGE_TYPE, pageNumber, IMAGES_PER_PAGE)
+                .findImages(KEY, query, getLang(), IMAGE_TYPE, pageNumber, IMAGES_PER_PAGE)
                 .doOnSubscribe(disposable -> Timber.d("Start get images from network '%s' page %d", query, pageNumber))
                 .doOnSuccess(imagesResponse -> Timber.d("End get images %d from network '%s' page %d", imagesResponse.getHits().size(), query, pageNumber))
                 .map(imagesResponse -> NetMapper.mapFromNet(imagesResponse.getHits()))
                 .subscribeOn(Schedulers.io());
+    }
+
+    private String getLang() {
+        String language = Locale.getDefault().getDisplayLanguage();
+        if (language.equals("русский")) {
+            return LANG_RU;
+        }
+        return LANG_EN;
     }
 }

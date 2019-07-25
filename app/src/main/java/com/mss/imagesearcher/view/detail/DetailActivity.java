@@ -75,6 +75,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
+        setTitle(R.string.detail_activity_title);
 
         getParameters();
         presenter.onCreate(position);

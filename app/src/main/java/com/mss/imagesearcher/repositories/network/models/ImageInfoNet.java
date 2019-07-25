@@ -38,7 +38,7 @@ public class ImageInfoNet {
     private String tags;
 
     @Expose
-    @SerializedName("pageUrl")
+    @SerializedName("pageURL")
     private String pageUrl;
 
     @Expose

@@ -13,4 +13,12 @@
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-8601890205077009/1937035141</string>
     <string name="banner_between_page_id" translatable="false">ca-app-pub-8601890205077009/2356697346</string>
     <string name="privacy_policy_url" translatable="false">https://firebasestorage.googleapis.com/v0/b/imagesearcher-447b4.appspot.com/o/Privacy%20Policy.htm?alt=media&amp;token=7e2e92ba-bbc6-42bf-86be-bbb74b38ccc8</string>
+    <string name="size_label">Size</string>
+    <string name="type_label">Type</string>
+    <string name="tags_label">Tags</string>
+    <string name="likes_label">Likes</string>
+    <string name="views_label">Views</string>
+    <string name="comments_label">Comments</string>
+    <string name="info_activity_title">Info</string>
+    <string name="detail_activity_title">View</string>
 </resources>

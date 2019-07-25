@@ -1,6 +1,7 @@
 package com.mss.imagesearcher.view.info;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -16,7 +17,6 @@ import com.mss.imagesearcher.R;
 import com.mss.imagesearcher.domain.models.ImageInfo;
 import com.mss.imagesearcher.presenter.info.InfoPresenter;
 
-import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -26,11 +26,35 @@ import timber.log.Timber;
 public class InfoActivity extends MvpAppCompatActivity implements InfoView {
 
     public static final String PARAMETER_POSITION_TAG = "PARAMETER_POSITION_TAG";
+
     @Inject
     @InjectPresenter
     InfoPresenter presenter;
+
     @BindView(R.id.adView)
     AdView adView;
+
+    @BindView(R.id.tvSize)
+    TextView tvSize;
+
+    @BindView(R.id.tvType)
+    TextView tvType;
+
+    @BindView(R.id.tvTags)
+    TextView tvTags;
+
+    @BindView(R.id.tvLikes)
+    TextView tvLikes;
+
+    @BindView(R.id.tvViews)
+    TextView tvViews;
+
+    @BindView(R.id.tvComments)
+    TextView tvComments;
+
+    @BindView(R.id.tvUrl)
+    TextView tvUrl;
+
     private InterstitialAd interstitialAd;
     private int position = 0;
 
@@ -47,6 +71,7 @@ public class InfoActivity extends MvpAppCompatActivity implements InfoView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
         ButterKnife.bind(this);
+        setTitle(R.string.info_activity_title);
 
         getParameters();
         presenter.onCreate(position);
@@ -106,7 +131,13 @@ public class InfoActivity extends MvpAppCompatActivity implements InfoView {
     }
 
     @Override
-    public void showInfo(@Nonnull ImageInfo imageInfo) {
-
+    public void showInfo(@NonNull ImageInfo imageInfo) {
+        tvSize.setText(String.format("%d x %d", imageInfo.getHeight(), imageInfo.getWidth()));
+        tvType.setText(imageInfo.getType());
+        tvTags.setText(imageInfo.getTags());
+        tvLikes.setText(String.valueOf(imageInfo.getLikes()));
+        tvViews.setText(String.valueOf(imageInfo.getViews()));
+        tvComments.setText(String.valueOf(imageInfo.getComments()));
+        tvUrl.setText(imageInfo.getPageUrl());
     }
 }

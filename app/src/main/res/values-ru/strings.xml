@@ -11,4 +11,12 @@
     <string name="image_failed_message">Не удалось сохранить изображение</string>
     <string name="image_saved_message">Изображение сохранено</string>
     <string name="storage_rationale">Требуется доступ к локальному хранилищу</string>
+    <string name="size_label">Размер</string>
+    <string name="type_label">Тип</string>
+    <string name="tags_label">Теги</string>
+    <string name="likes_label">Лайки</string>
+    <string name="views_label">Просмотры</string>
+    <string name="comments_label">Комментарии</string>
+    <string name="info_activity_title">Информация</string>
+    <string name="detail_activity_title">Просмотр</string>
 </resources>
