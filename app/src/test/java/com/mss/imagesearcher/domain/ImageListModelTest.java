@@ -16,16 +16,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Completable;
 import io.reactivex.Maybe;
-import io.reactivex.Single;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -50,7 +47,7 @@ public class ImageListModelTest {
 
     @Before
     public void setUp() {
-        model = new ImageListModel(cacheDBRepository, imagesNetRepository, filesRepository);
+        model = new ImageListModel(imagesNetRepository, filesRepository);
     }
 
     private void initImageInfoList() {
@@ -76,38 +73,6 @@ public class ImageListModelTest {
 
         model.clearImages();
         assertEquals(0, model.getImages().size());
-    }
-
-    @Test
-    public void getImagesFromCacheDB_callDBRepositoryAndSaveResult() {
-        initImageInfoList();
-        when(cacheDBRepository.getImagesInfo(anyString(), anyInt())).thenReturn(Single.just(images));
-
-        assertEquals(images.size(), model.getImagesFromCacheDB("one", 1).blockingGet().size());
-
-        verify(cacheDBRepository).getImagesInfo("one", 1);
-        assertEquals(images.size(), model.getImages().size());
-    }
-
-    @Test
-    public void saveToCacheDBAsync_callDBRepository() {
-        initImageInfoList();
-        List<Long> ids = new ArrayList<>();
-        ids.add(1L);
-        when(cacheDBRepository.insertToCacheDB(anyString(), anyInt(), anyList())).thenReturn(Single.just(ids));
-
-        assertEquals(1, model.saveToCacheDBAsync("one", 1, images).blockingGet().size());
-
-        verify(cacheDBRepository).insertToCacheDB("one", 1, images);
-    }
-
-    @Test
-    public void deleteImagesFromCache_callDBRepository() {
-        when(cacheDBRepository.deleteImages(anyString())).thenReturn(Completable.complete());
-
-        model.deleteImagesFromCache("one").blockingGet();
-
-        verify(cacheDBRepository).deleteImages("one");
     }
 
     @Test

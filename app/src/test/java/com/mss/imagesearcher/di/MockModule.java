@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.mss.imagesearcher.presenter.detail.DetailPresenter;
 import com.mss.imagesearcher.presenter.imagelist.ImageListPresenter;
+import com.mss.imagesearcher.presenter.info.InfoPresenter;
 import com.mss.imagesearcher.view.helpers.ImageLoader;
 
 import org.mockito.Mockito;
@@ -35,5 +36,12 @@ class MockModule {
     @NonNull
     DetailPresenter provideDetailPresenter() {
         return Mockito.mock(DetailPresenter.class);
+    }
+
+    @Singleton
+    @Provides
+    @NonNull
+    InfoPresenter provideInfoPresenter() {
+        return Mockito.mock(InfoPresenter.class);
     }
 }

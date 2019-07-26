@@ -1,8 +1,8 @@
 package com.mss.imagesearcher.view.imagelist;
 
 import android.content.Intent;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -240,7 +240,7 @@ public class ImageListActivityTest {
     public void onAction_callPresenterOnSearchClick() {
         TextInputEditText etSearch = imageListActivity.findViewById(R.id.etSearch);
         etSearch.setText("one");
-        etSearch.onEditorAction(EditorInfo.IME_ACTION_SEARCH);
+        etSearch.onKeyDown(KeyEvent.KEYCODE_ENTER, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
 
         verify(presenter).onSearchClick("one");
     }

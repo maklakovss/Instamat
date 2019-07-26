@@ -122,7 +122,6 @@ public class InfoActivity extends MvpAppCompatActivity implements InfoView {
         }
     }
 
-
     private void getParameters() {
         final Bundle bundle = getIntent().getExtras();
         if (bundle != null) {

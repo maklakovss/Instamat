@@ -15,15 +15,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Completable;
 import io.reactivex.Maybe;
-import io.reactivex.Single;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -60,7 +57,7 @@ public class ImageListPresenterTest {
         for (int i = 0; i < 50; i++) {
             ImageInfo imageInfo = new ImageInfo();
             imageInfo.setId(i);
-            imageInfo.setPreviewURL("https:\\\\previewurl" + i);
+            imageInfo.setWebFormatURL("https:\\\\previewurl" + i);
             imageInfo.setLargeImageURL("https:\\\\largeimagewurl" + i);
             imageInfoList.add(imageInfo);
         }
@@ -79,46 +76,14 @@ public class ImageListPresenterTest {
     }
 
     @Test
-    public void onSearchClick_queryInCache_showResultWithoutNetwork() {
+    public void onSearchClick_showResultFromNetwork() {
         initImageInfoList();
-        when(model.getImagesFromCacheDB(anyString(), eq(1))).thenReturn(Single.just(imageInfoList));
-
-        imageListPresenter.onSearchClick("one");
-
-        verify(imageListView).showProgress(true);
-        verify(model, times(0)).getImagesFromNetwork("one", 1);
-        verify(imageListView, times(2)).refreshImageList();
-        verify(imageListView).showProgress(false);
-    }
-
-    @Test
-    public void onSearchClick_dbException_showResultFromNetwork() {
-        initImageInfoList();
-        when(model.getImagesFromCacheDB(anyString(), eq(1))).thenReturn(Single.error(new Exception()));
         when(model.getImagesFromNetwork(anyString(), eq(1))).thenReturn(Maybe.just(imageInfoList));
-        when(model.saveToCacheDBAsync(anyString(), eq(1), anyList())).thenReturn(Single.error(new Exception()));
 
         imageListPresenter.onSearchClick("one");
 
         verify(imageListView).showProgress(true);
-        verify(model, times(1)).getImagesFromNetwork("one", 1);
-        verify(imageListView, times(2)).refreshImageList();
-        verify(imageListView).showProgress(false);
-    }
-
-    @Test
-    public void onSearchClick_queryNotInCache_showResultFromNetwork() {
-        initImageInfoList();
-        when(model.getImagesFromCacheDB(anyString(), eq(1))).thenReturn(Single.just(new ArrayList()));
-        when(model.getImagesFromNetwork(anyString(), eq(1))).thenReturn(Maybe.just(imageInfoList));
-        when(model.saveToCacheDBAsync(anyString(), eq(1), anyList())).thenReturn(Single.just(new ArrayList<>()));
-
-        imageListPresenter.onSearchClick("one");
-
-        verify(imageListView).showProgress(true);
-        verify(model).getImagesFromCacheDB("one", 1);
         verify(model).getImagesFromNetwork("one", 1);
-        verify(model).saveToCacheDBAsync("one", 1, imageInfoList);
         verify(imageListView, times(2)).refreshImageList();
         verify(imageListView).showProgress(false);
     }
@@ -126,24 +91,21 @@ public class ImageListPresenterTest {
     @Test
     public void onSearchClick_queryReturnNetworkException_showNotFoundMessage() {
         when(model.getImages()).thenReturn(new ArrayList<>());
-        when(model.getImagesFromCacheDB(anyString(), eq(1))).thenReturn(Single.just(new ArrayList()));
         when(model.getImagesFromNetwork(anyString(), eq(1))).thenReturn(Maybe.error(new Exception()));
 
         imageListPresenter.onSearchClick("one");
 
         verify(imageListView).showProgress(true);
-        verify(model).getImagesFromCacheDB("one", 1);
         verify(model).getImagesFromNetwork("one", 1);
-        verify(model, times(0)).saveToCacheDBAsync(eq("one"), eq(1), anyList());
         verify(imageListView, times(1)).refreshImageList();
         verify(imageListView).showProgress(false);
         verify(imageListView).showNotFoundMessage();
     }
 
     @Test
-    public void onNeedNextPage_queryInCache_showResultWithoutNetwork() {
+    public void onNeedNextPage_showResultFromNetwork() {
         initImageInfoList();
-        when(model.getImagesFromCacheDB(anyString(), eq(1))).thenReturn(Single.just(imageInfoList));
+        when(model.getImagesFromNetwork(anyString(), eq(1))).thenReturn(Maybe.just(imageInfoList));
 
         imageListPresenter.onNeedNextPage();
 
@@ -156,22 +118,29 @@ public class ImageListPresenterTest {
     @Test
     public void onRefresh_showResultFromNetwork() {
         initImageInfoList();
-        when(model.deleteImagesFromCache(anyString())).thenReturn(Completable.complete());
-        when(model.getImagesFromCacheDB(anyString(), eq(1))).thenReturn(Single.just(new ArrayList<>()));
         when(model.getImagesFromNetwork(anyString(), eq(1))).thenReturn(Maybe.just(imageInfoList));
-        when(model.saveToCacheDBAsync(anyString(), eq(1), anyList())).thenReturn(Single.just(new ArrayList<>()));
 
         imageListPresenter.onRefresh("one");
 
-        verify(model).deleteImagesFromCache("one");
         verify(imageListView).showProgress(true);
-        verify(model).getImagesFromCacheDB("one", 1);
         verify(model).getImagesFromNetwork("one", 1);
-        verify(model).saveToCacheDBAsync("one", 1, imageInfoList);
         verify(imageListView, times(2)).refreshImageList();
         verify(imageListView).showProgress(false);
     }
 
+    @Test
+    public void onCreate_InitAdMob() {
+        imageListPresenter.onCreate();
+
+        verify(imageListView).initAdMob();
+    }
+
+    @Test
+    public void onPrivacyPolicyClick_ShowPrivacyPolicy() {
+        imageListPresenter.onPrivacyPolicyClick();
+
+        verify(imageListView).showPrivacyPolicy();
+    }
 
     @Test
     public void RvPresenterBindView_showProgressSetImage() {
@@ -182,7 +151,7 @@ public class ImageListPresenterTest {
         imageListPresenter.getRvPresenter().bindView(holder);
 
         verify(holder).showProgress(true);
-        verify(holder).setImage(imageInfoList.get(1).getPreviewURL());
+        verify(holder).setImage(imageInfoList.get(1).getWebFormatURL());
     }
 
     @Test

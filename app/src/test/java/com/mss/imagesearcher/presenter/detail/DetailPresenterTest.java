@@ -29,6 +29,7 @@ public class DetailPresenterTest {
 
     @Mock
     private DetailView detailView;
+
     @Mock
     private ImageListModel model;
 
@@ -51,7 +52,7 @@ public class DetailPresenterTest {
         for (int i = 0; i < 50; i++) {
             ImageInfo imageInfo = new ImageInfo();
             imageInfo.setId(i);
-            imageInfo.setPreviewURL("https:\\\\previewurl" + i);
+            imageInfo.setWebFormatURL("https:\\\\previewurl" + i);
             imageInfo.setLargeImageURL("https:\\\\largeimagewurl" + i);
             imageInfoList.add(imageInfo);
         }
@@ -146,5 +147,19 @@ public class DetailPresenterTest {
 
         verify(model).saveBitmap(imageInfoList.get(1), null);
         verify(detailView).showFailedSaveMessage();
+    }
+
+    @Test
+    public void onAdLoaded__ShowFullScreenAd() throws IOException {
+        detailPresenter.onAdLoaded();
+
+        verify(detailView).showFullScreenAd();
+    }
+
+    @Test
+    public void onInfoClick_ShowInfo() throws IOException {
+        detailPresenter.onInfoClick();
+
+        verify(detailView).showInfo();
     }
 }
