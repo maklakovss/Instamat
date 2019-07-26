@@ -13,7 +13,7 @@
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintStart_toStartOf="parent"
         ads:layout_constraintTop_toTopOf="parent"
-        tools:context=".view.imagelist.ImageListActivity">
+        tools:context=".view.main.ImageListActivity">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -75,10 +75,15 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <fragment
+            android:id="@+id/nav_host_fragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/srlImages"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintBottom_toTopOf="@+id/adView"
             app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +99,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:scrollbars="vertical"
-                tools:context=".view.imagelist.ImageListActivity"
+                tools:context=".view.main.ImageListActivity"
                 tools:showIn="@layout/activity_imagelist" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

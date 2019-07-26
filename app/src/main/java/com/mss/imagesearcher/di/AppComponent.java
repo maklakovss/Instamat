@@ -4,9 +4,9 @@ package com.mss.imagesearcher.di;
 import androidx.annotation.NonNull;
 
 import com.mss.imagesearcher.view.detail.DetailActivity;
-import com.mss.imagesearcher.view.imagelist.ImageListActivity;
 import com.mss.imagesearcher.view.imagelist.ImageListAdapter;
 import com.mss.imagesearcher.view.info.InfoActivity;
+import com.mss.imagesearcher.view.main.ImageListActivity;
 
 import javax.inject.Singleton;
 

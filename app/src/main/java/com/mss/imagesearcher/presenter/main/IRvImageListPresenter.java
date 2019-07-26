@@ -1,4 +1,4 @@
-package com.mss.imagesearcher.presenter.imagelist;
+package com.mss.imagesearcher.presenter.main;
 
 import androidx.annotation.NonNull;
 

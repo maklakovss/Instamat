@@ -5,6 +5,7 @@ import android.view.KeyEvent;
 import androidx.test.rule.ActivityTestRule;
 
 import com.mss.imagesearcher.R;
+import com.mss.imagesearcher.view.main.ImageListActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

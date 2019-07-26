@@ -17,6 +17,7 @@ import com.mss.imagesearcher.presenter.imagelist.ImageListPresenter;
 import com.mss.imagesearcher.robolectric.ShadowSnackbar;
 import com.mss.imagesearcher.view.detail.DetailActivity;
 import com.mss.imagesearcher.view.helpers.ImageLoader;
+import com.mss.imagesearcher.view.main.ImageListActivity;
 
 import org.junit.Before;
 import org.junit.Test;

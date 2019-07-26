@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.mss.imagesearcher.domain.ImageListModel;
+import com.mss.imagesearcher.presenter.main.IRvImageListPresenter;
 import com.mss.imagesearcher.view.imagelist.IImageListViewHolder;
 import com.mss.imagesearcher.view.imagelist.ImageListView;
 

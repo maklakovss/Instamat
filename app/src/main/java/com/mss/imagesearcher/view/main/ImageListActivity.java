@@ -1,4 +1,4 @@
-package com.mss.imagesearcher.view.imagelist;
+package com.mss.imagesearcher.view.main;
 
 import android.Manifest;
 import android.content.Intent;
@@ -31,6 +31,8 @@ import com.mss.imagesearcher.App;
 import com.mss.imagesearcher.R;
 import com.mss.imagesearcher.presenter.imagelist.ImageListPresenter;
 import com.mss.imagesearcher.view.detail.DetailActivity;
+import com.mss.imagesearcher.view.imagelist.ImageListAdapter;
+import com.mss.imagesearcher.view.imagelist.ImageListView;
 
 import javax.inject.Inject;
 
