@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/npHistory"
+        android:icon="@drawable/ic_history_black_24dp"
+        android:title="@string/history_page" />
+    <item
+        android:id="@+id/npSettings"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="@string/settings_page" />
+    <item
+        android:id="@+id/npResults"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="@string/results_page" />
+</menu>

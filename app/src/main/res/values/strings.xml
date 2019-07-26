@@ -21,4 +21,7 @@
     <string name="comments_label">Comments</string>
     <string name="info_activity_title">Info</string>
     <string name="detail_activity_title">View</string>
+    <string name="history_page">History</string>
+    <string name="settings_page">Settings</string>
+    <string name="results_page">Results</string>
 </resources>

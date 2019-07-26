@@ -70,6 +70,7 @@ public class ImageListPresenter extends MvpPresenter<ImageListView> {
     public void onRefresh(String searchText) {
         model.clearImages();
         startSearch(searchText);
+        getViewState().stopRefreshing();
 //        model
 //                .deleteImagesFromCache(searchText)
 //                .observeOn(AndroidSchedulers.mainThread())
