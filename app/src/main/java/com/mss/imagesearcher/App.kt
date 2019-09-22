@@ -10,10 +10,10 @@ import com.squareup.leakcanary.LeakCanary
 
 import timber.log.Timber
 
-class App : MultiDexApplication() {
+open class App : MultiDexApplication() {
 
     companion object {
-        lateinit var appComponent: AppComponent private set
+        lateinit var appComponent: AppComponent
     }
 
     override fun onCreate() {
@@ -23,7 +23,7 @@ class App : MultiDexApplication() {
         initDebug()
     }
 
-    private fun initDebug() {
+    open fun initDebug() {
         initLeakCanary()
         initStetho()
     }
@@ -42,11 +42,11 @@ class App : MultiDexApplication() {
         }
     }
 
-    private fun initLogging() {
+    fun initLogging() {
         Timber.plant(Timber.DebugTree())
     }
 
-    private fun initAppComponent() {
+    open fun initAppComponent() {
         appComponent = DaggerAppComponent
                 .builder()
                 .appModule(AppModule(applicationContext))

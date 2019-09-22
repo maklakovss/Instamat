@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @InjectViewState
 class DetailPresenter @Inject
-constructor(private val model: ImageListModel) : MvpPresenter<DetailView>() {
+constructor(val model: ImageListModel) : MvpPresenter<DetailView>() {
 
     fun onCreate(position: Int) {
         Timber.d("onCreate %d", position)
