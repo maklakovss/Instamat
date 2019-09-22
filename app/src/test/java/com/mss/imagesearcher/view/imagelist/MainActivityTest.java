@@ -17,7 +17,7 @@ import com.mss.imagesearcher.presenter.imagelist.ImageListPresenter;
 import com.mss.imagesearcher.robolectric.ShadowSnackbar;
 import com.mss.imagesearcher.view.detail.DetailActivity;
 import com.mss.imagesearcher.view.helpers.ImageLoader;
-import com.mss.imagesearcher.view.main.ImageListActivity;
+import com.mss.imagesearcher.view.main.MainActivity;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,9 +44,9 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28, application = RobolectricApp.class, shadows = {ShadowSnackbar.class})
-public class ImageListActivityTest {
+public class MainActivityTest {
 
-    private ImageListActivity imageListActivity;
+    private MainActivity mainActivity;
     private List<ImageInfo> imageInfoList;
 
     @Inject
@@ -57,7 +57,7 @@ public class ImageListActivityTest {
 
     @Before
     public void setUp() {
-        imageListActivity = Robolectric.buildActivity(ImageListActivity.class)
+        mainActivity = Robolectric.buildActivity(MainActivity.class)
                 .create()
                 .start()
                 .resume()
@@ -68,28 +68,28 @@ public class ImageListActivityTest {
 
     @Test
     public void showProgress_Hide_pbDetailHide() {
-        ProgressBar progressBar = imageListActivity.findViewById(R.id.pbList);
+        ProgressBar progressBar = mainActivity.findViewById(R.id.pbList);
 
-        imageListActivity.showProgress(false);
+        mainActivity.showProgress(false);
 
         assertEquals(View.INVISIBLE, progressBar.getVisibility());
     }
 
     @Test
     public void showProgress_Show_pbDetailShow() {
-        ProgressBar progressBar = imageListActivity.findViewById(R.id.pbList);
+        ProgressBar progressBar = mainActivity.findViewById(R.id.pbList);
 
-        imageListActivity.showProgress(true);
+        mainActivity.showProgress(true);
 
         assertEquals(View.VISIBLE, progressBar.getVisibility());
     }
 
     @Test
     public void stopRefreshing_pbDetailShow() {
-        SwipeRefreshLayout swipeRefreshLayout = imageListActivity.findViewById(R.id.srlImages);
+        SwipeRefreshLayout swipeRefreshLayout = mainActivity.findViewById(R.id.srlImages);
         swipeRefreshLayout.setRefreshing(true);
 
-        imageListActivity.stopRefreshing();
+        mainActivity.stopRefreshing();
 
         assertFalse(swipeRefreshLayout.isRefreshing());
     }
@@ -101,8 +101,8 @@ public class ImageListActivityTest {
         when(presenter.getRvPresenter()).thenReturn(rvPresenter);
         when(rvPresenter.getItemCount()).thenReturn(imageInfoList.size());
 
-        imageListActivity.refreshImageList();
-        imageListActivity.refreshImageList();
+        mainActivity.refreshImageList();
+        mainActivity.refreshImageList();
 
         verify(presenter).getRvPresenter();
     }
@@ -111,36 +111,36 @@ public class ImageListActivityTest {
     public void showNotFoundMessage_showSnackbar() {
         ShadowSnackbar.reset();
 
-        imageListActivity.showNotFoundMessage();
+        mainActivity.showNotFoundMessage();
 
-        assertEquals(ShadowSnackbar.getTextOfLatestSnackbar(), imageListActivity.getString(R.string.not_found_message));
+        assertEquals(ShadowSnackbar.getTextOfLatestSnackbar(), mainActivity.getString(R.string.not_found_message));
     }
 
     @Test
     public void openDetailActivity_startDetailActivityWithParam() {
-        imageListActivity.openDetailActivity(1);
+        mainActivity.openDetailActivity(1);
 
-        Intent intent = Shadows.shadowOf(imageListActivity).getNextStartedActivity();
+        Intent intent = Shadows.shadowOf(mainActivity).getNextStartedActivity();
         assertEquals("com.mss.imagesearcher.view.detail.DetailActivity", intent.getComponent().getClassName());
         assertEquals(1, intent.getIntExtra(DetailActivity.PARAMETER_POSITION_TAG, 0));
     }
 
     @Test
     public void onRequestPermissionsResult_NoPermission_FinishActivity() {
-        imageListActivity.onRequestPermissionsResult(ImageListActivity.PERMISSION_REQUEST_CODE, new String[2], new int[2]);
-        assertTrue(Shadows.shadowOf(imageListActivity).isFinishing());
+        mainActivity.onRequestPermissionsResult(MainActivity.PERMISSION_REQUEST_CODE, new String[2], new int[2]);
+        assertTrue(Shadows.shadowOf(mainActivity).isFinishing());
     }
 
     @Test
     public void onRequestPermissionsResult_HasPermission_NoFinishActivity() {
         ShadowApplication application = new ShadowApplication();
-        for (String p : ImageListActivity.NETWORK_PERMISSIONS) {
+        for (String p : MainActivity.NETWORK_PERMISSIONS) {
             application.grantPermissions(p);
         }
 
-        imageListActivity.onRequestPermissionsResult(ImageListActivity.PERMISSION_REQUEST_CODE, new String[2], new int[2]);
+        mainActivity.onRequestPermissionsResult(MainActivity.PERMISSION_REQUEST_CODE, new String[2], new int[2]);
 
-        assertTrue(!Shadows.shadowOf(imageListActivity).isFinishing());
+        assertTrue(!Shadows.shadowOf(mainActivity).isFinishing());
     }
 
     @Test
@@ -149,10 +149,10 @@ public class ImageListActivityTest {
         ImageListPresenter.RvPresenter rvPresenter = mock(ImageListPresenter.RvPresenter.class);
         when(presenter.getRvPresenter()).thenReturn(rvPresenter);
         when(rvPresenter.getItemCount()).thenReturn(imageInfoList.size());
-        RecyclerView recyclerView = imageListActivity.findViewById(R.id.rvImages);
+        RecyclerView recyclerView = mainActivity.findViewById(R.id.rvImages);
         recyclerView.measure(0, 0);
         recyclerView.layout(0, 0, 100, 800);
-        imageListActivity.refreshImageList();
+        mainActivity.refreshImageList();
         ImageListAdapter.ViewHolder viewHolder = (ImageListAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(1);
 
         viewHolder.ivItem.performClick();
@@ -166,10 +166,10 @@ public class ImageListActivityTest {
         ImageListPresenter.RvPresenter rvPresenter = mock(ImageListPresenter.RvPresenter.class);
         when(presenter.getRvPresenter()).thenReturn(rvPresenter);
         when(rvPresenter.getItemCount()).thenReturn(imageInfoList.size());
-        RecyclerView recyclerView = imageListActivity.findViewById(R.id.rvImages);
+        RecyclerView recyclerView = mainActivity.findViewById(R.id.rvImages);
         recyclerView.measure(0, 0);
         recyclerView.layout(0, 0, 100, 200);
-        imageListActivity.refreshImageList();
+        mainActivity.refreshImageList();
         ImageListAdapter.ViewHolder viewHolder = (ImageListAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(1);
         doAnswer(answer -> {
             ((Runnable) answer.getArgument(3)).run();
@@ -188,10 +188,10 @@ public class ImageListActivityTest {
         ImageListPresenter.RvPresenter rvPresenter = mock(ImageListPresenter.RvPresenter.class);
         when(presenter.getRvPresenter()).thenReturn(rvPresenter);
         when(rvPresenter.getItemCount()).thenReturn(imageInfoList.size());
-        RecyclerView recyclerView = imageListActivity.findViewById(R.id.rvImages);
+        RecyclerView recyclerView = mainActivity.findViewById(R.id.rvImages);
         recyclerView.measure(0, 0);
         recyclerView.layout(0, 0, 100, 200);
-        imageListActivity.refreshImageList();
+        mainActivity.refreshImageList();
         ImageListAdapter.ViewHolder viewHolder = (ImageListAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(1);
         doAnswer(answer -> {
             ((Runnable) answer.getArgument(4)).run();
@@ -209,10 +209,10 @@ public class ImageListActivityTest {
         ImageListPresenter.RvPresenter rvPresenter = mock(ImageListPresenter.RvPresenter.class);
         when(presenter.getRvPresenter()).thenReturn(rvPresenter);
         when(rvPresenter.getItemCount()).thenReturn(imageInfoList.size());
-        RecyclerView recyclerView = imageListActivity.findViewById(R.id.rvImages);
+        RecyclerView recyclerView = mainActivity.findViewById(R.id.rvImages);
         recyclerView.measure(0, 0);
         recyclerView.layout(0, 0, 100, 200);
-        imageListActivity.refreshImageList();
+        mainActivity.refreshImageList();
         ImageListAdapter.ViewHolder viewHolder = (ImageListAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(1);
 
         viewHolder.showProgress(true);
@@ -226,10 +226,10 @@ public class ImageListActivityTest {
         ImageListPresenter.RvPresenter rvPresenter = mock(ImageListPresenter.RvPresenter.class);
         when(presenter.getRvPresenter()).thenReturn(rvPresenter);
         when(rvPresenter.getItemCount()).thenReturn(imageInfoList.size());
-        RecyclerView recyclerView = imageListActivity.findViewById(R.id.rvImages);
+        RecyclerView recyclerView = mainActivity.findViewById(R.id.rvImages);
         recyclerView.measure(0, 0);
         recyclerView.layout(0, 0, 100, 200);
-        imageListActivity.refreshImageList();
+        mainActivity.refreshImageList();
         ImageListAdapter.ViewHolder viewHolder = (ImageListAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(1);
 
         viewHolder.showProgress(false);
@@ -239,7 +239,7 @@ public class ImageListActivityTest {
 
     @Test
     public void onAction_callPresenterOnSearchClick() {
-        TextInputEditText etSearch = imageListActivity.findViewById(R.id.etSearch);
+        TextInputEditText etSearch = mainActivity.findViewById(R.id.etSearch);
         etSearch.setText("one");
         etSearch.onKeyDown(KeyEvent.KEYCODE_ENTER, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
 

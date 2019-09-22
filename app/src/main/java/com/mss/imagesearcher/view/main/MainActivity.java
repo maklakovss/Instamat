@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +40,7 @@ import butterknife.ButterKnife;
 import pub.devrel.easypermissions.EasyPermissions;
 import timber.log.Timber;
 
-public class ImageListActivity extends MvpAppCompatActivity implements ImageListView, ImageListAdapter.OnItemClickListener {
+public class MainActivity extends MvpAppCompatActivity implements ImageListView, ImageListAdapter.OnItemClickListener {
 
     public static final int PERMISSION_REQUEST_CODE = 777;
     public static final String[] NETWORK_PERMISSIONS = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE};
@@ -52,9 +51,6 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
 
     @BindView(R.id.rvImages)
     public RecyclerView rvImages;
-
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
 
     @BindView(R.id.etSearch)
     TextInputEditText etSearch;
@@ -73,11 +69,8 @@ public class ImageListActivity extends MvpAppCompatActivity implements ImageList
         App.getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
         Timber.d("onCreate");
-        setContentView(R.layout.activity_imagelist);
+        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         recyclerViewInit();
 

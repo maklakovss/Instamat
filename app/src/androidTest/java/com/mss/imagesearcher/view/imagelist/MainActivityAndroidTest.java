@@ -5,7 +5,7 @@ import android.view.KeyEvent;
 import androidx.test.rule.ActivityTestRule;
 
 import com.mss.imagesearcher.R;
-import com.mss.imagesearcher.view.main.ImageListActivity;
+import com.mss.imagesearcher.view.main.MainActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,11 +19,11 @@ import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtP
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
-public class ImageListActivityAndroidTest {
+public class MainActivityAndroidTest {
 
     @Rule
-    public ActivityTestRule<ImageListActivity> mActivityRule = new ActivityTestRule<>(
-            ImageListActivity.class);
+    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
+            MainActivity.class);
 
     @Test
     public void onSearchAndDetail_loadImagesAndShowDetailImage() {
