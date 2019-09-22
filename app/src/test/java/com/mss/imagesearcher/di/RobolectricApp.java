@@ -6,9 +6,9 @@ public class RobolectricApp extends App {
 
     @Override
     protected void initAppComponent() {
-        appComponent = DaggerRobolectricComponent
+        Companion.setAppComponent(DaggerRobolectricComponent
                 .builder()
-                .build();
+                .build());
     }
 
     @Override

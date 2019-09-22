@@ -134,7 +134,7 @@ public class MainActivityTest {
     @Test
     public void onRequestPermissionsResult_HasPermission_NoFinishActivity() {
         ShadowApplication application = new ShadowApplication();
-        for (String p : MainActivity.NETWORK_PERMISSIONS) {
+        for (String p : MainActivity.Companion.getNETWORK_PERMISSIONS()) {
             application.grantPermissions(p);
         }
 
@@ -155,7 +155,7 @@ public class MainActivityTest {
         mainActivity.refreshImageList();
         ImageListAdapter.ViewHolder viewHolder = (ImageListAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(1);
 
-        viewHolder.ivItem.performClick();
+        viewHolder.getIvItem().performClick();
 
         verify(presenter).onItemClick(1);
     }
@@ -217,7 +217,7 @@ public class MainActivityTest {
 
         viewHolder.showProgress(true);
 
-        assertEquals(View.VISIBLE, viewHolder.pbItem.getVisibility());
+        assertEquals(View.VISIBLE, viewHolder.getPbItem().getVisibility());
     }
 
     @Test
@@ -234,7 +234,7 @@ public class MainActivityTest {
 
         viewHolder.showProgress(false);
 
-        assertEquals(View.GONE, viewHolder.pbItem.getVisibility());
+        assertEquals(View.GONE, viewHolder.getPbItem().getVisibility());
     }
 
     @Test
