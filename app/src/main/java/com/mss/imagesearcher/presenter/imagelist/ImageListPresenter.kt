@@ -3,17 +3,15 @@ package com.mss.imagesearcher.presenter.imagelist
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.mss.imagesearcher.domain.ImageListModel
-import com.mss.imagesearcher.presenter.main.IRvImageListPresenter
 import com.mss.imagesearcher.view.imagelist.IImageListViewHolder
-import com.mss.imagesearcher.view.imagelist.ImageListView
+import com.mss.imagesearcher.view.imagelist.ListFragmentView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
 import javax.inject.Inject
 
 @InjectViewState
-class ImageListPresenter @Inject
-constructor(val model: ImageListModel) : MvpPresenter<ImageListView>() {
+class ImageListPresenter @Inject constructor(val model: ImageListModel) : MvpPresenter<ListFragmentView>() {
 
     val rvPresenter: RvPresenter
 
@@ -32,15 +30,6 @@ constructor(val model: ImageListModel) : MvpPresenter<ImageListView>() {
         viewState.openDetailActivity(position)
     }
 
-    fun onSearchClick(searchText: String) {
-        Timber.d("onSearchClick")
-        if (searchText == lastQuery) {
-            onRefresh(searchText)
-        } else {
-            startSearch(searchText)
-        }
-    }
-
     fun onNeedNextPage() {
         Timber.d("onNeedNextPage")
         if (end) {
@@ -55,12 +44,6 @@ constructor(val model: ImageListModel) : MvpPresenter<ImageListView>() {
             inProgress = true
         }
         getNextPage()
-    }
-
-    fun onRefresh(searchText: String) {
-        model.clearImages()
-        startSearch(searchText)
-        viewState.stopRefreshing()
     }
 
 
@@ -128,15 +111,6 @@ constructor(val model: ImageListModel) : MvpPresenter<ImageListView>() {
         lastDisposableQuery = null
         showMessageListEmpty()
     }
-
-    fun onCreate() {
-        viewState.initAdMob()
-    }
-
-    fun onPrivacyPolicyClick() {
-        viewState.showPrivacyPolicy()
-    }
-
 
     inner class RvPresenter : IRvImageListPresenter {
 

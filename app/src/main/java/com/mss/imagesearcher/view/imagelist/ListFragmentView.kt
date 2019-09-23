@@ -5,7 +5,7 @@ import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy
 import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 
-interface ImageListView : MvpView {
+interface ListFragmentView : MvpView {
 
     @StateStrategyType(value = AddToEndSingleStrategy::class)
     fun refreshImageList()
@@ -21,10 +21,4 @@ interface ImageListView : MvpView {
 
     @StateStrategyType(value = OneExecutionStateStrategy::class)
     fun stopRefreshing()
-
-    @StateStrategyType(value = OneExecutionStateStrategy::class)
-    fun initAdMob()
-
-    @StateStrategyType(value = OneExecutionStateStrategy::class)
-    fun showPrivacyPolicy()
 }

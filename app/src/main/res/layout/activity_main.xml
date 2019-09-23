@@ -6,16 +6,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <FrameLayout
+        android:id="@+id/flFragmentsContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        ads:layout_constraintBottom_toTopOf="@+id/adView"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+
+        <fragment
+            android:id="@+id/listFragment"
+            android:name="com.mss.imagesearcher.view.imagelist.ImageListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
     <ProgressBar
         android:id="@+id/pbList"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
-        ads:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView"
+        ads:layout_constraintBottom_toBottomOf="@+id/textInputLayout"
         ads:layout_constraintEnd_toEndOf="parent"
-        ads:layout_constraintTop_toTopOf="@+id/bottomNavigationView"
+        ads:layout_constraintTop_toTopOf="@+id/textInputLayout"
         tools:visibility="visible" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ads:layout_constraintBottom_toBottomOf="parent"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_navigation_menu" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
@@ -26,16 +52,6 @@
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView" />
-
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        ads:layout_constraintBottom_toBottomOf="parent"
-        ads:layout_constraintEnd_toEndOf="@+id/pbList"
-        ads:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_navigation_menu" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
@@ -56,13 +72,5 @@
             android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <fragment
-        android:id="@+id/nav_host_fragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        ads:layout_constraintEnd_toEndOf="parent"
-        ads:layout_constraintStart_toStartOf="parent"
-        ads:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

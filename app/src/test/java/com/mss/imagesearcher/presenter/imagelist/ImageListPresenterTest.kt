@@ -3,7 +3,7 @@ package com.mss.imagesearcher.presenter.imagelist
 import com.mss.imagesearcher.domain.ImageListModel
 import com.mss.imagesearcher.domain.models.ImageInfo
 import com.mss.imagesearcher.view.imagelist.IImageListViewHolder
-import com.mss.imagesearcher.view.imagelist.ImageListView
+import com.mss.imagesearcher.view.imagelist.ListFragmentView
 import io.reactivex.Maybe
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.schedulers.Schedulers
@@ -24,7 +24,7 @@ import java.util.*
 class ImageListPresenterTest {
 
     @Mock
-    private val imageListView: ImageListView? = null
+    private val listFragmentView: ListFragmentView? = null
 
     @Mock
     private val model: ImageListModel? = null
@@ -35,7 +35,7 @@ class ImageListPresenterTest {
     @Before
     fun setUp() {
         imageListPresenter = spy(ImageListPresenter(model!!))
-        imageListPresenter!!.attachView(imageListView)
+        imageListPresenter!!.attachView(listFragmentView)
     }
 
     private fun initImageInfoList() {
@@ -53,7 +53,7 @@ class ImageListPresenterTest {
     @Test
     fun onItemClick_openDetailActivity() {
         imageListPresenter!!.onItemClick(1)
-        verify<ImageListView>(imageListView).openDetailActivity(1)
+        verify<ListFragmentView>(listFragmentView).openDetailActivity(1)
     }
 
     @Test
@@ -68,10 +68,10 @@ class ImageListPresenterTest {
 
         imageListPresenter!!.onSearchClick("one")
 
-        verify<ImageListView>(imageListView).showProgress(true)
+        verify<ListFragmentView>(listFragmentView).showProgress(true)
         verify(model).getImagesFromNetwork("one", 1)
-        verify<ImageListView>(imageListView, times(2)).refreshImageList()
-        verify<ImageListView>(imageListView).showProgress(false)
+        verify<ListFragmentView>(listFragmentView, times(2)).refreshImageList()
+        verify<ListFragmentView>(listFragmentView).showProgress(false)
     }
 
     @Test
@@ -81,11 +81,11 @@ class ImageListPresenterTest {
 
         imageListPresenter!!.onSearchClick("one")
 
-        verify<ImageListView>(imageListView).showProgress(true)
+        verify<ListFragmentView>(listFragmentView).showProgress(true)
         verify(model).getImagesFromNetwork("one", 1)
-        verify<ImageListView>(imageListView, times(1)).refreshImageList()
-        verify<ImageListView>(imageListView).showProgress(false)
-        verify<ImageListView>(imageListView).showNotFoundMessage()
+        verify<ListFragmentView>(listFragmentView, times(1)).refreshImageList()
+        verify<ListFragmentView>(listFragmentView).showProgress(false)
+        verify<ListFragmentView>(listFragmentView).showNotFoundMessage()
     }
 
     @Test
@@ -95,10 +95,10 @@ class ImageListPresenterTest {
 
         imageListPresenter!!.onNeedNextPage()
 
-        verify<ImageListView>(imageListView).showProgress(true)
+        verify<ListFragmentView>(listFragmentView).showProgress(true)
         verify(model, times(0)).getImagesFromNetwork("one", 1)
-        verify<ImageListView>(imageListView).refreshImageList()
-        verify<ImageListView>(imageListView).showProgress(false)
+        verify<ListFragmentView>(listFragmentView).refreshImageList()
+        verify<ListFragmentView>(listFragmentView).showProgress(false)
     }
 
     @Test
@@ -108,24 +108,24 @@ class ImageListPresenterTest {
 
         imageListPresenter!!.onRefresh("one")
 
-        verify<ImageListView>(imageListView).showProgress(true)
+        verify<ListFragmentView>(listFragmentView).showProgress(true)
         verify(model).getImagesFromNetwork("one", 1)
-        verify<ImageListView>(imageListView, times(2)).refreshImageList()
-        verify<ImageListView>(imageListView).showProgress(false)
+        verify<ListFragmentView>(listFragmentView, times(2)).refreshImageList()
+        verify<ListFragmentView>(listFragmentView).showProgress(false)
     }
 
     @Test
     fun onCreate_InitAdMob() {
         imageListPresenter!!.onCreate()
 
-        verify<ImageListView>(imageListView).initAdMob()
+        verify<ListFragmentView>(listFragmentView).initAdMob()
     }
 
     @Test
     fun onPrivacyPolicyClick_ShowPrivacyPolicy() {
         imageListPresenter!!.onPrivacyPolicyClick()
 
-        verify<ImageListView>(imageListView).showPrivacyPolicy()
+        verify<ListFragmentView>(listFragmentView).showPrivacyPolicy()
     }
 
     @Test

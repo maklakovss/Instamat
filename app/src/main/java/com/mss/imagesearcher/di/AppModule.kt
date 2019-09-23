@@ -6,6 +6,7 @@ import com.mss.imagesearcher.domain.repositories.FilesRepository
 import com.mss.imagesearcher.domain.repositories.ImagesNetRepository
 import com.mss.imagesearcher.presenter.imagelist.ImageListPresenter
 import com.mss.imagesearcher.presenter.info.InfoPresenter
+import com.mss.imagesearcher.presenter.main.MainPresenter
 import com.mss.imagesearcher.view.helpers.ImageLoader
 import com.mss.imagesearcher.view.helpers.ImageLoaderImpl
 import dagger.Module
@@ -29,6 +30,12 @@ class AppModule(private val appContext: Context) {
         return ImageListModel(//cacheDBRepository,
                 imagesNetRepository,
                 filesRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideMainPresenter(model: ImageListModel): MainPresenter {
+        return MainPresenter(model)
     }
 
     @Singleton

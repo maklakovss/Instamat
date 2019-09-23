@@ -11,7 +11,7 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.mss.imagesearcher.App
 import com.mss.imagesearcher.R
-import com.mss.imagesearcher.presenter.main.IRvImageListPresenter
+import com.mss.imagesearcher.presenter.imagelist.IRvImageListPresenter
 import com.mss.imagesearcher.view.helpers.ImageLoader
 import javax.inject.Inject
 
