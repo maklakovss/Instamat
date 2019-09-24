@@ -27,23 +27,23 @@ class MainPresenter @Inject constructor(val model: ImageListModel) : MvpPresente
 //        }
     }
 
+    fun onShowHistoryClick() {
+        viewState.showHistory()
+    }
+
+    fun onShowSettingsClick() {
+        viewState.showSettings()
+    }
+
     fun onShowListClick() {
         viewState.showList()
     }
 
     fun onShowImageClick() {
-
+        viewState.showImage()
     }
 
     fun onShowInfoClick() {
-
-    }
-
-    fun onShowHistoryClick() {
-
-    }
-
-    fun onShowSettingsClick() {
-
+        viewState.showInfo()
     }
 }

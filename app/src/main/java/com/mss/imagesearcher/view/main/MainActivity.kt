@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.ListFragment
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
@@ -14,6 +16,7 @@ import com.google.android.gms.ads.MobileAds
 import com.mss.imagesearcher.App
 import com.mss.imagesearcher.R
 import com.mss.imagesearcher.presenter.main.MainPresenter
+import com.mss.imagesearcher.view.detail.DetailFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -86,9 +89,13 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
     }
 
     override fun showList() {
+        val fargment = ListFragment()
+        showFragment(fargment)
     }
 
     override fun showImage() {
+        val fargment = DetailFragment()
+        showFragment(fargment)
     }
 
     override fun showInfo() {
@@ -104,5 +111,11 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
             presenter.onSearchClick(etSearch!!.text!!.toString())
         }
         return false
+    }
+
+    private fun showFragment(fargment: Fragment) {
+        val ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.flFragmentsContainer, fargment);
+        ft.commit();
     }
 }

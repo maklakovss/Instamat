@@ -17,10 +17,11 @@ constructor(val model: ImageListModel) : MvpPresenter<DetailView>() {
     fun onCreate(position: Int) {
         Timber.d("onCreate %d", position)
         viewState.apply {
-            initAdMob()
             showImage(false)
-            showProgress(true)
-            startLoadImage(model.images[position].largeImageURL!!)
+            if (model.images.size > position) {
+                showProgress(true)
+                startLoadImage(model.images[position].largeImageURL!!)
+            }
         }
     }
 
@@ -63,10 +64,6 @@ constructor(val model: ImageListModel) : MvpPresenter<DetailView>() {
             viewState.showFailedSaveMessage()
         }
 
-    }
-
-    fun onAdLoaded() {
-        viewState.showFullScreenAd()
     }
 
     fun onInfoClick() {
