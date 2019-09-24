@@ -13,4 +13,12 @@
         android:id="@+id/npResults"
         android:icon="@drawable/ic_search_black_24dp"
         android:title="@string/results_page" />
+    <item
+        android:id="@+id/npImage"
+        android:icon="@drawable/ic_image"
+        android:title="@string/image_page" />
+    <item
+        android:id="@+id/npInfo"
+        android:icon="@drawable/ic_info"
+        android:title="@string/info_page" />
 </menu>

@@ -19,7 +19,9 @@
     <string name="comments_label">Комментарии</string>
     <string name="info_activity_title">Информация</string>
     <string name="detail_activity_title">Просмотр</string>
-    <string name="history_page">History</string>
-    <string name="settings_page">Settings</string>
-    <string name="results_page">Results</string>
+    <string name="history_page">Запросы</string>
+    <string name="settings_page">Настройки</string>
+    <string name="results_page">Результаты</string>
+    <string name="image_page">Картинка</string>
+    <string name="info_page">Информация</string>
 </resources>
