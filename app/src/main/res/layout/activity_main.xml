@@ -36,11 +36,31 @@
         ads:layout_constraintStart_toStartOf="parent"
         ads:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
-        <fragment
-            android:id="@+id/listFragment"
-            android:name="com.mss.imagesearcher.view.imagelist.ImageListFragment"
+        <FrameLayout
+            android:id="@+id/flListContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+            <fragment
+                android:id="@+id/listFragment"
+                android:name="com.mss.imagesearcher.view.imagelist.ImageListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/flDetailContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <fragment
+                android:id="@+id/detailFragment"
+                android:name="com.mss.imagesearcher.view.detail.DetailFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
 
     </FrameLayout>
 

@@ -26,4 +26,24 @@ class MainPresenter @Inject constructor(val model: ImageListModel) : MvpPresente
 //            //startSearch(searchText)
 //        }
     }
+
+    fun onShowListClick() {
+        viewState.showList()
+    }
+
+    fun onShowImageClick() {
+
+    }
+
+    fun onShowInfoClick() {
+
+    }
+
+    fun onShowHistoryClick() {
+
+    }
+
+    fun onShowSettingsClick() {
+
+    }
 }

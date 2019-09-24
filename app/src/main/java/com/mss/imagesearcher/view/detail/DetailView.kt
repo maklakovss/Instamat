@@ -26,11 +26,5 @@ interface DetailView : MvpView {
     fun showImage(visible: Boolean)
 
     @StateStrategyType(value = OneExecutionStateStrategy::class)
-    fun initAdMob()
-
-    @StateStrategyType(value = OneExecutionStateStrategy::class)
-    fun showFullScreenAd()
-
-    @StateStrategyType(value = OneExecutionStateStrategy::class)
     fun showInfo()
 }

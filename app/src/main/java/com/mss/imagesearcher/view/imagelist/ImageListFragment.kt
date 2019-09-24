@@ -30,6 +30,9 @@ class ImageListFragment : MvpAppCompatFragment(), ListFragmentView, ImageListAda
 
     companion object {
         const val PERMISSION_REQUEST_CODE = 777
+        private const val PERMISSION_REQUEST_SAVE = 555
+        private const val PERMISSION_REQUEST_SHARE = 888
+        private val STORAGE_PERMISSIONS = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         val NETWORK_PERMISSIONS = arrayOf(Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE)
     }
 

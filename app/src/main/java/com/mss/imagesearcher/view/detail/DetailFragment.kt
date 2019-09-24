@@ -1,30 +1,20 @@
 package com.mss.imagesearcher.view.detail
 
-import android.Manifest
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.widget.ProgressBar
-import androidx.databinding.DataBindingUtil.setContentView
-import butterknife.BindView
-import butterknife.ButterKnife
+import android.view.*
 import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.InterstitialAd
 import com.google.android.material.snackbar.Snackbar
-import com.jsibbold.zoomage.ZoomageView
 import com.mss.imagesearcher.App
 import com.mss.imagesearcher.R
 import com.mss.imagesearcher.presenter.detail.DetailPresenter
 import com.mss.imagesearcher.view.helpers.ImageLoader
 import com.mss.imagesearcher.view.info.InfoActivity
-import pub.devrel.easypermissions.EasyPermissions
+import kotlinx.android.synthetic.main.activity_detail.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -32,14 +22,9 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
 
     companion object {
         const val PARAMETER_POSITION_TAG = "PARAMETER_POSITION_TAG"
-
-        private const val PERMISSION_REQUEST_SAVE = 555
-        private const val PERMISSION_REQUEST_SHARE = 888
-        private val STORAGE_PERMISSIONS = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     }
 
     private var position = 0
-    private var interstitialAd: InterstitialAd? = null
 
     @Inject
     @InjectPresenter
@@ -48,49 +33,36 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
     @Inject
     lateinit var imageLoader: ImageLoader
 
-    @BindView(R.id.pbDetail)
-    var pbDetail: ProgressBar? = null
+    init {
+        App.appComponent.inject(this)
+    }
 
-    @BindView(R.id.imageView)
-    var imageView: ZoomageView? = null
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.activity_detail, container, false)
+    }
 
-    @BindView(R.id.adView)
-    var adView: AdView? = null
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        Timber.d("onCreate")
+        presenter.onCreate(position)
+    }
 
     @ProvidePresenter
     fun providePresenter(): DetailPresenter {
         return presenter
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        Timber.d("onCreate")
-        App.appComponent.inject(this)
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
-        ButterKnife.bind(this)
-
-        getParameters()
-        presenter.onCreate(position)
-    }
-
     override fun showInfo() {
         Timber.d("openDetailActivity")
-        val intent = Intent(this, InfoActivity::class.java)
+        val intent = Intent(context, InfoActivity::class.java)
         intent.putExtra(InfoActivity.PARAMETER_POSITION_TAG, position)
         startActivity(intent)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (interstitialAd != null) {
-            interstitialAd!!.adListener = null
-            interstitialAd = null
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.detail_menu, menu)
-        return true
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.detail_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -100,33 +72,26 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
                 return true
             }
             R.id.miSave -> {
-                saveImageWithCheckPermission()
+                saveImage()
                 return true
             }
             R.id.miShare -> {
-                shareImageWithCheckPermission()
+                shareImage()
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>,
-                                            grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        Timber.d("onRequestPermissionsResult requestCode = %d, grantResultsSize = %s", requestCode, grantResults.size)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
-    }
-
     override fun startLoadImage(imageURL: String) {
         Timber.d("startLoadImage %s", imageURL)
-        imageLoader.load(this,
-                imageURL,
-                imageView!!,
-                { presenter.onImageLoaded() },
-                { presenter.onImageLoadFailed() })
+        context?.let {
+            imageLoader.load(context!!,
+                    imageURL,
+                    imageView!!,
+                    { presenter.onImageLoaded() },
+                    { presenter.onImageLoadFailed() })
+        }
     }
 
     override fun showProgress(visible: Boolean) {
@@ -175,16 +140,5 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
         Timber.d("shareImage")
         val drawable = imageView!!.drawable as BitmapDrawable
         presenter.onShareClick(position, drawable.bitmap)
-    }
-
-    private fun hasStoragePermission(): Boolean {
-        return EasyPermissions.hasPermissions(this, *STORAGE_PERMISSIONS)
-    }
-
-    private fun getParameters() {
-        val bundle = intent.extras
-        if (bundle != null) {
-            position = bundle.getInt(PARAMETER_POSITION_TAG, 0)
-        }
     }
 }

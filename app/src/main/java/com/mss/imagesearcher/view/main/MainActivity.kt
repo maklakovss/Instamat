@@ -27,10 +27,21 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
-        Timber.d("onCreate")
         setContentView(R.layout.activity_main)
+        Timber.d("onCreate")
 
-        etSearch!!.setOnEditorActionListener { _, actionId, keyEvent -> this.onAction(actionId, keyEvent) }
+        etSearch!!.setOnEditorActionListener { _, actionId, keyEvent -> onAction(actionId, keyEvent) }
+
+        bottomNavigationView.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.npHistory -> presenter.onShowHistoryClick()
+                R.id.npSettings -> presenter.onShowSettingsClick()
+                R.id.npResults -> presenter.onShowListClick()
+                R.id.npImage -> presenter.onShowImageClick()
+                R.id.npInfo -> presenter.onShowInfoClick()
+            }
+            true
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -53,6 +64,36 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
         return presenter
     }
 
+    override fun initAdMob() {
+        MobileAds.initialize(this, "ca-app-pub-8601890205077009~6067851844")
+
+        val adRequest = AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build()
+
+        adView.loadAd(adRequest)
+    }
+
+    override fun showPrivacyPolicy() {
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_policy_url)))
+        startActivity(browserIntent)
+    }
+
+    override fun showHistory() {
+    }
+
+    override fun showSettings() {
+    }
+
+    override fun showList() {
+    }
+
+    override fun showImage() {
+    }
+
+    override fun showInfo() {
+    }
+
     private fun onAction(actionId: Int, keyEvent: KeyEvent?): Boolean {
         var keyCode = 0
         if (keyEvent != null) {
@@ -64,18 +105,4 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
         }
         return false
     }
-
-    override fun initAdMob() {
-        MobileAds.initialize(this, "ca-app-pub-8601890205077009~6067851844")
-        val adRequest = AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .build()
-        adView!!.loadAd(adRequest)
-    }
-
-    override fun showPrivacyPolicy() {
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_policy_url)))
-        startActivity(browserIntent)
-    }
-
 }
