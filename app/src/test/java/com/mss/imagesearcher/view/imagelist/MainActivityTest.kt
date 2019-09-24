@@ -9,7 +9,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.mss.imagesearcher.R
 import com.mss.imagesearcher.di.RobolectricApp
 import com.mss.imagesearcher.di.RobolectricComponent
-import com.mss.imagesearcher.domain.models.ImageInfo
+import com.mss.imagesearcher.model.entity.ImageInfo
 import com.mss.imagesearcher.presenter.imagelist.ImageListPresenter
 import com.mss.imagesearcher.robolectric.ShadowSnackbar
 import com.mss.imagesearcher.view.detail.DetailActivity

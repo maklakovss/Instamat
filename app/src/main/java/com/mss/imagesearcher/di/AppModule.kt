@@ -1,9 +1,9 @@
 package com.mss.imagesearcher.di
 
 import android.content.Context
-import com.mss.imagesearcher.domain.ImageListModel
-import com.mss.imagesearcher.domain.repositories.FilesRepository
-import com.mss.imagesearcher.domain.repositories.ImagesNetRepository
+import com.mss.imagesearcher.model.ImageListModel
+import com.mss.imagesearcher.model.repositories.FilesRepository
+import com.mss.imagesearcher.model.repositories.ImagesNetRepository
 import com.mss.imagesearcher.presenter.imagelist.ImageListPresenter
 import com.mss.imagesearcher.presenter.info.InfoPresenter
 import com.mss.imagesearcher.presenter.main.MainPresenter

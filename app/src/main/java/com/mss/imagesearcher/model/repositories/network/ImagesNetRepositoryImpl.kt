@@ -1,7 +1,7 @@
-package com.mss.imagesearcher.repositories.network
+package com.mss.imagesearcher.model.repositories.network
 
-import com.mss.imagesearcher.domain.models.ImageInfo
-import com.mss.imagesearcher.domain.repositories.ImagesNetRepository
+import com.mss.imagesearcher.model.entity.ImageInfo
+import com.mss.imagesearcher.model.repositories.ImagesNetRepository
 import io.reactivex.Maybe
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber

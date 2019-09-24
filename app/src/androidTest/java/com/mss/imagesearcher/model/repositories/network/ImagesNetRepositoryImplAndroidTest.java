@@ -1,10 +1,10 @@
-package com.mss.imagesearcher.repositories.network;
+package com.mss.imagesearcher.model.repositories.network;
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
 import com.google.gson.GsonBuilder;
-import com.mss.imagesearcher.domain.models.ImageInfo;
-import com.mss.imagesearcher.domain.repositories.ImagesNetRepository;
+import com.mss.imagesearcher.model.entity.ImageInfo;
+import com.mss.imagesearcher.model.repositories.ImagesNetRepository;
 
 import org.junit.AfterClass;
 import org.junit.Before;

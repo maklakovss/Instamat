@@ -1,8 +1,8 @@
-package com.mss.imagesearcher.repositories.files
+package com.mss.imagesearcher.model.repositories.files
 
 import android.graphics.Bitmap
 import android.os.Environment
-import com.mss.imagesearcher.domain.models.ImageInfo
+import com.mss.imagesearcher.model.entity.ImageInfo
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream

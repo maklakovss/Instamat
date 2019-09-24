@@ -3,7 +3,7 @@ package com.mss.imagesearcher.presenter.detail
 import android.graphics.Bitmap
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
-import com.mss.imagesearcher.domain.ImageListModel
+import com.mss.imagesearcher.model.ImageListModel
 import com.mss.imagesearcher.view.detail.DetailView
 import timber.log.Timber
 import java.io.FileNotFoundException

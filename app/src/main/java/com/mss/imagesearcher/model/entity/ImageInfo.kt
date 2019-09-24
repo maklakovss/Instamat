@@ -1,4 +1,4 @@
-package com.mss.imagesearcher.domain.models
+package com.mss.imagesearcher.model.entity
 
 data class ImageInfo(
 

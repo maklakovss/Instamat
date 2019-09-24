@@ -1,8 +1,8 @@
 package com.mss.imagesearcher.di
 
-import com.mss.imagesearcher.domain.repositories.FilesRepository
-import com.mss.imagesearcher.repositories.files.FilesHelper
-import com.mss.imagesearcher.repositories.files.FilesRepositoryImpl
+import com.mss.imagesearcher.model.repositories.FilesRepository
+import com.mss.imagesearcher.model.repositories.files.FilesHelper
+import com.mss.imagesearcher.model.repositories.files.FilesRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

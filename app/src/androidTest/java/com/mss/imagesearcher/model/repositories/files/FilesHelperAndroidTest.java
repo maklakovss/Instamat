@@ -1,10 +1,10 @@
-package com.mss.imagesearcher.repositories.files;
+package com.mss.imagesearcher.model.repositories.files;
 
 import android.graphics.Bitmap;
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
-import com.mss.imagesearcher.domain.models.ImageInfo;
+import com.mss.imagesearcher.model.entity.ImageInfo;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,7 +1,7 @@
 package com.mss.imagesearcher.presenter.info
 
-import com.mss.imagesearcher.domain.ImageListModel
-import com.mss.imagesearcher.domain.models.ImageInfo
+import com.mss.imagesearcher.model.ImageListModel
+import com.mss.imagesearcher.model.entity.ImageInfo
 import com.mss.imagesearcher.view.info.InfoView
 import org.junit.Before
 import org.junit.Test

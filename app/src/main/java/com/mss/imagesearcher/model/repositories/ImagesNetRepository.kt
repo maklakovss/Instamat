@@ -1,6 +1,6 @@
-package com.mss.imagesearcher.domain.repositories
+package com.mss.imagesearcher.model.repositories
 
-import com.mss.imagesearcher.domain.models.ImageInfo
+import com.mss.imagesearcher.model.entity.ImageInfo
 
 import io.reactivex.Maybe
 

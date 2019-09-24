@@ -1,8 +1,8 @@
-package com.mss.imagesearcher.repositories.files
+package com.mss.imagesearcher.model.repositories.files
 
 import android.graphics.Bitmap
-import com.mss.imagesearcher.domain.models.ImageInfo
-import com.mss.imagesearcher.domain.repositories.FilesRepository
+import com.mss.imagesearcher.model.entity.ImageInfo
+import com.mss.imagesearcher.model.repositories.FilesRepository
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

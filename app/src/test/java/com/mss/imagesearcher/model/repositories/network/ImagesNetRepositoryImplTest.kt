@@ -1,8 +1,8 @@
-package com.mss.imagesearcher.repositories.network
+package com.mss.imagesearcher.model.repositories.network
 
-import com.mss.imagesearcher.domain.repositories.ImagesNetRepository
-import com.mss.imagesearcher.repositories.network.models.ImageInfoNet
-import com.mss.imagesearcher.repositories.network.models.ImagesResponse
+import com.mss.imagesearcher.model.repositories.ImagesNetRepository
+import com.mss.imagesearcher.model.repositories.network.entity.ImageInfoNet
+import com.mss.imagesearcher.model.repositories.network.entity.ImagesResponse
 import io.reactivex.Maybe
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.schedulers.Schedulers

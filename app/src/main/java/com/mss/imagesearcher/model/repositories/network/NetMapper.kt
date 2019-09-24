@@ -1,7 +1,7 @@
-package com.mss.imagesearcher.repositories.network
+package com.mss.imagesearcher.model.repositories.network
 
-import com.mss.imagesearcher.domain.models.ImageInfo
-import com.mss.imagesearcher.repositories.network.models.ImageInfoNet
+import com.mss.imagesearcher.model.entity.ImageInfo
+import com.mss.imagesearcher.model.repositories.network.entity.ImageInfoNet
 import java.util.*
 
 object NetMapper {

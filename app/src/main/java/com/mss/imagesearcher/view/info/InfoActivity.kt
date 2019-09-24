@@ -13,7 +13,7 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.InterstitialAd
 import com.mss.imagesearcher.App
 import com.mss.imagesearcher.R
-import com.mss.imagesearcher.domain.models.ImageInfo
+import com.mss.imagesearcher.model.entity.ImageInfo
 import com.mss.imagesearcher.presenter.info.InfoPresenter
 import timber.log.Timber
 import javax.inject.Inject

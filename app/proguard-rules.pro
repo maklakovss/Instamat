@@ -24,4 +24,4 @@
 # Retrofit
 # Add any classes the interact with gson
 # the following line is for illustration purposes
--keep class com.mss.imagesearcher.repositories.network.models.** { *; }
+-keep class com.mss.imagesearcher.model.repositories.network.models.** { *; }

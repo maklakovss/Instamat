@@ -1,8 +1,8 @@
 package com.mss.imagesearcher.presenter.detail
 
 import android.graphics.Bitmap
-import com.mss.imagesearcher.domain.ImageListModel
-import com.mss.imagesearcher.domain.models.ImageInfo
+import com.mss.imagesearcher.model.ImageListModel
+import com.mss.imagesearcher.model.entity.ImageInfo
 import com.mss.imagesearcher.view.detail.DetailView
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.schedulers.Schedulers

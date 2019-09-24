@@ -1,9 +1,9 @@
-package com.mss.imagesearcher.domain
+package com.mss.imagesearcher.model
 
 import android.graphics.Bitmap
-import com.mss.imagesearcher.domain.models.ImageInfo
-import com.mss.imagesearcher.domain.repositories.FilesRepository
-import com.mss.imagesearcher.domain.repositories.ImagesNetRepository
+import com.mss.imagesearcher.model.entity.ImageInfo
+import com.mss.imagesearcher.model.repositories.FilesRepository
+import com.mss.imagesearcher.model.repositories.ImagesNetRepository
 import io.reactivex.Maybe
 import timber.log.Timber
 import java.io.IOException

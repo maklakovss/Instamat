@@ -1,9 +1,9 @@
 package com.mss.imagesearcher.di
 
 import com.google.gson.GsonBuilder
-import com.mss.imagesearcher.domain.repositories.ImagesNetRepository
-import com.mss.imagesearcher.repositories.network.ImagesNetRepositoryImpl
-import com.mss.imagesearcher.repositories.network.PixabayAPI
+import com.mss.imagesearcher.model.repositories.ImagesNetRepository
+import com.mss.imagesearcher.model.repositories.network.ImagesNetRepositoryImpl
+import com.mss.imagesearcher.model.repositories.network.PixabayAPI
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit

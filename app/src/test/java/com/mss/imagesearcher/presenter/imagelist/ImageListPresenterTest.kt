@@ -1,7 +1,7 @@
 package com.mss.imagesearcher.presenter.imagelist
 
-import com.mss.imagesearcher.domain.ImageListModel
-import com.mss.imagesearcher.domain.models.ImageInfo
+import com.mss.imagesearcher.model.ImageListModel
+import com.mss.imagesearcher.model.entity.ImageInfo
 import com.mss.imagesearcher.view.imagelist.IImageListViewHolder
 import com.mss.imagesearcher.view.imagelist.ListFragmentView
 import io.reactivex.Maybe

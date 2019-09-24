@@ -1,4 +1,4 @@
-package com.mss.imagesearcher.repositories.network.models
+package com.mss.imagesearcher.model.repositories.network.entity
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
