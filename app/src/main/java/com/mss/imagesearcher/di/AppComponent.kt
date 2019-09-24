@@ -1,7 +1,7 @@
 package com.mss.imagesearcher.di
 
 
-import com.mss.imagesearcher.view.detail.DetailActivity
+import com.mss.imagesearcher.view.detail.DetailFragment
 import com.mss.imagesearcher.view.imagelist.ImageListAdapter
 import com.mss.imagesearcher.view.imagelist.ImageListFragment
 import com.mss.imagesearcher.view.info.InfoActivity
@@ -15,7 +15,7 @@ interface AppComponent {
 
     fun inject(mainActivity: MainActivity)
 
-    fun inject(detailActivity: DetailActivity)
+    fun inject(detailFragment: DetailFragment)
 
     fun inject(imageListAdapter: ImageListAdapter)
 

@@ -19,7 +19,7 @@ import com.mss.imagesearcher.App
 
 import com.mss.imagesearcher.R
 import com.mss.imagesearcher.presenter.imagelist.ImageListPresenter
-import com.mss.imagesearcher.view.detail.DetailActivity
+import com.mss.imagesearcher.view.detail.DetailFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_list.*
 import pub.devrel.easypermissions.EasyPermissions
@@ -74,8 +74,8 @@ class ImageListFragment : MvpAppCompatFragment(), ListFragmentView, ImageListAda
 
     override fun openDetailActivity(position: Int) {
         Timber.d("openDetailActivity")
-        val intent = Intent(context, DetailActivity::class.java)
-        intent.putExtra(DetailActivity.PARAMETER_POSITION_TAG, position)
+        val intent = Intent(context, DetailFragment::class.java)
+        intent.putExtra(DetailFragment.PARAMETER_POSITION_TAG, position)
         startActivity(intent)
     }
 

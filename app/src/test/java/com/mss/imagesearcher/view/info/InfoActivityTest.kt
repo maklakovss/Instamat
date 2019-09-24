@@ -8,7 +8,7 @@ import com.mss.imagesearcher.di.RobolectricComponent
 import com.mss.imagesearcher.model.entity.ImageInfo
 import com.mss.imagesearcher.presenter.info.InfoPresenter
 import com.mss.imagesearcher.robolectric.ShadowSnackbar
-import com.mss.imagesearcher.view.detail.DetailActivity
+import com.mss.imagesearcher.view.detail.DetailFragment
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -33,7 +33,7 @@ class InfoActivityTest {
     @Throws(Exception::class)
     fun setUp() {
         val intent = Intent(RuntimeEnvironment.systemContext, InfoActivity::class.java)
-        intent.putExtra(DetailActivity.PARAMETER_POSITION_TAG, 1)
+        intent.putExtra(DetailFragment.PARAMETER_POSITION_TAG, 1)
         infoActivity = Robolectric.buildActivity(InfoActivity::class.java, intent)
                 .create()
                 .start()

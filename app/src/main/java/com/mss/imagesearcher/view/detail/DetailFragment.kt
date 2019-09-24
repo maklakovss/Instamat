@@ -9,13 +9,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
+import androidx.databinding.DataBindingUtil.setContentView
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.arellomobile.mvp.MvpAppCompatActivity
+import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.material.snackbar.Snackbar
@@ -25,12 +24,11 @@ import com.mss.imagesearcher.R
 import com.mss.imagesearcher.presenter.detail.DetailPresenter
 import com.mss.imagesearcher.view.helpers.ImageLoader
 import com.mss.imagesearcher.view.info.InfoActivity
-import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import timber.log.Timber
 import javax.inject.Inject
 
-class DetailActivity : MvpAppCompatActivity(), DetailView {
+class DetailFragment : MvpAppCompatFragment(), DetailView {
 
     companion object {
         const val PARAMETER_POSITION_TAG = "PARAMETER_POSITION_TAG"
@@ -70,49 +68,9 @@ class DetailActivity : MvpAppCompatActivity(), DetailView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
         ButterKnife.bind(this)
-        setTitle(R.string.detail_activity_title)
 
         getParameters()
         presenter.onCreate(position)
-    }
-
-    override fun initAdMob() {
-        interstitialAd = InterstitialAd(applicationContext)
-        interstitialAd!!.adListener = object : AdListener() {
-            override fun onAdClosed() {
-                super.onAdClosed()
-                Timber.d("onAdClosed")
-            }
-
-            override fun onAdFailedToLoad(i: Int) {
-                super.onAdFailedToLoad(i)
-                Timber.d("onAdFailedToLoad %d", i)
-            }
-
-            override fun onAdLoaded() {
-                super.onAdLoaded()
-                Timber.d("onAdLoaded")
-                presenter.onAdLoaded()
-            }
-
-            override fun onAdClicked() {
-                super.onAdClicked()
-                Timber.d("onAdClicked")
-            }
-        }
-        interstitialAd!!.adUnitId = getString(R.string.banner_between_page_id)
-        val adRequest = AdRequest.Builder().build()
-        interstitialAd!!.loadAd(adRequest)
-
-        adView!!.loadAd(AdRequest.Builder().build())
-    }
-
-    override fun showFullScreenAd() {
-        if (interstitialAd != null) {
-            if (interstitialAd!!.isLoaded) {
-                interstitialAd!!.show()
-            }
-        }
     }
 
     override fun showInfo() {
@@ -207,33 +165,10 @@ class DetailActivity : MvpAppCompatActivity(), DetailView {
         }
     }
 
-    @AfterPermissionGranted(PERMISSION_REQUEST_SAVE)
-    private fun saveImageWithCheckPermission() {
-        if (hasStoragePermission()) {
-            saveImage()
-        } else {
-            requestPermission(PERMISSION_REQUEST_SAVE)
-        }
-    }
-
-    private fun requestPermission(permissionRequestCode: Int) {
-        Timber.d("requestPermission")
-        EasyPermissions.requestPermissions(this, getString(R.string.storage_rationale), permissionRequestCode, *STORAGE_PERMISSIONS)
-    }
-
     private fun saveImage() {
         Timber.d("saveImage")
         val drawable = imageView!!.drawable as BitmapDrawable
         presenter.onSaveClick(position, drawable.bitmap)
-    }
-
-    @AfterPermissionGranted(PERMISSION_REQUEST_SHARE)
-    private fun shareImageWithCheckPermission() {
-        if (hasStoragePermission()) {
-            shareImage()
-        } else {
-            requestPermission(PERMISSION_REQUEST_SHARE)
-        }
     }
 
     private fun shareImage() {

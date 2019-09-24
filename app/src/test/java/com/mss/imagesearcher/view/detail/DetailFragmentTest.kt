@@ -29,9 +29,9 @@ import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [28], application = RobolectricApp::class, shadows = [ShadowSnackbar::class])
-class DetailActivityTest {
+class DetailFragmentTest {
 
-    private var detailActivity: DetailActivity? = null
+    private var detailFragment: DetailFragment? = null
 
     @Inject
     var presenter: DetailPresenter? = null
@@ -41,9 +41,9 @@ class DetailActivityTest {
 
     @Before
     fun setUp() {
-        val intent = Intent(RuntimeEnvironment.systemContext, DetailActivity::class.java)
-        intent.putExtra(DetailActivity.PARAMETER_POSITION_TAG, 1)
-        detailActivity = Robolectric.buildActivity(DetailActivity::class.java, intent)
+        val intent = Intent(RuntimeEnvironment.systemContext, DetailFragment::class.java)
+        intent.putExtra(DetailFragment.PARAMETER_POSITION_TAG, 1)
+        detailFragment = Robolectric.buildActivity(DetailFragment::class.java, intent)
                 .create()
                 .start()
                 .resume()
@@ -61,8 +61,8 @@ class DetailActivityTest {
     fun onMenuSaveClick_HasPermission_callPresenterOnCSaveClick() {
         val application = ShadowApplication()
         application.grantPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        val shadowActivity = Shadows.shadowOf(detailActivity)
-        val imageView = detailActivity!!.findViewById<ImageView>(R.id.imageView)
+        val shadowActivity = Shadows.shadowOf(detailFragment)
+        val imageView = detailFragment!!.findViewById<ImageView>(R.id.imageView)
         imageView.setImageDrawable(BitmapDrawable())
 
         shadowActivity.clickMenuItem(R.id.miSave)
@@ -74,8 +74,8 @@ class DetailActivityTest {
     fun onMenuShareClick_callPresenterOnShareClick() {
         val application = ShadowApplication()
         application.grantPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        val shadowActivity = Shadows.shadowOf(detailActivity)
-        val imageView = detailActivity!!.findViewById<ImageView>(R.id.imageView)
+        val shadowActivity = Shadows.shadowOf(detailFragment)
+        val imageView = detailFragment!!.findViewById<ImageView>(R.id.imageView)
         imageView.setImageDrawable(BitmapDrawable())
 
         shadowActivity.clickMenuItem(R.id.miShare)
@@ -87,25 +87,25 @@ class DetailActivityTest {
     fun onShowSuccessSaveMessage_showSnackbar() {
         ShadowSnackbar.reset()
 
-        detailActivity!!.showSuccessSaveMessage()
+        detailFragment!!.showSuccessSaveMessage()
 
-        assertEquals(ShadowSnackbar.textOfLatestSnackbar, detailActivity!!.getString(R.string.image_saved_message))
+        assertEquals(ShadowSnackbar.textOfLatestSnackbar, detailFragment!!.getString(R.string.image_saved_message))
     }
 
     @Test
     fun onShowFailSaveMessage_showSnackbar() {
         ShadowSnackbar.reset()
 
-        detailActivity!!.showFailedSaveMessage()
+        detailFragment!!.showFailedSaveMessage()
 
-        assertEquals(ShadowSnackbar.textOfLatestSnackbar, detailActivity!!.getString(R.string.image_failed_message))
+        assertEquals(ShadowSnackbar.textOfLatestSnackbar, detailFragment!!.getString(R.string.image_failed_message))
     }
 
     @Test
     fun shareImage_startIntentChooserImageWithPath() {
-        detailActivity!!.shareImage("path")
+        detailFragment!!.shareImage("path")
 
-        val intent = Shadows.shadowOf(detailActivity).nextStartedActivity
+        val intent = Shadows.shadowOf(detailFragment).nextStartedActivity
         assertEquals(Intent.ACTION_CHOOSER, intent.action)
         val intent1 = intent.extras!!.get(Intent.EXTRA_INTENT) as Intent?
         assertEquals(Intent.ACTION_SEND, intent1!!.action)
@@ -115,18 +115,18 @@ class DetailActivityTest {
 
     @Test
     fun showProgress_Hide_pbDetailHide() {
-        val progressBar = detailActivity!!.findViewById<ProgressBar>(R.id.pbDetail)
+        val progressBar = detailFragment!!.findViewById<ProgressBar>(R.id.pbDetail)
 
-        detailActivity!!.showProgress(false)
+        detailFragment!!.showProgress(false)
 
         assertEquals(View.GONE.toLong(), progressBar.visibility.toLong())
     }
 
     @Test
     fun showProgress_Show_pbDetailShow() {
-        val progressBar = detailActivity!!.findViewById<ProgressBar>(R.id.pbDetail)
+        val progressBar = detailFragment!!.findViewById<ProgressBar>(R.id.pbDetail)
 
-        detailActivity!!.showProgress(true)
+        detailFragment!!.showProgress(true)
 
         assertEquals(View.VISIBLE.toLong(), progressBar.visibility.toLong())
     }
@@ -139,7 +139,7 @@ class DetailActivityTest {
             null
         }.`when`<ImageLoader>(imageLoader).load(any<Context>(), any(), any(), any(), any())
 
-        detailActivity!!.startLoadImage("path")
+        detailFragment!!.startLoadImage("path")
 
         verify<DetailPresenter>(presenter).onImageLoaded()
     }
@@ -152,14 +152,14 @@ class DetailActivityTest {
             null
         }.`when`<ImageLoader>(imageLoader).load(any<Context>(), any(), any(), any(), any())
 
-        detailActivity!!.startLoadImage("path")
+        detailFragment!!.startLoadImage("path")
 
         verify<DetailPresenter>(presenter).onImageLoadFailed()
     }
 
     @Test
     fun onMenuSaveClick_NoPermission_noCallPresenterOnSaveClick() {
-        val shadowActivity = Shadows.shadowOf(detailActivity)
+        val shadowActivity = Shadows.shadowOf(detailFragment)
 
         shadowActivity.clickMenuItem(R.id.miSave)
 
@@ -168,7 +168,7 @@ class DetailActivityTest {
 
     @Test
     fun onMenuShareClick_NoPermission_noCallPresenterOnShareClick() {
-        val shadowActivity = Shadows.shadowOf(detailActivity)
+        val shadowActivity = Shadows.shadowOf(detailFragment)
 
         shadowActivity.clickMenuItem(R.id.miSave)
 

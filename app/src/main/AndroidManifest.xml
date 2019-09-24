@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.detail.DetailActivity" />
+        <activity android:name=".view.detail.DetailFragment" />
         <activity android:name=".view.info.InfoActivity" />
 
         <meta-data

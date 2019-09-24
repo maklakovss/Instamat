@@ -12,7 +12,7 @@ import com.mss.imagesearcher.di.RobolectricComponent
 import com.mss.imagesearcher.model.entity.ImageInfo
 import com.mss.imagesearcher.presenter.imagelist.ImageListPresenter
 import com.mss.imagesearcher.robolectric.ShadowSnackbar
-import com.mss.imagesearcher.view.detail.DetailActivity
+import com.mss.imagesearcher.view.detail.DetailFragment
 import com.mss.imagesearcher.view.helpers.ImageLoader
 import com.mss.imagesearcher.view.main.MainActivity
 import org.junit.Assert.*
@@ -108,8 +108,8 @@ class MainActivityTest {
         mainActivity!!.openDetailActivity(1)
 
         val intent = Shadows.shadowOf(mainActivity).nextStartedActivity
-        assertEquals("com.mss.imagesearcher.view.detail.DetailActivity", intent.component!!.className)
-        assertEquals(1, intent.getIntExtra(DetailActivity.PARAMETER_POSITION_TAG, 0).toLong())
+        assertEquals("com.mss.imagesearcher.view.detail.DetailFragment", intent.component!!.className)
+        assertEquals(1, intent.getIntExtra(DetailFragment.PARAMETER_POSITION_TAG, 0).toLong())
     }
 
     @Test
