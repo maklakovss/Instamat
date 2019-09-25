@@ -78,7 +78,6 @@ class ImageListFragment : MvpAppCompatFragment(), ListFragmentView, ImageListAda
     override fun openDetailActivity(position: Int) {
         Timber.d("openDetailActivity")
         val intent = Intent(context, DetailFragment::class.java)
-        intent.putExtra(DetailFragment.PARAMETER_POSITION_TAG, position)
         startActivity(intent)
     }
 

@@ -17,6 +17,9 @@ import com.mss.imagesearcher.App
 import com.mss.imagesearcher.R
 import com.mss.imagesearcher.presenter.main.MainPresenter
 import com.mss.imagesearcher.view.detail.DetailFragment
+import com.mss.imagesearcher.view.history.HistoryFragment
+import com.mss.imagesearcher.view.info.InfoFragment
+import com.mss.imagesearcher.view.settings.SettingsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -83,22 +86,28 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
     }
 
     override fun showHistory() {
+        val fragment = HistoryFragment()
+        showFragment(fragment)
     }
 
     override fun showSettings() {
+        val fragment = SettingsFragment()
+        showFragment(fragment)
     }
 
     override fun showList() {
-        val fargment = ListFragment()
-        showFragment(fargment)
+        val fragment = ListFragment()
+        showFragment(fragment)
     }
 
     override fun showImage() {
-        val fargment = DetailFragment()
-        showFragment(fargment)
+        val fragment = DetailFragment()
+        showFragment(fragment)
     }
 
     override fun showInfo() {
+        val fragment = InfoFragment()
+        showFragment(fragment)
     }
 
     private fun onAction(actionId: Int, keyEvent: KeyEvent?): Boolean {

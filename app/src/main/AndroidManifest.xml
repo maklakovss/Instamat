@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.detail.DetailFragment" />
-        <activity android:name=".view.info.InfoActivity" />
+        <activity android:name=".view.info.InfoFragment" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

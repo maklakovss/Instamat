@@ -14,14 +14,11 @@ class ImageListModel @Inject
 constructor(val imagesNetRepository: ImagesNetRepository,
             val filesRepository: FilesRepository) {
 
-    private val imageInfoList: MutableList<ImageInfo>
-
+    private val imageInfoList: MutableList<ImageInfo> = ArrayList()
     val images: List<ImageInfo>
         get() = imageInfoList
 
-    init {
-        imageInfoList = ArrayList()
-    }
+    var currentImage: ImageInfo? = null
 
     fun getImagesFromNetwork(searchText: String, page: Int): Maybe<List<ImageInfo>> {
         return imagesNetRepository.findImages(searchText, page)
@@ -38,6 +35,7 @@ constructor(val imagesNetRepository: ImagesNetRepository,
 
     fun clearImages() {
         imageInfoList.clear()
+        currentImage = null
         Timber.d("Image list cleared")
     }
 

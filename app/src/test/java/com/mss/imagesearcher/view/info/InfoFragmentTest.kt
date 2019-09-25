@@ -22,19 +22,19 @@ import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [28], application = RobolectricApp::class, shadows = [ShadowSnackbar::class])
-class InfoActivityTest {
+class InfoFragmentTest {
 
     @Inject
     var presenter: InfoPresenter? = null
 
-    private var infoActivity: InfoActivity? = null
+    private var infoFragment: InfoFragment? = null
 
     @Before
     @Throws(Exception::class)
     fun setUp() {
-        val intent = Intent(RuntimeEnvironment.systemContext, InfoActivity::class.java)
+        val intent = Intent(RuntimeEnvironment.systemContext, InfoFragment::class.java)
         intent.putExtra(DetailFragment.PARAMETER_POSITION_TAG, 1)
-        infoActivity = Robolectric.buildActivity(InfoActivity::class.java, intent)
+        infoFragment = Robolectric.buildActivity(InfoFragment::class.java, intent)
                 .create()
                 .start()
                 .resume()
@@ -60,16 +60,16 @@ class InfoActivityTest {
         imageInfo.tags = "tags"
         imageInfo.pageUrl = "URL"
 
-        val tvSize = infoActivity!!.findViewById<TextView>(R.id.tvSize)
-        val tvViews = infoActivity!!.findViewById<TextView>(R.id.tvViews)
-        val tvLikes = infoActivity!!.findViewById<TextView>(R.id.tvLikes)
-        val tvComments = infoActivity!!.findViewById<TextView>(R.id.tvComments)
-        val tvType = infoActivity!!.findViewById<TextView>(R.id.tvType)
-        val tvTags = infoActivity!!.findViewById<TextView>(R.id.tvTags)
-        val tvUrl = infoActivity!!.findViewById<TextView>(R.id.tvUrl)
+        val tvSize = infoFragment!!.findViewById<TextView>(R.id.tvSize)
+        val tvViews = infoFragment!!.findViewById<TextView>(R.id.tvViews)
+        val tvLikes = infoFragment!!.findViewById<TextView>(R.id.tvLikes)
+        val tvComments = infoFragment!!.findViewById<TextView>(R.id.tvComments)
+        val tvType = infoFragment!!.findViewById<TextView>(R.id.tvType)
+        val tvTags = infoFragment!!.findViewById<TextView>(R.id.tvTags)
+        val tvUrl = infoFragment!!.findViewById<TextView>(R.id.tvUrl)
 
 
-        infoActivity!!.showInfo(imageInfo)
+        infoFragment!!.showInfo(imageInfo)
 
 
         assertEquals("2000 x 1000", tvSize.text)

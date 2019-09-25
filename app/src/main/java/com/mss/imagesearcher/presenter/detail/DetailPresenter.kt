@@ -14,13 +14,13 @@ import javax.inject.Inject
 class DetailPresenter @Inject
 constructor(val model: ImageListModel) : MvpPresenter<DetailView>() {
 
-    fun onCreate(position: Int) {
-        Timber.d("onCreate %d", position)
+    fun onCreate() {
+        Timber.d("onCreate")
         viewState.apply {
             showImage(false)
-            if (model.images.size > position) {
+            model.currentImage?.let {
                 showProgress(true)
-                startLoadImage(model.images[position].largeImageURL!!)
+                startLoadImage(it.largeImageURL)
             }
         }
     }
@@ -36,10 +36,10 @@ constructor(val model: ImageListModel) : MvpPresenter<DetailView>() {
         viewState.showProgress(false)
     }
 
-    fun onSaveClick(position: Int, bitmap: Bitmap) {
+    fun onSaveClick(bitmap: Bitmap) {
         try {
             Timber.d("onSaveClick")
-            model.saveBitmap(model.images[position], bitmap)
+            model.saveBitmap(model.images[0], bitmap)
             viewState.showSuccessSaveMessage()
         } catch (e: FileNotFoundException) {
             Timber.e(e)
@@ -51,10 +51,10 @@ constructor(val model: ImageListModel) : MvpPresenter<DetailView>() {
 
     }
 
-    fun onShareClick(position: Int, bitmap: Bitmap) {
+    fun onShareClick(bitmap: Bitmap) {
         try {
             Timber.d("onShareClick")
-            val path = model.saveBitmap(model.images[position], bitmap)
+            val path = model.saveBitmap(model.images[0], bitmap)
             viewState.shareImage(path)
         } catch (e: FileNotFoundException) {
             Timber.e(e)

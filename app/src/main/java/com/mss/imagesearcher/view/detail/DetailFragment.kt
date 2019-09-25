@@ -13,18 +13,11 @@ import com.mss.imagesearcher.App
 import com.mss.imagesearcher.R
 import com.mss.imagesearcher.presenter.detail.DetailPresenter
 import com.mss.imagesearcher.view.helpers.ImageLoader
-import com.mss.imagesearcher.view.info.InfoActivity
 import kotlinx.android.synthetic.main.activity_detail.*
 import timber.log.Timber
 import javax.inject.Inject
 
 class DetailFragment : MvpAppCompatFragment(), DetailView {
-
-    companion object {
-        const val PARAMETER_POSITION_TAG = "PARAMETER_POSITION_TAG"
-    }
-
-    private var position = 0
 
     @Inject
     @InjectPresenter
@@ -45,7 +38,7 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Timber.d("onCreate")
-        presenter.onCreate(position)
+        presenter.onCreate()
     }
 
     @ProvidePresenter
@@ -54,10 +47,7 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
     }
 
     override fun showInfo() {
-        Timber.d("openDetailActivity")
-        val intent = Intent(context, InfoActivity::class.java)
-        intent.putExtra(InfoActivity.PARAMETER_POSITION_TAG, position)
-        startActivity(intent)
+        Timber.d("openDetailFragment")
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -133,12 +123,12 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
     private fun saveImage() {
         Timber.d("saveImage")
         val drawable = imageView!!.drawable as BitmapDrawable
-        presenter.onSaveClick(position, drawable.bitmap)
+        presenter.onSaveClick(drawable.bitmap)
     }
 
     private fun shareImage() {
         Timber.d("shareImage")
         val drawable = imageView!!.drawable as BitmapDrawable
-        presenter.onShareClick(position, drawable.bitmap)
+        presenter.onShareClick(drawable.bitmap)
     }
 }

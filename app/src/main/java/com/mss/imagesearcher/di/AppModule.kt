@@ -4,9 +4,11 @@ import android.content.Context
 import com.mss.imagesearcher.model.ImageListModel
 import com.mss.imagesearcher.model.repositories.FilesRepository
 import com.mss.imagesearcher.model.repositories.ImagesNetRepository
+import com.mss.imagesearcher.presenter.history.HistoryPresenter
 import com.mss.imagesearcher.presenter.imagelist.ImageListPresenter
 import com.mss.imagesearcher.presenter.info.InfoPresenter
 import com.mss.imagesearcher.presenter.main.MainPresenter
+import com.mss.imagesearcher.presenter.settings.SettingsPresenter
 import com.mss.imagesearcher.view.helpers.ImageLoader
 import com.mss.imagesearcher.view.helpers.ImageLoaderImpl
 import dagger.Module
@@ -36,6 +38,18 @@ class AppModule(private val appContext: Context) {
     @Provides
     fun provideMainPresenter(model: ImageListModel): MainPresenter {
         return MainPresenter(model)
+    }
+
+    @Singleton
+    @Provides
+    fun provideHistoryPresenter(model: ImageListModel): HistoryPresenter {
+        return HistoryPresenter(model)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSettingsPresenter(model: ImageListModel): SettingsPresenter {
+        return SettingsPresenter(model)
     }
 
     @Singleton

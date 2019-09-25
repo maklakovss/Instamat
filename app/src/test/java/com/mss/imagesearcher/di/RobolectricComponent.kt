@@ -2,7 +2,7 @@ package com.mss.imagesearcher.di
 
 import com.mss.imagesearcher.view.detail.DetailFragmentTest
 import com.mss.imagesearcher.view.imagelist.MainActivityTest
-import com.mss.imagesearcher.view.info.InfoActivityTest
+import com.mss.imagesearcher.view.info.InfoFragmentTest
 import dagger.Component
 import javax.inject.Singleton
 
@@ -14,5 +14,5 @@ interface RobolectricComponent : AppComponent {
 
     fun inject(imageListActivityTest: MainActivityTest)
 
-    fun inject(infoActivityTest: InfoActivityTest)
+    fun inject(infoActivityTest: InfoFragmentTest)
 }

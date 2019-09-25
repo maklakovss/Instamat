@@ -11,15 +11,15 @@ data class ImageInfoNet(
 
         @Expose
         @SerializedName("largeImageURL")
-        var largeImageURL: String? = null,
+        var largeImageURL: String,
 
         @Expose
         @SerializedName("previewURL")
-        var previewURL: String? = null,
+        var previewURL: String,
 
         @Expose
         @SerializedName("webformatURL")
-        var webFormatURL: String? = null,
+        var webFormatURL: String,
 
         @Expose
         @SerializedName("imageHeight")
@@ -31,15 +31,15 @@ data class ImageInfoNet(
 
         @Expose
         @SerializedName("type")
-        var type: String? = null,
+        var type: String,
 
         @Expose
         @SerializedName("tags")
-        var tags: String? = null,
+        var tags: String,
 
         @Expose
         @SerializedName("pageURL")
-        var pageUrl: String? = null,
+        var pageUrl: String,
 
         @Expose
         @SerializedName("likes")
