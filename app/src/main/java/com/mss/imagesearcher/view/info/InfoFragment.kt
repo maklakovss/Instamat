@@ -11,7 +11,7 @@ import com.mss.imagesearcher.App
 import com.mss.imagesearcher.R
 import com.mss.imagesearcher.model.entity.ImageInfo
 import com.mss.imagesearcher.presenter.info.InfoPresenter
-import kotlinx.android.synthetic.main.activity_info.*
+import kotlinx.android.synthetic.main.fragment_info.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -27,7 +27,7 @@ class InfoFragment : MvpAppCompatFragment(), InfoView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.activity_info, container, false)
+        return inflater.inflate(R.layout.fragment_info, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

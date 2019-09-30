@@ -13,7 +13,7 @@ import com.mss.imagesearcher.App
 import com.mss.imagesearcher.R
 import com.mss.imagesearcher.presenter.detail.DetailPresenter
 import com.mss.imagesearcher.view.helpers.ImageLoader
-import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.android.synthetic.main.fragment_detail.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -32,7 +32,7 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.activity_detail, container, false)
+        return inflater.inflate(R.layout.fragment_detail, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
