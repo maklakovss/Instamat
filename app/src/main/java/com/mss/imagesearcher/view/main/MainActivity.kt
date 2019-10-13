@@ -35,6 +35,8 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Timber.d("onCreate")
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         etSearch!!.setOnEditorActionListener { _, actionId, keyEvent -> onAction(actionId, keyEvent) }
 
