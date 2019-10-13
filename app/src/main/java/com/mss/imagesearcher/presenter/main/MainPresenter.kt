@@ -20,11 +20,8 @@ class MainPresenter @Inject constructor(val model: ImageListModel) : MvpPresente
 
     fun onSearchClick(searchText: String) {
         Timber.d("onSearchClick")
-//        if (searchText == lastQuery) {
-//            //onRefresh(searchText)
-//        } else {
-//            //startSearch(searchText)
-//        }
+        model.setCurrentQuery(searchText)
+        viewState.goToList()
     }
 
     fun onShowHistoryClick() {

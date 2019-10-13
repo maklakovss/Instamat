@@ -26,6 +26,8 @@ import javax.inject.Inject
 
 class MainActivity : MvpAppCompatActivity(), MainActivityView {
 
+    private var currentFragment: Fragment? = null
+
     @Inject
     @InjectPresenter
     lateinit var presenter: MainPresenter
@@ -88,28 +90,41 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
     }
 
     override fun showHistory() {
-        val fragment = HistoryFragment()
-        showFragment(fragment)
+        showFragment<HistoryFragment>()
     }
 
     override fun showSettings() {
-        val fragment = SettingsFragment()
-        showFragment(fragment)
+        showFragment<SettingsFragment>()
     }
 
     override fun showList() {
-        val fragment = ListFragment()
-        showFragment(fragment)
-    }
-
-    override fun showImage() {
-        val fragment = DetailFragment()
-        showFragment(fragment)
+        showFragment<ListFragment>()
     }
 
     override fun showInfo() {
-        val fragment = InfoFragment()
-        showFragment(fragment)
+        showFragment<InfoFragment>()
+    }
+
+    override fun showImage() {
+        showFragment<DetailFragment>()
+    }
+
+    override fun goToList() {
+        bottomNavigationView.selectedItemId = R.id.npResults
+    }
+
+    private inline fun <reified T : Fragment> showFragment() {
+        val fragments = supportFragmentManager.fragments.filterIsInstance<T>()
+        val ft = supportFragmentManager.beginTransaction()
+        currentFragment?.let { ft.hide(it) }
+        if (fragments.isEmpty()) {
+            currentFragment = T::class.java.newInstance()
+            ft.add(R.id.flFragmentsContainer, currentFragment!!)
+        } else {
+            currentFragment = fragments[0]
+            ft.show(currentFragment!!)
+        }
+        ft.commit()
     }
 
     private fun onAction(actionId: Int, keyEvent: KeyEvent?): Boolean {
@@ -124,9 +139,4 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
         return false
     }
 
-    private fun showFragment(fargment: Fragment) {
-        val ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.flFragmentsContainer, fargment);
-        ft.commit();
-    }
 }

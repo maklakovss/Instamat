@@ -45,4 +45,8 @@ constructor(val imagesNetRepository: ImagesNetRepository,
         Timber.d("Image saved to path - %s", path)
         return path
     }
+
+    fun setCurrentQuery(searchText: String) {
+
+    }
 }
