@@ -72,7 +72,6 @@ class ImageListPresenter @Inject constructor(val model: ImageListModel) : MvpPre
     }
 
     private fun getNextPage() {
-        viewState.showProgress(true)
         loadImagesFromNetwork()
     }
 
@@ -89,7 +88,6 @@ class ImageListPresenter @Inject constructor(val model: ImageListModel) : MvpPre
     private fun doOnError(throwable: Throwable) {
         Timber.d(throwable)
         inProgress = false
-        viewState.showProgress(false)
         lastDisposableQuery = null
         end = true
         showMessageListEmpty()
@@ -106,7 +104,6 @@ class ImageListPresenter @Inject constructor(val model: ImageListModel) : MvpPre
         Timber.d("doOnSuccess")
         inProgress = false
         nextPage += 1
-        viewState.showProgress(false)
         viewState.refreshImageList()
         lastDisposableQuery = null
         showMessageListEmpty()
@@ -116,7 +113,7 @@ class ImageListPresenter @Inject constructor(val model: ImageListModel) : MvpPre
 
         override fun bindView(viewHolder: IImageListViewHolder) {
             viewHolder.showProgress(true)
-            viewHolder.setImage(model.images[viewHolder.pos].webFormatURL!!)
+            viewHolder.setImage(model.images[viewHolder.pos].webFormatURL)
         }
 
         override fun getItemCount(): Int {

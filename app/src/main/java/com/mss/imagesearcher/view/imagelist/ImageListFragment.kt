@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,11 +15,9 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.material.snackbar.Snackbar
 import com.mss.imagesearcher.App
-
 import com.mss.imagesearcher.R
 import com.mss.imagesearcher.presenter.imagelist.ImageListPresenter
 import com.mss.imagesearcher.view.detail.DetailFragment
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_list.*
 import pub.devrel.easypermissions.EasyPermissions
 import timber.log.Timber
@@ -79,15 +76,6 @@ class ImageListFragment : MvpAppCompatFragment(), ListFragmentView, ImageListAda
         Timber.d("openDetailActivity")
         val intent = Intent(context, DetailFragment::class.java)
         startActivity(intent)
-    }
-
-    override fun showProgress(visible: Boolean) {
-        Timber.d("showProgress %b", visible)
-        if (visible) {
-            pbList!!.visibility = View.VISIBLE
-        } else {
-            pbList!!.visibility = View.INVISIBLE
-        }
     }
 
     override fun showNotFoundMessage() {

@@ -13,9 +13,6 @@ interface ListFragmentView : MvpView {
     @StateStrategyType(value = OneExecutionStateStrategy::class)
     fun openDetailActivity(position: Int)
 
-    @StateStrategyType(value = AddToEndSingleStrategy::class)
-    fun showProgress(visible: Boolean)
-
     @StateStrategyType(value = OneExecutionStateStrategy::class)
     fun showNotFoundMessage()
 
