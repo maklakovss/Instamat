@@ -19,6 +19,7 @@ constructor(val imagesNetRepository: ImagesNetRepository,
         get() = imageInfoList
 
     var currentImage: ImageInfo? = null
+    var currentSearchString = ""
 
     fun getImagesFromNetwork(searchText: String, page: Int): Maybe<List<ImageInfo>> {
         return imagesNetRepository.findImages(searchText, page)
@@ -47,6 +48,7 @@ constructor(val imagesNetRepository: ImagesNetRepository,
     }
 
     fun setCurrentQuery(searchText: String) {
-
+        currentSearchString = searchText
+        clearImages()
     }
 }

@@ -21,6 +21,7 @@
             android:scrollbars="vertical"
             tools:context=".view.main.MainActivity"
             tools:showIn="@layout/activity_main" />
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </FrameLayout>
