@@ -44,11 +44,11 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
 
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.npHistory -> presenter.onShowHistoryClick()
-                R.id.npSettings -> presenter.onShowSettingsClick()
-                R.id.npResults -> presenter.onShowListClick()
-                R.id.npImage -> presenter.onShowImageClick()
-                R.id.npInfo -> presenter.onShowInfoClick()
+                R.id.npHistory -> showFragment<HistoryFragment>()
+                R.id.npSettings -> showFragment<SettingsFragment>()
+                R.id.npResults -> showFragment<ImageListFragment>()
+                R.id.npImage -> showFragment<DetailFragment>()
+                R.id.npInfo -> showFragment<InfoFragment>()
             }
             true
         }
@@ -87,26 +87,6 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
     override fun showPrivacyPolicy() {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_policy_url)))
         startActivity(browserIntent)
-    }
-
-    override fun showHistory() {
-        showFragment<HistoryFragment>()
-    }
-
-    override fun showSettings() {
-        showFragment<SettingsFragment>()
-    }
-
-    override fun showList() {
-        showFragment<ImageListFragment>()
-    }
-
-    override fun showInfo() {
-        showFragment<InfoFragment>()
-    }
-
-    override fun showImage() {
-        showFragment<DetailFragment>()
     }
 
     override fun goToList() {

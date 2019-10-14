@@ -23,24 +23,4 @@ class MainPresenter @Inject constructor(val model: ImageListModel) : MvpPresente
         model.setCurrentQuery(searchText)
         viewState.goToList()
     }
-
-    fun onShowHistoryClick() {
-        viewState.showHistory()
-    }
-
-    fun onShowSettingsClick() {
-        viewState.showSettings()
-    }
-
-    fun onShowListClick() {
-        viewState.showList()
-    }
-
-    fun onShowImageClick() {
-        viewState.showImage()
-    }
-
-    fun onShowInfoClick() {
-        viewState.showInfo()
-    }
 }
