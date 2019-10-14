@@ -93,6 +93,10 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
         bottomNavigationView.selectedItemId = R.id.npResults
     }
 
+    override fun goToDetail() {
+        bottomNavigationView.selectedItemId = R.id.npImage
+    }
+
     private inline fun <reified T : Fragment> showFragment() {
         val fragments = supportFragmentManager.fragments.filterIsInstance<T>()
         val ft = supportFragmentManager.beginTransaction()

@@ -10,6 +10,20 @@ import javax.inject.Inject
 @InjectViewState
 class MainPresenter @Inject constructor(val model: ImageListModel) : MvpPresenter<MainActivityView>() {
 
+    init {
+        model.needShowPage.observeForever {
+            if (it == ImageListModel.PageType.NONE) {
+                return@observeForever
+            }
+            when (it) {
+                ImageListModel.PageType.DETAIL -> viewState.goToDetail()
+                ImageListModel.PageType.LIST -> viewState.goToList()
+                else -> return@observeForever
+            }
+            model.needShowPage.value = ImageListModel.PageType.NONE
+        }
+    }
+
     fun onCreate() {
         viewState.initAdMob()
     }
@@ -21,6 +35,6 @@ class MainPresenter @Inject constructor(val model: ImageListModel) : MvpPresente
     fun onSearchClick(searchText: String) {
         Timber.d("onSearchClick")
         model.setCurrentQuery(searchText)
-        viewState.goToList()
+        model.needShowPage.value = ImageListModel.PageType.LIST
     }
 }

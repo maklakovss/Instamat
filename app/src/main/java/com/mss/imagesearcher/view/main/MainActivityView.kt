@@ -15,4 +15,6 @@ interface MainActivityView : MvpView {
     @StateStrategyType(value = OneExecutionStateStrategy::class)
     fun goToList()
 
+    @StateStrategyType(value = OneExecutionStateStrategy::class)
+    fun goToDetail()
 }
