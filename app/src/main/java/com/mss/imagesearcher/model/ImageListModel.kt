@@ -16,11 +16,15 @@ constructor(val imagesNetRepository: ImagesNetRepository,
             val filesRepository: FilesRepository) {
 
     private val imageInfoList: MutableList<ImageInfo> = ArrayList()
-    val images: List<ImageInfo>
-        get() = imageInfoList
 
+    val images: List<ImageInfo> get() = imageInfoList
     val currentImage = MutableLiveData<ImageInfo>(null)
     val currentSearchString = MutableLiveData<String>("")
+    val needShowPage = MutableLiveData<PageType>(PageType.NONE)
+
+    enum class PageType {
+        NONE, HISTORY, SETTINGS, LIST, DETAIL, INFO
+    }
 
     fun getImagesFromNetwork(searchText: String, page: Int): Maybe<List<ImageInfo>> {
         return imagesNetRepository.findImages(searchText, page)

@@ -28,6 +28,7 @@ class ImageListPresenter @Inject constructor(val model: ImageListModel) : MvpPre
     fun onItemClick(position: Int) {
         Timber.d("onItemClick")
         model.currentImage.value = model.images[position]
+        model.needShowPage.value = ImageListModel.PageType.DETAIL
     }
 
     fun onNeedNextPage() {
