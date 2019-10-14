@@ -53,7 +53,7 @@ class ImageListPresenterTest {
     @Test
     fun onItemClick_openDetailActivity() {
         imageListPresenter!!.onItemClick(1)
-        verify<ListFragmentView>(listFragmentView).openDetailActivity(1)
+        verify<ListFragmentView>(listFragmentView).showImage(1)
     }
 
     @Test

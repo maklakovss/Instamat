@@ -11,11 +11,8 @@ interface ListFragmentView : MvpView {
     fun refreshImageList()
 
     @StateStrategyType(value = OneExecutionStateStrategy::class)
-    fun openDetailActivity(position: Int)
-
-    @StateStrategyType(value = OneExecutionStateStrategy::class)
     fun showNotFoundMessage()
 
     @StateStrategyType(value = OneExecutionStateStrategy::class)
-    fun stopRefreshing()
+    fun showProgress(visible: Boolean)
 }

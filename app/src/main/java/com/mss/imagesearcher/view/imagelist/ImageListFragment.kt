@@ -2,7 +2,6 @@ package com.mss.imagesearcher.view.imagelist
 
 
 import android.Manifest
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +16,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.mss.imagesearcher.App
 import com.mss.imagesearcher.R
 import com.mss.imagesearcher.presenter.imagelist.ImageListPresenter
-import com.mss.imagesearcher.view.detail.DetailFragment
 import kotlinx.android.synthetic.main.fragment_list.*
 import pub.devrel.easypermissions.EasyPermissions
 import timber.log.Timber
@@ -72,23 +70,9 @@ class ImageListFragment : MvpAppCompatFragment(), ListFragmentView, ImageListAda
         }
     }
 
-    override fun openDetailActivity(position: Int) {
-        Timber.d("openDetailActivity")
-        val intent = Intent(context, DetailFragment::class.java)
-        startActivity(intent)
-    }
-
     override fun showNotFoundMessage() {
         Timber.d("showNotFoundMessage")
         Snackbar.make(rvImages!!, getString(R.string.not_found_message), Snackbar.LENGTH_SHORT).show()
-    }
-
-
-    private fun checkNetworkPermissions() {
-        if (EasyPermissions.hasPermissions(context!!, *NETWORK_PERMISSIONS)) {
-            Timber.d("Need NetworkPermissions")
-            EasyPermissions.requestPermissions(this, getString(R.string.storage_rationale), PERMISSION_REQUEST_CODE, *NETWORK_PERMISSIONS)
-        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
@@ -104,19 +88,26 @@ class ImageListFragment : MvpAppCompatFragment(), ListFragmentView, ImageListAda
 
     }
 
-    override fun stopRefreshing() {
-        srlImages.isRefreshing = false
-    }
-
     override fun onItemClick(view: View, position: Int) {
         Timber.d("onItemClick")
         presenter.onItemClick(position)
     }
 
+    override fun showProgress(visible: Boolean) {
+        srlImages.isRefreshing = visible
+    }
+
+
+    private fun checkNetworkPermissions() {
+        if (EasyPermissions.hasPermissions(context!!, *NETWORK_PERMISSIONS)) {
+            Timber.d("Need NetworkPermissions")
+            EasyPermissions.requestPermissions(this, getString(R.string.storage_rationale), PERMISSION_REQUEST_CODE, *NETWORK_PERMISSIONS)
+        }
+    }
 
     private fun onRefresh() {
         Timber.d("onRefresh")
-        //presenter.onRefresh(etSearch!!.text!!.toString())
+        presenter.onRefresh()
     }
 
     private fun recyclerViewInit() {

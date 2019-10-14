@@ -1,6 +1,7 @@
 package com.mss.imagesearcher.model
 
 import android.graphics.Bitmap
+import androidx.lifecycle.MutableLiveData
 import com.mss.imagesearcher.model.entity.ImageInfo
 import com.mss.imagesearcher.model.repositories.FilesRepository
 import com.mss.imagesearcher.model.repositories.ImagesNetRepository
@@ -18,8 +19,8 @@ constructor(val imagesNetRepository: ImagesNetRepository,
     val images: List<ImageInfo>
         get() = imageInfoList
 
-    var currentImage: ImageInfo? = null
-    var currentSearchString = ""
+    val currentImage = MutableLiveData<ImageInfo>(null)
+    val currentSearchString = MutableLiveData<String>("")
 
     fun getImagesFromNetwork(searchText: String, page: Int): Maybe<List<ImageInfo>> {
         return imagesNetRepository.findImages(searchText, page)
@@ -36,7 +37,7 @@ constructor(val imagesNetRepository: ImagesNetRepository,
 
     fun clearImages() {
         imageInfoList.clear()
-        currentImage = null
+        currentImage.value = null
         Timber.d("Image list cleared")
     }
 
@@ -48,7 +49,6 @@ constructor(val imagesNetRepository: ImagesNetRepository,
     }
 
     fun setCurrentQuery(searchText: String) {
-        currentSearchString = searchText
-        clearImages()
+        currentSearchString.value = searchText
     }
 }

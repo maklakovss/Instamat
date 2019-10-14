@@ -15,19 +15,19 @@ class ImageListPresenter @Inject constructor(val model: ImageListModel) : MvpPre
 
     val rvPresenter: RvPresenter
 
-    private var lastQuery = ""
     private var nextPage = 1
     private var lastDisposableQuery: Disposable? = null
     private var end = false
-    private var inProgress: Boolean? = false
+    private var inProgress: Boolean = false
 
     init {
         rvPresenter = RvPresenter()
+        model.currentSearchString.observeForever { startSearch() }
     }
 
     fun onItemClick(position: Int) {
         Timber.d("onItemClick")
-        viewState.openDetailActivity(position)
+        model.currentImage.value = model.images[position]
     }
 
     fun onNeedNextPage() {
@@ -36,27 +36,27 @@ class ImageListPresenter @Inject constructor(val model: ImageListModel) : MvpPre
             Timber.d("End results, return")
             return
         }
-        synchronized(this) {
-            if (inProgress!!) {
-                Timber.d("in progress, return")
-                return
+        synchronized(inProgress) {
+            if (!inProgress) {
+                loadImagesFromNetwork()
             }
-            inProgress = true
         }
-        getNextPage()
+    }
+
+    fun onRefresh() {
+        Timber.d("onRefresh")
+        startSearch()
     }
 
 
-    private fun startSearch(searchText: String) {
-        inProgress = true
+    private fun startSearch() {
         stopNetworkQuery()
-        initNewQuery(searchText)
-        getNextPage()
+        initNewQuery()
+        loadImagesFromNetwork()
     }
 
-    private fun initNewQuery(searchText: String) {
+    private fun initNewQuery() {
         Timber.d("initNewQuery")
-        lastQuery = searchText
         nextPage = 1
         end = false
         model.clearImages()
@@ -71,23 +71,23 @@ class ImageListPresenter @Inject constructor(val model: ImageListModel) : MvpPre
         }
     }
 
-    private fun getNextPage() {
-        loadImagesFromNetwork()
-    }
-
     private fun loadImagesFromNetwork() {
-        lastDisposableQuery = model.getImagesFromNetwork(lastQuery, nextPage)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ imagesNet ->
-                    Timber.d("From network returns %d images on query '%s'", imagesNet.size, lastQuery)
-                    doOnSuccess()
-                },
-                        { this.doOnError(it) })
+        model.currentSearchString.value?.let { searchString ->
+            startProgress()
+            lastDisposableQuery = model.getImagesFromNetwork(searchString, nextPage)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ imagesNet ->
+                        Timber.d("From network returns %d images on query '%s'", imagesNet.size, searchString)
+                        doOnSuccess()
+                    },
+                            { this.doOnError(it) })
+
+        }
     }
 
     private fun doOnError(throwable: Throwable) {
         Timber.d(throwable)
-        inProgress = false
+        stopProgress()
         lastDisposableQuery = null
         end = true
         showMessageListEmpty()
@@ -102,11 +102,25 @@ class ImageListPresenter @Inject constructor(val model: ImageListModel) : MvpPre
 
     private fun doOnSuccess() {
         Timber.d("doOnSuccess")
-        inProgress = false
+        stopProgress()
         nextPage += 1
         viewState.refreshImageList()
         lastDisposableQuery = null
         showMessageListEmpty()
+    }
+
+    private fun startProgress() {
+        synchronized(inProgress) {
+            inProgress = true
+        }
+        viewState.showProgress(true)
+    }
+
+    private fun stopProgress() {
+        synchronized(inProgress) {
+            inProgress = false
+        }
+        viewState.showProgress(false)
     }
 
     inner class RvPresenter : IRvImageListPresenter {

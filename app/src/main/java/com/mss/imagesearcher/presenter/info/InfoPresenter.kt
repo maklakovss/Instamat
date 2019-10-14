@@ -9,7 +9,7 @@ import com.mss.imagesearcher.view.info.InfoView
 class InfoPresenter(private val model: ImageListModel) : MvpPresenter<InfoView>() {
 
     fun onCreate() {
-        model.currentImage?.let {
+        model.currentImage.value?.let {
             viewState.showInfo(it)
         }
     }
