@@ -22,7 +22,7 @@ class ImageListPresenter @Inject constructor(val model: ImageListModel) : MvpPre
 
     init {
         rvPresenter = RvPresenter()
-        model.currentSearchString.observeForever { startSearch() }
+        model.currentQuery.observeForever { startSearch() }
     }
 
     fun onItemClick(position: Int) {
@@ -73,7 +73,7 @@ class ImageListPresenter @Inject constructor(val model: ImageListModel) : MvpPre
     }
 
     private fun loadImagesFromNetwork() {
-        model.currentSearchString.value?.let { searchString ->
+        model.currentQuery.value?.let { searchString ->
             startProgress()
             lastDisposableQuery = model.getImagesFromNetwork(searchString, nextPage)
                     .observeOn(AndroidSchedulers.mainThread())

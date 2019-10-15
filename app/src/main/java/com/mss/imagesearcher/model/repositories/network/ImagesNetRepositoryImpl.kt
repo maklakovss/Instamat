@@ -1,6 +1,7 @@
 package com.mss.imagesearcher.model.repositories.network
 
 import com.mss.imagesearcher.model.entity.ImageInfo
+import com.mss.imagesearcher.model.entity.QueryParams
 import com.mss.imagesearcher.model.repositories.ImagesNetRepository
 import io.reactivex.Maybe
 import io.reactivex.schedulers.Schedulers
@@ -13,7 +14,6 @@ class ImagesNetRepositoryImpl(private val pixabayAPI: PixabayAPI) : ImagesNetRep
         private val KEY = "12657704-170e4200b7841bc79a107ea6e"
         private val LANG_RU = "ru"
         private val LANG_EN = "en"
-        private val IMAGE_TYPE = "photo"
         private val IMAGES_PER_PAGE = 50
     }
 
@@ -25,11 +25,11 @@ class ImagesNetRepositoryImpl(private val pixabayAPI: PixabayAPI) : ImagesNetRep
             } else LANG_EN
         }
 
-    override fun findImages(query: String, pageNumber: Int): Maybe<List<ImageInfo>> {
+    override fun findImages(query: QueryParams, pageNumber: Int): Maybe<List<ImageInfo>> {
         return pixabayAPI
-                .findImages(KEY, query, lang, IMAGE_TYPE, pageNumber, IMAGES_PER_PAGE)
+                .findImages(KEY, query.query, lang, query.imageType, query.orientation, query.category, query.minWidth, query.minHeight, query.colors, query.imageOrder, pageNumber, IMAGES_PER_PAGE)
                 .doOnSubscribe { Timber.d("Start get images from network '%s' page %d", query, pageNumber) }
-                .doOnSuccess { (_, _, hits) -> Timber.d("End get images %d from network '%s' page %d", hits!!.size, query, pageNumber) }
+                .doOnSuccess { (_, _, hits) -> Timber.d("End get images %d from network '%s' page %d", hits!!.size, query.toString(), pageNumber) }
                 .map { (_, _, hits) -> NetMapper.mapFromNet(hits!!) }
                 .subscribeOn(Schedulers.io())
     }

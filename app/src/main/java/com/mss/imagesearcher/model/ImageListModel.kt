@@ -3,6 +3,7 @@ package com.mss.imagesearcher.model
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import com.mss.imagesearcher.model.entity.ImageInfo
+import com.mss.imagesearcher.model.entity.QueryParams
 import com.mss.imagesearcher.model.repositories.FilesRepository
 import com.mss.imagesearcher.model.repositories.ImagesNetRepository
 import io.reactivex.Maybe
@@ -19,20 +20,20 @@ constructor(val imagesNetRepository: ImagesNetRepository,
 
     val images: List<ImageInfo> get() = imageInfoList
     val currentImage = MutableLiveData<ImageInfo>(null)
-    val currentSearchString = MutableLiveData<String>("")
+    val currentQuery = MutableLiveData<QueryParams>()
     val needShowPage = MutableLiveData<PageType>(PageType.NONE)
 
     enum class PageType {
         NONE, HISTORY, SETTINGS, LIST, DETAIL, INFO
     }
 
-    fun getImagesFromNetwork(searchText: String, page: Int): Maybe<List<ImageInfo>> {
-        return imagesNetRepository.findImages(searchText, page)
+    fun getImagesFromNetwork(query: QueryParams, page: Int): Maybe<List<ImageInfo>> {
+        return imagesNetRepository.findImages(query, page)
                 .doOnSuccess { images ->
                     imageInfoList.addAll(images)
                     Timber.d("Added from network %d images on query '%s' page %d, all - %d",
                             images.size,
-                            searchText,
+                            query.toString(),
                             page,
                             imageInfoList.size)
                 }
@@ -53,6 +54,6 @@ constructor(val imagesNetRepository: ImagesNetRepository,
     }
 
     fun setCurrentQuery(searchText: String) {
-        currentSearchString.value = searchText
+        currentQuery.value = QueryParams(query = searchText)
     }
 }

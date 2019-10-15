@@ -12,7 +12,13 @@ interface PixabayAPI {
     fun findImages(@Query("key") key: String,
                    @Query("q") query: String,
                    @Query("lang") lang: String,
-                   @Query("image_type") imageType: String,
+                   @Query("image_type") imageType: String?,
+                   @Query("orientation") orientation: String?,
+                   @Query("category") category: String?,
+                   @Query("min_width") minWidth: Int?,
+                   @Query("min_height") minHeight: Int?,
+                   @Query("colors") colors: String?,
+                   @Query("order") order: String?,
                    @Query("page") pageNumber: Int,
                    @Query("per_page") imagesPerPage: Int): Maybe<ImagesResponse>
 }

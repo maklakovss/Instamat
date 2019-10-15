@@ -52,6 +52,7 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
             }
             true
         }
+        presenter.onCreate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
