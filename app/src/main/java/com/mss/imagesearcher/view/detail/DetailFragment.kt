@@ -30,24 +30,19 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
         App.appComponent.inject(this)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_detail, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Timber.d("onCreate")
-        presenter.onCreate()
-    }
-
     @ProvidePresenter
     fun providePresenter(): DetailPresenter {
         return presenter
-    }
-
-    override fun showInfo() {
-        Timber.d("openDetailFragment")
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -57,10 +52,6 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.miInfo -> {
-                presenter.onInfoClick()
-                return true
-            }
             R.id.miSave -> {
                 saveImage()
                 return true

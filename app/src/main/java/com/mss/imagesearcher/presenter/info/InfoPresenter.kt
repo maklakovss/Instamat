@@ -8,9 +8,13 @@ import com.mss.imagesearcher.view.info.InfoView
 @InjectViewState
 class InfoPresenter(private val model: ImageListModel) : MvpPresenter<InfoView>() {
 
-    fun onCreate() {
-        model.currentImage.value?.let {
-            viewState.showInfo(it)
+    init {
+        model.currentImage.observeForever {
+            if (it == null) {
+                viewState.clearInfo()
+            } else {
+                viewState.showInfo(it)
+            }
         }
     }
 }

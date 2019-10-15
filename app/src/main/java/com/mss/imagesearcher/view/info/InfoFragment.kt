@@ -12,7 +12,6 @@ import com.mss.imagesearcher.R
 import com.mss.imagesearcher.model.entity.ImageInfo
 import com.mss.imagesearcher.presenter.info.InfoPresenter
 import kotlinx.android.synthetic.main.fragment_info.*
-import timber.log.Timber
 import javax.inject.Inject
 
 class InfoFragment : MvpAppCompatFragment(), InfoView {
@@ -30,12 +29,6 @@ class InfoFragment : MvpAppCompatFragment(), InfoView {
         return inflater.inflate(R.layout.fragment_info, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Timber.d("onCreate")
-        presenter.onCreate()
-    }
-
     @ProvidePresenter
     fun providePresenter(): InfoPresenter {
         return presenter
@@ -49,5 +42,15 @@ class InfoFragment : MvpAppCompatFragment(), InfoView {
         tvViews!!.text = imageInfo.views.toString()
         tvComments!!.text = imageInfo.comments.toString()
         tvUrl!!.text = imageInfo.pageUrl
+    }
+
+    override fun clearInfo() {
+        tvSize!!.text = ""
+        tvType!!.text = ""
+        tvTags!!.text = ""
+        tvLikes!!.text = ""
+        tvViews!!.text = ""
+        tvComments!!.text = ""
+        tvUrl!!.text = ""
     }
 }

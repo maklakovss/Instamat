@@ -14,13 +14,15 @@ import javax.inject.Inject
 class DetailPresenter @Inject
 constructor(val model: ImageListModel) : MvpPresenter<DetailView>() {
 
-    fun onCreate() {
-        Timber.d("onCreate")
-        viewState.apply {
-            showImage(false)
-            model.currentImage.value?.let {
-                showProgress(true)
-                startLoadImage(it.largeImageURL)
+    init {
+        model.currentImage.observeForever {
+            viewState.apply {
+                Timber.d("current image changed")
+                showImage(false)
+                model.currentImage.value?.let {
+                    showProgress(true)
+                    startLoadImage(it.largeImageURL)
+                }
             }
         }
     }
@@ -63,10 +65,5 @@ constructor(val model: ImageListModel) : MvpPresenter<DetailView>() {
             Timber.e(e)
             viewState.showFailedSaveMessage()
         }
-
-    }
-
-    fun onInfoClick() {
-        viewState.showInfo()
     }
 }

@@ -24,7 +24,4 @@ interface DetailView : MvpView {
 
     @StateStrategyType(value = AddToEndSingleStrategy::class)
     fun showImage(visible: Boolean)
-
-    @StateStrategyType(value = OneExecutionStateStrategy::class)
-    fun showInfo()
 }
