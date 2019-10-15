@@ -25,7 +25,7 @@ class NetworkModule {
                 .baseUrl(URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()))
-                //                .client(new OkHttpClient.Builder().addNetworkInterceptor(new StethoInterceptor()).build())
+                //.client(new OkHttpClient.Builder().addNetworkInterceptor(new StethoInterceptor()).build())
                 //.client(OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().setLevel(if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE)).build())
                 .build()
                 .create(PixabayAPI::class.java)
