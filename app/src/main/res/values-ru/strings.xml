@@ -24,4 +24,58 @@
     <string name="results_page">Результаты</string>
     <string name="image_page">Картинка</string>
     <string name="info_page">Информация</string>
+
+    <array name="image_type">
+        <item>все</item>
+        <item>фото</item>
+        <item>иллюстрации</item>
+        <item>вектор</item>
+    </array>
+
+    <array name="image_orientation">
+        <item>все</item>
+        <item>горизонтальная</item>
+        <item>вертикальная</item>
+    </array>
+
+    <array name="image_category">
+        <item>мода</item>
+        <item>природа</item>
+        <item>ландшафт</item>
+        <item>наука</item>
+        <item>образование</item>
+        <item>люди</item>
+        <item>чувства</item>
+        <item>религия</item>
+        <item>здоровье</item>
+        <item>места</item>
+        <item>животные</item>
+        <item>промышленность</item>
+        <item>еда</item>
+        <item>компьютеры</item>
+        <item>спорт</item>
+        <item>транспорт</item>
+        <item>путешествие</item>
+        <item>здания</item>
+        <item>бизнес</item>
+        <item>музыка</item>
+    </array>
+
+    <array name="image_colors">
+        <item>grayscale</item>
+        <item>transparent</item>
+        <item>red</item>
+        <item>orange</item>
+        <item>yellow</item>
+        <item>green</item>
+        <item>turquoise</item>
+        <item>blue</item>
+        <item>lilac</item>
+        <item>pink</item>
+        <item>white</item>
+        <item>gray</item>
+        <item>black</item>
+        <item>brown</item>
+    </array>
+
 </resources>

@@ -27,6 +27,58 @@
     <string name="image_page">Image</string>
     <string name="info_page">Info</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <array name="image_type">
+        <item>all</item>
+        <item>photo</item>
+        <item>illustration</item>
+        <item>vector</item>
+    </array>
+
+    <array name="image_orientation">
+        <item>all</item>
+        <item>horizontal</item>
+        <item>vertical</item>
+    </array>
+
+    <array name="image_category">
+        <item>fashion</item>
+        <item>nature</item>
+        <item>backgrounds</item>
+        <item>science</item>
+        <item>education</item>
+        <item>people</item>
+        <item>feelings</item>
+        <item>religion</item>
+        <item>health</item>
+        <item>places</item>
+        <item>animals</item>
+        <item>industry</item>
+        <item>food</item>
+        <item>computer</item>
+        <item>sports</item>
+        <item>transportation</item>
+        <item>travel</item>
+        <item>buildings</item>
+        <item>business</item>
+        <item>music</item>
+    </array>
+
+    <array name="image_colors">
+        <item>grayscale</item>
+        <item>transparent</item>
+        <item>red</item>
+        <item>orange</item>
+        <item>yellow</item>
+        <item>green</item>
+        <item>turquoise</item>
+        <item>blue</item>
+        <item>lilac</item>
+        <item>pink</item>
+        <item>white</item>
+        <item>gray</item>
+        <item>black</item>
+        <item>brown</item>
+    </array>
+
+
 </resources>

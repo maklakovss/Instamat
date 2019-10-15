@@ -20,7 +20,7 @@ open class App : MultiDexApplication() {
         super.onCreate()
         initLogging()
         initAppComponent()
-        initDebug()
+        //initDebug()
     }
 
     open fun initDebug() {
