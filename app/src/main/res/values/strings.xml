@@ -26,6 +26,14 @@
     <string name="results_page">Results</string>
     <string name="image_page">Image</string>
     <string name="info_page">Info</string>
+    <string name="image_type_label">Image type</string>
+    <string name="orientation_label">Orientation</string>
+    <string name="category_label">Category</string>
+    <string name="min_width_label">Min width</string>
+    <string name="min_height_label">Min height</string>
+    <string name="colors_label">Colors</string>
+    <string name="order_label">Order</string>
+    <string name="clear_label">Clear</string>
 
     <array name="image_type">
         <item>all</item>
@@ -80,5 +88,9 @@
         <item>brown</item>
     </array>
 
+    <array name="image_order">
+        <item>popular</item>
+        <item>latest</item>
+    </array>
 
 </resources>

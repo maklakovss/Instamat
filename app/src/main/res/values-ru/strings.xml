@@ -24,6 +24,14 @@
     <string name="results_page">Результаты</string>
     <string name="image_page">Картинка</string>
     <string name="info_page">Информация</string>
+    <string name="image_type_label">Тип изображения</string>
+    <string name="orientation_label">Ориентация</string>
+    <string name="category_label">Категория</string>
+    <string name="min_width_label">Мин. ширина</string>
+    <string name="min_height_label">Мин. высота</string>
+    <string name="colors_label">Цвет</string>
+    <string name="order_label">Сортировка</string>
+    <string name="clear_label">Очистить</string>
 
     <array name="image_type">
         <item>все</item>
@@ -77,5 +85,11 @@
         <item>black</item>
         <item>brown</item>
     </array>
+
+    <array name="image_order">
+        <item>по популярности</item>
+        <item>по времени</item>
+    </array>
+
 
 </resources>
