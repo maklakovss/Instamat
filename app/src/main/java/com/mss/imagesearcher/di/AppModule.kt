@@ -2,6 +2,7 @@ package com.mss.imagesearcher.di
 
 import android.content.Context
 import com.mss.imagesearcher.model.ImageListModel
+import com.mss.imagesearcher.model.repositories.DBRepository
 import com.mss.imagesearcher.model.repositories.FilesRepository
 import com.mss.imagesearcher.model.repositories.ImagesNetRepository
 import com.mss.imagesearcher.presenter.history.HistoryPresenter
@@ -28,10 +29,12 @@ class AppModule(private val appContext: Context) {
     @Provides
     fun provideImageListModel(//@NonNull final CacheDBRepository cacheDBRepository,
             imagesNetRepository: ImagesNetRepository,
-            filesRepository: FilesRepository): ImageListModel {
+            filesRepository: FilesRepository,
+            dbRepository: DBRepository): ImageListModel {
         return ImageListModel(//cacheDBRepository,
                 imagesNetRepository,
-                filesRepository)
+                filesRepository,
+                dbRepository)
     }
 
     @Singleton

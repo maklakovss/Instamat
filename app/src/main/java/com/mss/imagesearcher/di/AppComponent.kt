@@ -12,7 +12,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AppModule::class, NetworkModule::class, FilesModule::class])
+@Component(modules = [AppModule::class, NetworkModule::class, FilesModule::class, DBModule::class])
 interface AppComponent {
 
     fun inject(mainActivity: MainActivity)

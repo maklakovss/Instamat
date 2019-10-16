@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import com.mss.imagesearcher.model.entity.ImageInfo
 import com.mss.imagesearcher.model.entity.QueryParams
+import com.mss.imagesearcher.model.repositories.DBRepository
 import com.mss.imagesearcher.model.repositories.FilesRepository
 import com.mss.imagesearcher.model.repositories.ImagesNetRepository
 import io.reactivex.Maybe
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 class ImageListModel @Inject
 constructor(val imagesNetRepository: ImagesNetRepository,
-            val filesRepository: FilesRepository) {
+            val filesRepository: FilesRepository,
+            val dbRepository: DBRepository) {
 
     private val imageInfoList: MutableList<ImageInfo> = ArrayList()
 
@@ -25,6 +27,15 @@ constructor(val imagesNetRepository: ImagesNetRepository,
 
     enum class PageType {
         NONE, HISTORY, SETTINGS, LIST, DETAIL, INFO
+    }
+
+    init {
+        currentQuery.observeForever {
+            if (it != null) {
+                dbRepository.addQueryInHistory(it)
+                        .subscribe()
+            }
+        }
     }
 
     fun getImagesFromNetwork(query: QueryParams, page: Int): Maybe<List<ImageInfo>> {
