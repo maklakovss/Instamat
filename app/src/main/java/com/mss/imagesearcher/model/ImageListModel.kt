@@ -54,6 +54,10 @@ constructor(val imagesNetRepository: ImagesNetRepository,
     }
 
     fun setCurrentQuery(searchText: String) {
-        currentQuery.value = QueryParams(query = searchText)
+        if (currentQuery.value == null) {
+            currentQuery.value = QueryParams(query = searchText)
+        } else {
+            currentQuery.value?.query = searchText
+        }
     }
 }

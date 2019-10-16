@@ -34,6 +34,7 @@
     <string name="colors_label">Colors</string>
     <string name="order_label">Order</string>
     <string name="clear_label">Clear</string>
+    <string name="apply">Apply</string>
 
     <array name="image_type">
         <item>all</item>
@@ -49,6 +50,7 @@
     </array>
 
     <array name="image_category">
+        <item>all</item>
         <item>fashion</item>
         <item>nature</item>
         <item>backgrounds</item>
@@ -72,6 +74,7 @@
     </array>
 
     <array name="image_colors">
+        <item>all</item>
         <item>grayscale</item>
         <item>transparent</item>
         <item>red</item>

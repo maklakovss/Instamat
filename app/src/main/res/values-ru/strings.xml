@@ -32,6 +32,7 @@
     <string name="colors_label">Цвет</string>
     <string name="order_label">Сортировка</string>
     <string name="clear_label">Очистить</string>
+    <string name="apply">Apply</string>
 
     <array name="image_type">
         <item>все</item>
@@ -47,6 +48,7 @@
     </array>
 
     <array name="image_category">
+        <item>все</item>
         <item>мода</item>
         <item>природа</item>
         <item>ландшафт</item>
@@ -70,6 +72,7 @@
     </array>
 
     <array name="image_colors">
+        <item>all</item>
         <item>grayscale</item>
         <item>transparent</item>
         <item>red</item>
