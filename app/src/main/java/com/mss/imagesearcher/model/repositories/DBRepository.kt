@@ -1,13 +1,13 @@
 package com.mss.imagesearcher.model.repositories
 
 import com.mss.imagesearcher.model.entity.QueryParams
-import io.reactivex.Maybe
+import io.reactivex.Single
 
 interface DBRepository {
 
-    fun getHistoryQueries(): Maybe<List<QueryParams>>
+    fun getHistoryQueries(): Single<List<QueryParams>>
 
-    fun addQueryInHistory(queryParams: QueryParams): Maybe<Int>
+    fun addQueryInHistory(queryParams: QueryParams): Single<Long>
 
-    fun clearHistory(): Maybe<Int>
+    fun clearHistory(): Single<Int>
 }

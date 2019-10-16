@@ -10,7 +10,7 @@ interface PixabayAPI {
 
     @GET("api/")
     fun findImages(@Query("key") key: String,
-                   @Query("q") query: String,
+                   @Query("q") query: String?,
                    @Query("lang") lang: String,
                    @Query("image_type") imageType: String?,
                    @Query("orientation") orientation: String?,

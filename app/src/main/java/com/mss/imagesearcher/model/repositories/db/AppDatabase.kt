@@ -6,5 +6,7 @@ import com.mss.imagesearcher.model.repositories.db.entity.QueryParamsDB
 
 @Database(entities = [QueryParamsDB::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun historyDao(): HistoryDao
+
+    abstract fun queryParamsDao(): QueryParamsDao
+
 }

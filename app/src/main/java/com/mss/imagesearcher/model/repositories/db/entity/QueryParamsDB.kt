@@ -1,12 +1,29 @@
 package com.mss.imagesearcher.model.repositories.db.entity
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "QueryParams")
 data class QueryParamsDB(
-        var query: String = "",
-        var imageType: String? = "all",
-        var orientation: String? = "all",
-        var category: String? = null,
-        var minWidth: Int? = null,
-        var minHeight: Int? = null,
-        var colors: String? = null,
-        var imageOrder: String? = "popular"
+
+        var id: Long,
+
+        @PrimaryKey
+        var hash: String,
+
+        var query: String?,
+
+        var imageType: String?,
+
+        var orientation: String?,
+
+        var category: String?,
+
+        var minWidth: Int?,
+
+        var minHeight: Int?,
+
+        var colors: String?,
+
+        var imageOrder: String?
 )

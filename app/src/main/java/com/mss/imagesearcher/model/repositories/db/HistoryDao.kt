@@ -8,9 +8,9 @@ import com.mss.imagesearcher.model.repositories.db.entity.QueryParamsDB
 import io.reactivex.Single
 
 @Dao
-interface HistoryDao {
+interface QueryParamsDao {
 
-    @Query("SELECT * FROM QueryParams ORDER BY dataUsing DESC")
+    @Query("SELECT * FROM QueryParams ORDER BY id DESC")
     fun getAll(): Single<List<QueryParamsDB>>
 
     @Query("DELETE FROM QueryParams")
