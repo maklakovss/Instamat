@@ -35,6 +35,7 @@
     <string name="order_label">Order</string>
     <string name="clear_label">Clear</string>
     <string name="apply">Apply</string>
+    <string name="clear_history">Clear history</string>
 
     <array name="image_type">
         <item>all</item>

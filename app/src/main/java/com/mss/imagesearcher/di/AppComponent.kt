@@ -2,6 +2,7 @@ package com.mss.imagesearcher.di
 
 
 import com.mss.imagesearcher.view.detail.DetailFragment
+import com.mss.imagesearcher.view.history.HistoryAdapter
 import com.mss.imagesearcher.view.history.HistoryFragment
 import com.mss.imagesearcher.view.imagelist.ImageListAdapter
 import com.mss.imagesearcher.view.imagelist.ImageListFragment
@@ -19,8 +20,6 @@ interface AppComponent {
 
     fun inject(detailFragment: DetailFragment)
 
-    fun inject(imageListAdapter: ImageListAdapter)
-
     fun inject(infoFragment: InfoFragment)
 
     fun inject(imageListFragment: ImageListFragment)
@@ -28,4 +27,8 @@ interface AppComponent {
     fun inject(historyFragment: HistoryFragment)
 
     fun inject(settingsFragment: SettingsFragment)
+
+    fun inject(imageListAdapter: ImageListAdapter)
+
+    fun inject(historyAdapter: HistoryAdapter)
 }

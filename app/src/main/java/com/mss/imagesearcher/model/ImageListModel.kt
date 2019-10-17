@@ -8,6 +8,7 @@ import com.mss.imagesearcher.model.repositories.DBRepository
 import com.mss.imagesearcher.model.repositories.FilesRepository
 import com.mss.imagesearcher.model.repositories.ImagesNetRepository
 import io.reactivex.Maybe
+import io.reactivex.Single
 import timber.log.Timber
 import java.io.IOException
 import java.util.*
@@ -19,21 +20,28 @@ constructor(val imagesNetRepository: ImagesNetRepository,
             val dbRepository: DBRepository) {
 
     private val imageInfoList: MutableList<ImageInfo> = ArrayList()
-
     val images: List<ImageInfo> get() = imageInfoList
+
     val currentImage = MutableLiveData<ImageInfo>(null)
     val currentQuery = MutableLiveData<QueryParams>()
     val needShowPage = MutableLiveData<PageType>(PageType.NONE)
+    val queryParamsList = MutableLiveData<MutableList<QueryParams>>(arrayListOf())
 
     enum class PageType {
         NONE, HISTORY, SETTINGS, LIST, DETAIL, INFO
     }
 
     init {
-        currentQuery.observeForever {
-            if (it != null) {
-                dbRepository.addQueryInHistory(it)
-                        .subscribe()
+        currentQuery.observeForever { queryParams ->
+            if (queryParams != null) {
+                dbRepository.addQueryInHistory(queryParams)
+                        .subscribe(
+                                {
+                                    queryParamsList.value?.add(0, queryParams)
+                                    queryParamsList.postValue(queryParamsList.value)
+                                },
+                                { Timber.e(it) }
+                        )
             }
         }
     }
@@ -70,5 +78,19 @@ constructor(val imagesNetRepository: ImagesNetRepository,
         } else {
             currentQuery.value?.query = searchText
         }
+    }
+
+    fun clearHistory(): Single<Int> {
+        queryParamsList.value?.clear()
+        queryParamsList.postValue(queryParamsList.value)
+        return dbRepository.clearHistory()
+    }
+
+    fun loadHistory(): Single<List<QueryParams>> {
+        return dbRepository.getHistoryQueries()
+                .doOnSuccess {
+                    queryParamsList.value?.addAll(it)
+                    queryParamsList.postValue(queryParamsList.value)
+                }
     }
 }

@@ -33,6 +33,7 @@
     <string name="order_label">Сортировка</string>
     <string name="clear_label">Очистить</string>
     <string name="apply">Apply</string>
+    <string name="clear_history">Clear history</string>
 
     <array name="image_type">
         <item>все</item>
