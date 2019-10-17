@@ -28,7 +28,8 @@ class HistoryPresenter(private val model: ImageListModel) : MvpPresenter<History
     }
 
     fun onItemClick(position: Int) {
-
+        model.currentQuery.value = model.queryParamsList.value?.get(position)
+        model.needShowPage.value = ImageListModel.PageType.LIST
     }
 
     inner class RvPresenter : IRvHistoryPresenter {
