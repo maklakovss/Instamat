@@ -16,8 +16,9 @@ class MainPresenter @Inject constructor(val model: ImageListModel) : MvpPresente
                 return@observeForever
             }
             when (it) {
-                ImageListModel.PageType.DETAIL -> viewState.goToDetail()
+                ImageListModel.PageType.HISTORY -> viewState.goToHistory()
                 ImageListModel.PageType.LIST -> viewState.goToList()
+                ImageListModel.PageType.DETAIL -> viewState.goToDetail()
                 else -> return@observeForever
             }
             model.needShowPage.value = ImageListModel.PageType.NONE

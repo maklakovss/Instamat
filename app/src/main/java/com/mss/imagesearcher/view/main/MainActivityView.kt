@@ -13,6 +13,9 @@ interface MainActivityView : MvpView {
     fun showPrivacyPolicy()
 
     @StateStrategyType(value = OneExecutionStateStrategy::class)
+    fun goToHistory()
+
+    @StateStrategyType(value = OneExecutionStateStrategy::class)
     fun goToList()
 
     @StateStrategyType(value = OneExecutionStateStrategy::class)

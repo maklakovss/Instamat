@@ -24,7 +24,7 @@ constructor(val imagesNetRepository: ImagesNetRepository,
 
     val currentImage = MutableLiveData<ImageInfo>(null)
     val currentQuery = MutableLiveData<QueryParams>()
-    val needShowPage = MutableLiveData<PageType>(PageType.NONE)
+    val needShowPage = MutableLiveData<PageType>(PageType.HISTORY)
     val queryParamsList = MutableLiveData<MutableList<QueryParams>>(arrayListOf())
 
     enum class PageType {

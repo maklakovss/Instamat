@@ -90,6 +90,10 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
         startActivity(browserIntent)
     }
 
+    override fun goToHistory() {
+        bottomNavigationView.selectedItemId = R.id.npHistory
+    }
+
     override fun goToList() {
         bottomNavigationView.selectedItemId = R.id.npResults
     }
