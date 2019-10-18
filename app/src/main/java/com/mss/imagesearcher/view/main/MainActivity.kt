@@ -47,7 +47,7 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
                 R.id.npHistory -> showFragment<HistoryFragment>()
                 R.id.npSettings -> showFragment<SettingsFragment>()
                 R.id.npResults -> showFragment<ImageListFragment>()
-                R.id.npImage -> showFragment<DetailFragment>()
+                R.id.npDetail -> showFragment<DetailFragment>()
                 R.id.npInfo -> showFragment<InfoFragment>()
             }
             true
@@ -94,12 +94,20 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
         bottomNavigationView.selectedItemId = R.id.npHistory
     }
 
+    override fun goToSettings() {
+        bottomNavigationView.selectedItemId = R.id.npSettings
+    }
+
     override fun goToList() {
         bottomNavigationView.selectedItemId = R.id.npResults
     }
 
     override fun goToDetail() {
-        bottomNavigationView.selectedItemId = R.id.npImage
+        bottomNavigationView.selectedItemId = R.id.npDetail
+    }
+
+    override fun goToInfo() {
+        bottomNavigationView.selectedItemId = R.id.npInfo
     }
 
     private inline fun <reified T : Fragment> showFragment() {

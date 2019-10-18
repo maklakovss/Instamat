@@ -1,6 +1,7 @@
 package com.mss.imagesearcher.model
 
 import android.graphics.Bitmap
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.mss.imagesearcher.model.entity.ImageInfo
 import com.mss.imagesearcher.model.entity.QueryParams
@@ -22,28 +23,15 @@ constructor(val imagesNetRepository: ImagesNetRepository,
     private val imageInfoList: MutableList<ImageInfo> = ArrayList()
     val images: List<ImageInfo> get() = imageInfoList
 
+    val _currentQuery = MutableLiveData<QueryParams>()
+    val currentQuery: LiveData<QueryParams> get() = _currentQuery
+
     val currentImage = MutableLiveData<ImageInfo>(null)
-    val currentQuery = MutableLiveData<QueryParams>()
     val needShowPage = MutableLiveData<PageType>(PageType.HISTORY)
     val queryParamsList = MutableLiveData<MutableList<QueryParams>>(arrayListOf())
 
     enum class PageType {
         NONE, HISTORY, SETTINGS, LIST, DETAIL, INFO
-    }
-
-    init {
-        currentQuery.observeForever { queryParams ->
-            if (queryParams != null) {
-                dbRepository.addQueryInHistory(queryParams)
-                        .subscribe(
-                                {
-                                    queryParamsList.value?.add(0, queryParams)
-                                    queryParamsList.postValue(queryParamsList.value)
-                                },
-                                { Timber.e(it) }
-                        )
-            }
-        }
     }
 
     fun getImagesFromNetwork(query: QueryParams, page: Int): Maybe<List<ImageInfo>> {
@@ -72,25 +60,37 @@ constructor(val imagesNetRepository: ImagesNetRepository,
         return path
     }
 
-    fun setCurrentQuery(searchText: String) {
-        if (currentQuery.value == null) {
-            currentQuery.value = QueryParams(query = searchText)
-        } else {
-            currentQuery.value?.query = searchText
-        }
+    fun setCurrentQuery(queryParams: QueryParams) {
+        _currentQuery.value = queryParams
     }
 
-    fun clearHistory(): Single<Int> {
-        queryParamsList.value?.clear()
-        queryParamsList.postValue(queryParamsList.value)
+    fun clearHistoryInDB(): Single<Int> {
         return dbRepository.clearHistory()
     }
 
-    fun loadHistory(): Single<List<QueryParams>> {
+    fun loadHistoryFromDB(): Single<List<QueryParams>> {
         return dbRepository.getHistoryQueries()
-                .doOnSuccess {
-                    queryParamsList.value?.addAll(it)
-                    queryParamsList.postValue(queryParamsList.value)
-                }
+    }
+
+    fun clearHistoryInMemory() {
+        queryParamsList.value?.clear()
+        queryParamsList.value = queryParamsList.value
+
+    }
+
+    fun setHistoryInMemory(list: List<QueryParams>) {
+        queryParamsList.value?.clear()
+        queryParamsList.value?.addAll(list)
+        queryParamsList.value = queryParamsList.value
+
+    }
+
+    fun saveQueryParamsToDB(queryParams: QueryParams): Single<Long> {
+        return dbRepository.addQueryInHistory(queryParams)
+    }
+
+    fun popParamQueryToListInMemory(queryParams: QueryParams) {
+        queryParamsList.value?.add(0, queryParams)
+        queryParamsList.value = queryParamsList.value
     }
 }

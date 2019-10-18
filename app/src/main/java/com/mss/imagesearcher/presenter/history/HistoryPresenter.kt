@@ -15,21 +15,31 @@ class HistoryPresenter(private val model: ImageListModel) : MvpPresenter<History
 
     init {
         model.queryParamsList.observeForever { viewState.refreshHistoryList(it) }
-        model.loadHistory().subscribe()
+        model.loadHistoryFromDB()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ model.setHistoryInMemory(it) }, { Timber.e(it) })
     }
 
     fun onClearHistoryClick() {
-        model.clearHistory()
+        model.clearHistoryInDB()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { viewState.refreshHistoryList(model.queryParamsList.value) },
-                        { Timber.e(it) }
-                )
+                .subscribe({ model.clearHistoryInMemory() }, { Timber.e(it) })
     }
 
     fun onItemClick(position: Int) {
-        model.currentQuery.value = model.queryParamsList.value?.get(position)
-        model.needShowPage.value = ImageListModel.PageType.LIST
+        model.queryParamsList.value?.let {
+            val queryParams = it.get(position)
+            model.setCurrentQuery(queryParams)
+            model.saveQueryParamsToDB(queryParams)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            {
+                                model.popParamQueryToListInMemory(queryParams)
+                                model.needShowPage.value = ImageListModel.PageType.LIST
+                            },
+                            { Timber.e(it) }
+                    )
+        }
     }
 
     inner class RvPresenter : IRvHistoryPresenter {
