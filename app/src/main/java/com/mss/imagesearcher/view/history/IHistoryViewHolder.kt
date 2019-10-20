@@ -7,4 +7,7 @@ interface IHistoryViewHolder {
     fun setText(text: String)
 
     fun setDescription(description: String)
+
+    fun getStringByRes(idRes: Int): String
+
 }
