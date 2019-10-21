@@ -90,7 +90,10 @@ constructor(val imagesNetRepository: ImagesNetRepository,
     }
 
     fun popParamQueryToListInMemory(queryParams: QueryParams) {
-        queryParamsList.value?.add(0, queryParams)
+        queryParamsList.value?.let { list ->
+            list.removeAll(list.filter { it.equals(queryParams) })
+            list.add(0, queryParams)
+        }
         queryParamsList.value = queryParamsList.value
     }
 }
