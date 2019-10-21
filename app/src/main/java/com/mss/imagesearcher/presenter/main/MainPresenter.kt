@@ -12,6 +12,8 @@ import javax.inject.Inject
 @InjectViewState
 class MainPresenter @Inject constructor(val model: ImageListModel) : MvpPresenter<MainActivityView>() {
 
+    var lastQuery: String = ""
+
     init {
         model.needShowPage.observeForever {
             when (it) {
@@ -23,6 +25,13 @@ class MainPresenter @Inject constructor(val model: ImageListModel) : MvpPresente
                 else -> return@observeForever
             }
             model.needShowPage.value = ImageListModel.PageType.NONE
+        }
+
+        model.currentQuery.observeForever {
+            if (it.query != lastQuery) {
+                lastQuery = it.query ?: ""
+                viewState.setSearchText(lastQuery)
+            }
         }
     }
 
@@ -36,9 +45,12 @@ class MainPresenter @Inject constructor(val model: ImageListModel) : MvpPresente
 
     fun onSearchClick(searchText: String) {
         Timber.d("onSearchClick")
+        lastQuery = searchText
         var queryParams: QueryParams? = model.currentQuery.value
         if (queryParams == null) {
             queryParams = QueryParams()
+        } else {
+            queryParams = queryParams.copy()
         }
         queryParams.query = searchText
         model.setCurrentQuery(queryParams)

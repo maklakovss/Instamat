@@ -26,4 +26,7 @@ interface MainActivityView : MvpView {
 
     @StateStrategyType(value = OneExecutionStateStrategy::class)
     fun goToInfo()
+
+    @StateStrategyType(value = OneExecutionStateStrategy::class)
+    fun setSearchText(query: String)
 }

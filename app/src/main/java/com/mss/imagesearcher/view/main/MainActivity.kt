@@ -110,6 +110,10 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
         bottomNavigationView.selectedItemId = R.id.npInfo
     }
 
+    override fun setSearchText(query: String) {
+        etSearch.setText(query)
+    }
+
     private inline fun <reified T : Fragment> showFragment() {
         val fragments = supportFragmentManager.fragments.filterIsInstance<T>()
         val ft = supportFragmentManager.beginTransaction()
