@@ -19,10 +19,8 @@ constructor(val model: ImageListModel) : MvpPresenter<DetailView>() {
             viewState.apply {
                 Timber.d("current image changed")
                 showImage(false)
-                model.currentImage.value?.let {
-                    showProgress(true)
-                    startLoadImage(it.largeImageURL)
-                }
+                showProgress(true)
+                startLoadImage(it.largeImageURL)
             }
         }
     }
@@ -41,8 +39,10 @@ constructor(val model: ImageListModel) : MvpPresenter<DetailView>() {
     fun onSaveClick(bitmap: Bitmap) {
         try {
             Timber.d("onSaveClick")
-            model.saveBitmap(model.images[0], bitmap)
-            viewState.showSuccessSaveMessage()
+            model.currentImage.value?.let {
+                model.saveBitmap(it, bitmap)
+                viewState.showSuccessSaveMessage()
+            }
         } catch (e: FileNotFoundException) {
             Timber.e(e)
             viewState.showFailedSaveMessage()
@@ -56,8 +56,10 @@ constructor(val model: ImageListModel) : MvpPresenter<DetailView>() {
     fun onShareClick(bitmap: Bitmap) {
         try {
             Timber.d("onShareClick")
-            val path = model.saveBitmap(model.images[0], bitmap)
-            viewState.shareImage(path)
+            model.currentImage.value?.let {
+                val path = model.saveBitmap(it, bitmap)
+                viewState.shareImage(path)
+            }
         } catch (e: FileNotFoundException) {
             Timber.e(e)
             viewState.showFailedSaveMessage()

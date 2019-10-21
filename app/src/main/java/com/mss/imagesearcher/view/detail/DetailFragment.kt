@@ -99,6 +99,7 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "image/jpeg"
         intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path))
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         startActivity(Intent.createChooser(intent, "Share Image"))
     }
 
