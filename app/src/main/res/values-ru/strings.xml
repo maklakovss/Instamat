@@ -32,8 +32,8 @@
     <string name="colors_label">Цвет</string>
     <string name="order_label">Сортировка</string>
     <string name="clear_label">Очистить</string>
-    <string name="apply">Apply</string>
-    <string name="clear_history">Clear history</string>
+    <string name="apply">Применить</string>
+    <string name="clear_history">Очистить историю</string>
 
     <array name="image_type">
         <item>все</item>
@@ -73,21 +73,21 @@
     </array>
 
     <array name="image_colors">
-        <item>all</item>
-        <item>grayscale</item>
-        <item>transparent</item>
-        <item>red</item>
-        <item>orange</item>
-        <item>yellow</item>
-        <item>green</item>
-        <item>turquoise</item>
-        <item>blue</item>
-        <item>lilac</item>
-        <item>pink</item>
-        <item>white</item>
-        <item>gray</item>
-        <item>black</item>
-        <item>brown</item>
+        <item>все</item>
+        <item>чернобелый</item>
+        <item>прозрачный</item>
+        <item>красный</item>
+        <item>оранжевый</item>
+        <item>желтый</item>
+        <item>зеленый</item>
+        <item>бирюзовый</item>
+        <item>голубой</item>
+        <item>лиловый</item>
+        <item>розлвый</item>
+        <item>белый</item>
+        <item>серый</item>
+        <item>черный</item>
+        <item>коричнивый</item>
     </array>
 
     <array name="image_order">

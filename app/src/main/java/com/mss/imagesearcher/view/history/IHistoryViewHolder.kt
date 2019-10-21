@@ -8,6 +8,4 @@ interface IHistoryViewHolder {
 
     fun setDescription(description: String)
 
-    fun getStringByRes(idRes: Int): String
-
 }

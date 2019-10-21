@@ -53,9 +53,5 @@ class HistoryAdapter(private val rvPresenter: IRvHistoryPresenter) : RecyclerVie
             itemView.historyItemDescription.text = description
         }
 
-        override fun getStringByRes(idRes: Int): String {
-            return itemView.resources.getString(idRes)
-        }
-
     }
 }

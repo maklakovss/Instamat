@@ -12,6 +12,7 @@ import com.mss.imagesearcher.presenter.main.MainPresenter
 import com.mss.imagesearcher.presenter.settings.SettingsPresenter
 import com.mss.imagesearcher.view.helpers.ImageLoader
 import com.mss.imagesearcher.view.helpers.ImageLoaderImpl
+import com.mss.imagesearcher.view.helpers.TranslateHelper
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -45,8 +46,8 @@ class AppModule(private val appContext: Context) {
 
     @Singleton
     @Provides
-    fun provideHistoryPresenter(model: ImageListModel): HistoryPresenter {
-        return HistoryPresenter(model)
+    fun provideHistoryPresenter(model: ImageListModel, translateHelper: TranslateHelper): HistoryPresenter {
+        return HistoryPresenter(model, translateHelper)
     }
 
     @Singleton
@@ -72,4 +73,11 @@ class AppModule(private val appContext: Context) {
     fun provideImageLoader(): ImageLoader {
         return ImageLoaderImpl()
     }
+
+    @Singleton
+    @Provides
+    fun provideTranslateHelper(): TranslateHelper {
+        return TranslateHelper(appContext)
+    }
+
 }
