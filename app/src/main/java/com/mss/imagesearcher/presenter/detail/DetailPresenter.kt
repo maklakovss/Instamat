@@ -19,8 +19,10 @@ constructor(val model: ImageListModel) : MvpPresenter<DetailView>() {
             viewState.apply {
                 Timber.d("current image changed")
                 showImage(false)
-                showProgress(true)
-                startLoadImage(it.largeImageURL)
+                if (it != null) {
+                    showProgress(true)
+                    startLoadImage(it.largeImageURL)
+                }
             }
         }
     }

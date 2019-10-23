@@ -1,5 +1,6 @@
 package com.mss.imagesearcher.view.detail
 
+import android.Manifest
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
@@ -14,10 +15,21 @@ import com.mss.imagesearcher.R
 import com.mss.imagesearcher.presenter.detail.DetailPresenter
 import com.mss.imagesearcher.view.helpers.ImageLoader
 import kotlinx.android.synthetic.main.fragment_detail.*
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.EasyPermissions
+import pub.devrel.easypermissions.EasyPermissions.hasPermissions
 import timber.log.Timber
 import javax.inject.Inject
 
+
 class DetailFragment : MvpAppCompatFragment(), DetailView {
+
+    companion object {
+        private const val PERMISSION_REQUEST_SAVE = 555
+        private const val PERMISSION_REQUEST_SHARE = 888
+        private val STORAGE_PERMISSIONS = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+    }
 
     @Inject
     @InjectPresenter
@@ -53,11 +65,11 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.miSave -> {
-                saveImage()
+                saveImageWithCheckPermission()
                 return true
             }
             R.id.miShare -> {
-                shareImage()
+                shareImageWithCheckPermission()
                 return true
             }
         }
@@ -123,4 +135,41 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
         val drawable = imageView!!.drawable as BitmapDrawable
         presenter.onShareClick(drawable.bitmap)
     }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>,
+                                            grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        Timber.d("onRequestPermissionsResult requestCode = %d, grantResultsSize = %s", requestCode, grantResults.size)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    @AfterPermissionGranted(PERMISSION_REQUEST_SAVE)
+    private fun saveImageWithCheckPermission() {
+        if (hasStoragePermission()) {
+            saveImage()
+        } else {
+            requestPermission(PERMISSION_REQUEST_SAVE)
+        }
+    }
+
+    private fun requestPermission(permissionRequestCode: Int) {
+        Timber.d("requestPermission")
+        EasyPermissions.requestPermissions(this, getString(R.string.storage_rationale), permissionRequestCode, *STORAGE_PERMISSIONS)
+    }
+
+    @AfterPermissionGranted(PERMISSION_REQUEST_SHARE)
+    private fun shareImageWithCheckPermission() {
+        if (hasStoragePermission()) {
+            shareImage()
+        } else {
+            requestPermission(PERMISSION_REQUEST_SHARE)
+        }
+    }
+
+    private fun hasStoragePermission(): Boolean {
+        return hasPermissions(requireContext(), *STORAGE_PERMISSIONS)
+    }
+
 }
