@@ -3,9 +3,9 @@ package com.mss.imagesearcher.view.detail
 import android.Manifest
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import androidx.core.content.FileProvider
 import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
@@ -19,6 +19,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.EasyPermissions.hasPermissions
 import timber.log.Timber
+import java.io.File
 import javax.inject.Inject
 
 
@@ -109,9 +110,8 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
     override fun shareImage(path: String) {
         Timber.d("shareImage")
         val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "image/jpeg"
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path))
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.type = "image/*"
+        intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(requireContext(), requireContext().packageName, File(path)))
         startActivity(Intent.createChooser(intent, "Share Image"))
     }
 
@@ -122,18 +122,6 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
         } else {
             imageView!!.visibility = View.INVISIBLE
         }
-    }
-
-    private fun saveImage() {
-        Timber.d("saveImage")
-        val drawable = imageView!!.drawable as BitmapDrawable
-        presenter.onSaveClick(drawable.bitmap)
-    }
-
-    private fun shareImage() {
-        Timber.d("shareImage")
-        val drawable = imageView!!.drawable as BitmapDrawable
-        presenter.onShareClick(drawable.bitmap)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
@@ -148,7 +136,8 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
     @AfterPermissionGranted(PERMISSION_REQUEST_SAVE)
     private fun saveImageWithCheckPermission() {
         if (hasStoragePermission()) {
-            saveImage()
+            Timber.d("saveImage")
+            presenter.onSaveClick((imageView!!.drawable as BitmapDrawable).bitmap)
         } else {
             requestPermission(PERMISSION_REQUEST_SAVE)
         }
@@ -162,7 +151,8 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
     @AfterPermissionGranted(PERMISSION_REQUEST_SHARE)
     private fun shareImageWithCheckPermission() {
         if (hasStoragePermission()) {
-            shareImage()
+            Timber.d("shareImage")
+            presenter.onShareClick((imageView!!.drawable as BitmapDrawable).bitmap)
         } else {
             requestPermission(PERMISSION_REQUEST_SHARE)
         }

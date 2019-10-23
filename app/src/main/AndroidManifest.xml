@@ -27,6 +27,15 @@
         <activity android:name=".view.detail.DetailFragment" />
         <activity android:name=".view.info.InfoFragment" />
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.mss.imagesearcher"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-8601890205077009~6067851844" />
